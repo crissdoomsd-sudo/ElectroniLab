@@ -285,7 +285,7 @@
 var firebaseConfig={apiKey:"AIzaSyCZbKU27EngACUMP1FNBxA0N3HabxcBPZg",authDomain:"electronilab-aa4da.firebaseapp.com",databaseURL:"https://electronilab-aa4da-default-rtdb.firebaseio.com/",projectId:"electronilab-aa4da",storageBucket:"electronilab-aa4da.firebasestorage.app",messagingSenderId:"1009038542986",appId:"1:1009038542986:web:2ca34ff0ab861637eb0573",measurementId:"G-15Z1B5MMR6"};
 firebase.initializeApp(firebaseConfig);
 var db=firebase.database();
-var storageRef=firebase.storage().ref();
+// No usamos Storage, imágenes van como base64 en Realtime Database
 var ADMIN_PASS="amolacocaconfernet22";
 var currentPracticeType="";
 
@@ -423,24 +423,44 @@ function submitPractice(){
 
     if(imageFile){
         document.getElementById('pfUploadProgress').style.display='block';
-        var fileName='practices/'+Date.now()+'_'+imageFile.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-        var uploadTask=storageRef.child(fileName).put(imageFile);
-        uploadTask.on('state_changed',function(snapshot){
-            var progress=(snapshot.bytesTransferred/snapshot.totalBytes)*100;
-            document.getElementById('pfProgressBar').style.width=progress+'%';
-        },function(error){
-            console.error('Upload error:',error);
-            showToast('Error al subir imagen. Se guardar\u00e1 sin imagen.');
+        document.getElementById('pfProgressBar').style.width='30%';
+        
+        // Leer y comprimir imagen como base64
+        var reader=new FileReader();
+        reader.onload=function(e){
+            document.getElementById('pfProgressBar').style.width='60%';
+            
+            // Crear imagen temporal para redimensionar
+            var img=new Image();
+            img.onload=function(){
+                // Redimensionar: máximo 800px de ancho
+                var maxW=800;
+                var w=img.width;
+                var h=img.height;
+                if(w>maxW){h=h*(maxW/w);w=maxW;}
+                
+                // Dibujar en canvas comprimido
+                var canvas=document.createElement('canvas');
+                canvas.width=w;
+                canvas.height=h;
+                var ctx=canvas.getContext('2d');
+                ctx.drawImage(img,0,0,w,h);
+                
+                // Convertir a JPEG con calidad 0.6 (aprox 50-150KB)
+                var base64=canvas.toDataURL('image/jpeg',0.6);
+                
+                document.getElementById('pfProgressBar').style.width='90%';
+                
+                practiceData.imageUrl=base64;
+                savePracticeToDb(practiceData);
+            };
+            img.src=e.target.result;
+        };
+        reader.onerror=function(){
+            showToast('Error al leer imagen. Se guardar\u00e1 sin imagen.');
             savePracticeToDb(practiceData);
-        },function(){
-            uploadTask.snapshot.ref.getDownloadURL().then(function(url){
-                practiceData.imageUrl=url;
-                savePracticeToDb(practiceData);
-            }).catch(function(err){
-                console.error('URL error:',err);
-                savePracticeToDb(practiceData);
-            });
-        });
+        };
+        reader.readAsDataURL(imageFile);
     }else{
         savePracticeToDb(practiceData);
     }
