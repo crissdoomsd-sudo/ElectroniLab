@@ -60,7 +60,6 @@
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
         <canvas id="heroCanvas"></canvas>
         <div class="absolute inset-0 bg-gradient-to-b from-electric-900/80 via-electric-900/60 to-electric-900/90 z-[1]"></div>
-        <!-- Floating geometric shapes for dynamism -->
         <div class="hero-shape w-40 h-40 top-[10%] left-[5%] z-[2]" style="animation-delay:0s"></div>
         <div class="hero-shape w-24 h-24 top-[60%] right-[8%] z-[2]" style="animation-delay:1.5s"></div>
         <div class="hero-shape w-56 h-56 bottom-[15%] left-[15%] z-[2]" style="animation-delay:3s"></div>
@@ -69,7 +68,6 @@
         <svg class="float-geo w-48 h-48 top-[8%] right-[12%] z-[2]" style="animation-delay:1s" viewBox="0 0 100 100"><polygon points="50,5 95,75 5,75" fill="none" stroke="#3399FF" stroke-width="1"/></svg>
         <svg class="float-geo w-36 h-36 bottom-[12%] left-[8%] z-[2]" style="animation-delay:2s" viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" fill="none" stroke="#3399FF" stroke-width="1" rx="5"/></svg>
         <svg class="float-geo w-28 h-28 top-[45%] left-[3%] z-[2]" style="animation-delay:3s" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#3399FF" stroke-width="1"/></svg>
-
         <div class="relative z-10 text-center px-6 max-w-4xl">
             <div class="flex items-center justify-center gap-6 mb-8">
                 <img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" alt="ESFM" class="shield-img h-24 md:h-28 object-contain">
@@ -119,19 +117,19 @@
     <!-- PAGE: ÁREAS -->
     <div id="page-areas" class="content-page active">
         <div class="max-w-7xl mx-auto px-6 py-16">
-            <div class="text-center mb-14"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-4 justify-items-center">Áreas de Aprendizaje</h2><p class="text-slate-500 max-w-2xl mx-auto">Domina los fundamentos de la electrónica con herramientas visuales e interactivas</p></div>
+            <div class="text-center mb-14"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-4 justify-items-center">Áreas de Aprendizaje</h2></div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <div onclick="navigateTo('ohm')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-volt"><div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-red-100 transition-colors"><i data-lucide="zap" class="w-7 h-7 text-volt"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Ley de Ohm</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Relación entre voltaje, corriente y resistencia.</p><span class="text-xs font-semibold text-volt flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
-                <div onclick="navigateTo('componentes')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-ohms"><div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-100 transition-colors"><i data-lucide="cpu" class="w-7 h-7 text-ohms"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Componentes</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Resistencias, capacitores, LEDs.</p><span class="text-xs font-semibold text-ohms flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
-                <div onclick="navigateTo('circuitos')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-amps"><div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-amber-100 transition-colors"><i data-lucide="git-branch" class="w-7 h-7 text-amps"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Circuitos</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Serie y paralelo.</p><span class="text-xs font-semibold text-amps flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
-                <div onclick="navigateTo('senales')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-watts"><div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-100 transition-colors"><i data-lucide="activity" class="w-7 h-7 text-watts"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Señales</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Ondas senoidales, cuadradas, triangulares.</p><span class="text-xs font-semibold text-watts flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
-                <div onclick="navigateTo('practica')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-electric-400"><div class="w-14 h-14 bg-electric-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-electric-100 transition-colors"><i data-lucide="brain" class="w-7 h-7 text-electric-600"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Práctica</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Cuestionarios y prácticas de laboratorio.</p><span class="text-xs font-semibold text-electric-600 flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
-                <div onclick="navigateTo('inicio')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-slate-400"><div class="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-slate-100 transition-colors"><i data-lucide="home" class="w-7 h-7 text-slate-500"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Inicio</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Volver a la pantalla principal.</p><span class="text-xs font-semibold text-slate-500 flex items-center gap-1">Volver <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
+                <div onclick="navigateTo('ohm')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-volt"><div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-red-100 transition-colors"><i data-lucide="zap" class="w-7 h-7 text-volt"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Ley de Ohm</h3><p class="text-sm text-slate-500 mb-4">Relación entre voltaje, corriente y resistencia.</p></div>
+                <div onclick="navigateTo('componentes')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-ohms"><div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-100 transition-colors"><i data-lucide="cpu" class="w-7 h-7 text-ohms"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Componentes</h3><p class="text-sm text-slate-500 mb-4">Resistencias, capacitores, LEDs.</p></div>
+                <div onclick="navigateTo('circuitos')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-amps"><div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-amber-100 transition-colors"><i data-lucide="git-branch" class="w-7 h-7 text-amps"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Circuitos</h3><p class="text-sm text-slate-500 mb-4">Serie y paralelo.</p></div>
+                <div onclick="navigateTo('senales')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-watts"><div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-100 transition-colors"><i data-lucide="activity" class="w-7 h-7 text-watts"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Señales</h3><p class="text-sm text-slate-500 mb-4">Ondas senoidales, cuadradas.</p></div>
+                <div onclick="navigateTo('practica')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-electric-400"><div class="w-14 h-14 bg-electric-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-electric-100 transition-colors"><i data-lucide="brain" class="w-7 h-7 text-electric-600"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Práctica</h3><p class="text-sm text-slate-500 mb-4">Cuestionarios y laboratorio.</p></div>
+                <div onclick="navigateTo('inicio')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-slate-400"><div class="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center mb-5"><i data-lucide="home" class="w-7 h-7 text-slate-500"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Inicio</h3><p class="text-sm text-slate-500 mb-4">Volver al inicio.</p></div>
             </div>
         </div>
     </div>
 
-    <!-- PAGE: LEY DE OHM -->
+    <!-- PAGE: OHM -->
     <div id="page-ohm" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Ley de Ohm</h2></div>
@@ -141,9 +139,9 @@
                     <div class="flex justify-center mb-8"><svg width="220" height="180" viewBox="0 0 220 180"><polygon points="110,10 10,170 210,170" fill="none" stroke="#0A84FF" stroke-width="2.5"/><line x1="10" y1="170" x2="210" y2="170" stroke="#0A84FF" stroke-width="2.5"/><line x1="60" y1="90" x2="160" y2="90" stroke="#0A84FF" stroke-width="1.5" stroke-dasharray="5,5"/><text x="110" y="70" text-anchor="middle" fill="#EF4444" font-size="32" font-weight="bold" font-family="Space Grotesk">V</text><text x="60" y="145" text-anchor="middle" fill="#F59E0B" font-size="28" font-weight="bold" font-family="Space Grotesk">I</text><text x="160" y="145" text-anchor="middle" fill="#22C55E" font-size="28" font-weight="bold" font-family="Space Grotesk">R</text></svg></div>
                     <div class="flex justify-center gap-2 mb-6"><button onclick="setSolveFor('V')" id="solveV" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-volt text-volt bg-red-50">V</button><button onclick="setSolveFor('I')" id="solveI" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white">I</button><button onclick="setSolveFor('R')" id="solveR" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white">R</button></div>
                     <div class="space-y-5">
-                        <div id="sliderV"><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-volt">⚡ Voltaje</label><span id="valV" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">12.0 V</span></div><input type="range" id="rangeV" min="0" max="48" step="0.1" value="12" class="w-full" oninput="updateOhm()"></div>
-                        <div id="sliderI"><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-amps">💡 Corriente</label><span id="valI" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">2.0 A</span></div><input type="range" id="rangeI" min="0.01" max="10" step="0.01" value="2" class="w-full" oninput="updateOhm()"></div>
-                        <div id="sliderR"><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-ohms">🔧 Resistencia</label><span id="valR" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">6.0 Ω</span></div><input type="range" id="rangeR" min="0.1" max="100" step="0.1" value="6" class="w-full" oninput="updateOhm()"></div>
+                        <div><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-volt">⚡ Voltaje</label><span id="valV" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">12.0 V</span></div><input type="range" id="rangeV" min="0" max="48" step="0.1" value="12" class="w-full" oninput="updateOhm()"></div>
+                        <div><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-amps">💡 Corriente</label><span id="valI" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">2.0 A</span></div><input type="range" id="rangeI" min="0.01" max="10" step="0.01" value="2" class="w-full" oninput="updateOhm()"></div>
+                        <div><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-ohms">🔧 Resistencia</label><span id="valR" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">6.0 Ω</span></div><input type="range" id="rangeR" min="0.1" max="100" step="0.1" value="6" class="w-full" oninput="updateOhm()"></div>
                     </div>
                     <div id="ohmResult" class="mt-6 bg-electric-600 text-white rounded-xl p-5 text-center"><div class="text-sm opacity-80 mb-1">Resultado</div><div class="font-mono text-2xl font-bold">V = I × R = 12.0 V</div><div class="text-sm mt-2 opacity-80">P = 24.0 W</div></div>
                 </div>
@@ -204,10 +202,13 @@
     <div id="page-practica" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Módulo de Práctica</h2></div>
+            <!-- Firebase Status -->
+            <div id="fbStatus" class="mb-4 px-4 py-2 rounded-lg text-xs font-mono flex items-center gap-2 bg-slate-100 text-slate-500"><span class="w-2 h-2 rounded-full bg-yellow-400" id="fbDot"></span><span id="fbText">Conectando a Firebase...</span></div>
             <div class="flex gap-2 mb-8 flex-wrap">
                 <button onclick="switchSubTab('quiz')" id="subQuiz" class="sub-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Cuestionario</button>
                 <button onclick="switchSubTab('escritas')" id="subEscritas" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Prácticas Escritas</button>
                 <button onclick="switchSubTab('realizar')" id="subRealizar" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Prácticas a Realizar</button>
+                <button onclick="refreshAllPractices()" class="ml-auto px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center gap-1"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refrescar</button>
             </div>
             <div id="panel-quiz" class="sub-panel" style="display:block">
                 <div class="max-w-4xl mx-auto">
@@ -248,15 +249,15 @@
     <div class="bg-white rounded-2xl p-8 max-w-lg w-full mx-4 shadow-2xl">
         <h3 class="text-lg font-bold text-slate-900 mb-4" id="pfModalTitle">Nueva Práctica</h3>
         <div class="space-y-4">
-            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Título *</label><input type="text" id="pfTitle" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm" placeholder="Título"></div>
+            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Título *</label><input type="text" id="pfTitle" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm"></div>
             <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Área</label><select id="pfArea" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm"><option>Ley de Ohm</option><option>Componentes</option><option>Circuitos</option><option>Señales</option><option>Otros</option></select></div>
-            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Objetivo *</label><textarea id="pfObj" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none" placeholder="¿Qué se busca lograr?"></textarea></div>
-            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Materiales</label><textarea id="pfMat" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none" placeholder="Lista de materiales..."></textarea></div>
-            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Procedimiento *</label><textarea id="pfPasos" rows="4" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none" placeholder="1. ...&#10;2. ..."></textarea></div>
-            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Observaciones</label><textarea id="pfNotas" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none" placeholder="Notas..."></textarea></div>
+            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Objetivo *</label><textarea id="pfObj" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none"></textarea></div>
+            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Materiales</label><textarea id="pfMat" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none"></textarea></div>
+            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Procedimiento *</label><textarea id="pfPasos" rows="4" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none"></textarea></div>
+            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Observaciones</label><textarea id="pfNotas" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none"></textarea></div>
             <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Imagen (opcional, máx 2MB)</label><input type="file" id="pfImage" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-electric-50 file:text-electric-700"></div>
-            <div id="pfImagePreview" style="display:none"><img id="pfPreviewImg" class="rounded-lg max-h-32 border border-slate-200" alt="Preview"></div>
-            <div id="pfUploadProgress" style="display:none"><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div id="pfProgressBar" class="h-full bg-electric-600 rounded-full transition-all" style="width:0%"></div></div><p class="text-xs text-slate-400 mt-1" id="pfProgressText">Procesando imagen...</p></div>
+            <div id="pfImagePreview" style="display:none"><img id="pfPreviewImg" class="rounded-lg max-h-32 border border-slate-200"></div>
+            <div id="pfUploadProgress" style="display:none"><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div id="pfProgressBar" class="h-full bg-electric-600 rounded-full transition-all" style="width:0%"></div></div><p class="text-xs text-slate-400 mt-1" id="pfProgressText">Procesando...</p></div>
             <div class="flex gap-3 pt-2">
                 <button onclick="closePracticeForm()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600">Cancelar</button>
                 <button onclick="submitPractice()" class="flex-1 px-4 py-2.5 bg-electric-600 text-white rounded-xl text-sm font-semibold hover:bg-electric-700 flex items-center justify-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> <span id="pfSubmitText">Guardar</span></button>
@@ -276,24 +277,63 @@
             <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" alt="Especialidad" class="h-10 object-contain shield-img">
         </div>
         <p class="text-sm text-electric-300">© 2026 ElectroniLab — IEPC - PEC · U.E. Max Fernandez Rojas · ESFM Mariscal Sucre</p>
-        <p class="text-xs text-electric-400 mt-2">Maestros en Formación: Cristian Medina Torres · Wilder R. Panique Chama · Jhonny S. Taboada Padilla</p>
     </div>
 </footer>
 
 <script>
-// ====== FIREBASE (solo Realtime Database, sin Storage) ======
+// ====== FIREBASE ======
 var firebaseConfig={apiKey:"AIzaSyCZbKU27EngACUMP1FNBxA0N3HabxcBPZg",authDomain:"electronilab-aa4da.firebaseapp.com",databaseURL:"https://electronilab-aa4da-default-rtdb.firebaseio.com/",projectId:"electronilab-aa4da",storageBucket:"electronilab-aa4da.firebasestorage.app",messagingSenderId:"1009038542986",appId:"1:1009038542986:web:2ca34ff0ab861637eb0573",measurementId:"G-15Z1B5MMR6"};
 firebase.initializeApp(firebaseConfig);
 var db=firebase.database();
 var ADMIN_PASS="amolacocaconfernet22";
 var currentPracticeType="";
 var editingId=null;
+var fbListeners={escrita:false,realizar:false};
 
 document.addEventListener('DOMContentLoaded',function(){
     lucide.createIcons();
     initHeroCanvas();initResistorDecoder();initOhm();initCircuit();initWaveform();initQuiz();renderFormulas();
-    loadFirebasePractices('escrita');loadFirebasePractices('realizar');
+    testFirebaseConnection();
 });
+
+// ====== FIREBASE CONNECTION TEST ======
+function testFirebaseConnection(){
+    var ref=db.ref('.info/connected');
+    ref.on('value',function(snap){
+        if(snap.val()===true){
+            document.getElementById('fbDot').className='w-2 h-2 rounded-full bg-green-400';
+            document.getElementById('fbText').textContent='Conectado a Firebase ✓';
+            // Load practices AFTER confirming connection
+            loadFirebasePractices('escrita');
+            loadFirebasePractices('realizar');
+        }else{
+            document.getElementById('fbDot').className='w-2 h-2 rounded-full bg-red-400';
+            document.getElementById('fbText').textContent='Sin conexión a Firebase ✗';
+        }
+    });
+}
+
+function refreshAllPractices(){
+    document.getElementById('fbText').textContent='Refrescando...';
+    document.getElementById('fbDot').className='w-2 h-2 rounded-full bg-yellow-400';
+    // Force reload using .once() for immediate results
+    ['escrita','realizar'].forEach(function(type){
+        var listId=type==='escrita'?'escritasList':'realizarList';
+        db.ref('practices/'+type).once('value').then(function(snapshot){
+            var data=snapshot.val()||{};var arr=[];
+            Object.keys(data).forEach(function(k){var d=data[k];arr.push({_id:k,title:d.title||'',area:d.area||'Otros',objetivo:d.objetivo||'',materiales:d.materiales||'',pasos:d.pasos||'',notas:d.notas||'',date:d.date||'',imageUrl:d.imageUrl||''});});
+            arr.reverse();
+            renderPracticeList(listId,type,arr);
+            console.log('[Firebase] Refreshed '+type+': '+arr.length+' practices');
+        }).catch(function(e){
+            console.error('[Firebase] Refresh error:',e);
+            document.getElementById(listId).innerHTML='<div class="text-center py-12 bg-red-50 rounded-2xl border border-red-200"><p class="text-red-500">Error: '+e.message+'</p></div>';
+        });
+    });
+    document.getElementById('fbText').textContent='Refrescado ✓';
+    document.getElementById('fbDot').className='w-2 h-2 rounded-full bg-green-400';
+    showToast('Listas actualizadas');
+}
 
 // ====== NAVIGATION ======
 function navigateTo(page){
@@ -311,38 +351,24 @@ function switchSubTab(sub){
 
 function showToast(msg){var t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},3000);}
 
-// ====== HERO CANVAS - DINÁMICO MEJORADO ======
-function initHeroCanvas(){
-    var canvas=document.getElementById('heroCanvas'),ctx=canvas.getContext('2d');
-    var w,h,nodes=[],traces=[],electrons=[],pulses=[];
-    function resize(){w=canvas.width=canvas.parentElement.offsetWidth;h=canvas.height=canvas.parentElement.offsetHeight;gen();}
-    function gen(){
-        var cols=Math.floor(w/70),rows=Math.floor(h/70);nodes=[];traces=[];electrons=[];pulses=[];
-        for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)if(Math.random()>.3)nodes.push({x:50+c*70,y:50+r*70,pulse:0,pulseT:Math.random()*100});
-        for(var i=0;i<nodes.length;i++)for(var j=i+1;j<nodes.length;j++){
-            var dx=Math.abs(nodes[i].x-nodes[j].x),dy=Math.abs(nodes[i].y-nodes[j].y);
-            if((dx===70&&dy===0)||(dx===0&&dy===70))if(Math.random()>.35){traces.push({from:i,to:j});electrons.push({trace:traces.length-1,t:Math.random(),speed:.003+Math.random()*.004,size:1.5+Math.random()*2});}}
-    }
-    function draw(){
-        ctx.clearRect(0,0,w,h);
-        // Draw traces with glow
-        traces.forEach(function(tr){var a=nodes[tr.from],b=nodes[tr.to];ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle='rgba(10,132,255,.12)';ctx.lineWidth=2;ctx.stroke();});
-        // Draw pulses on random nodes
-        for(var i=0;i<nodes.length;i++){var n=nodes[i];n.pulseT+=.02;var p=Math.sin(n.pulseT)*.5+.5;n.pulse=p;if(Math.random()<.002){pulses.push({x:n.x,y:n.y,r:0,maxR:30+Math.random()*20,alpha:1});}}
-        pulses.forEach(function(p,i){p.r+=1.5;p.alpha=1-p.r/p.maxR;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.strokeStyle='rgba(51,153,255,'+p.alpha*.3+')';ctx.lineWidth=1;ctx.stroke();});
-        pulses=pulses.filter(function(p){return p.r<p.maxR;});
-        // Draw nodes
-        nodes.forEach(function(n){var s=3+n.pulse*3;ctx.beginPath();ctx.arc(n.x,n.y,s,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255,'+(0.2+n.pulse*0.4)+')';ctx.fill();});
-        // Draw electrons with trails
-        electrons.forEach(function(e){e.t+=e.speed;if(e.t>1)e.t=0;var tr=traces[e.trace],a=nodes[tr.from],b=nodes[tr.to],x=a.x+(b.x-a.x)*e.t,y=a.y+(b.y-a.y)*e.t;
-        // Trail
-        var tx=a.x+(b.x-a.x)*Math.max(0,e.t-.06),ty=a.y+(b.y-a.y)*Math.max(0,e.t-.06);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(x,y);ctx.strokeStyle='rgba(51,153,255,.4)';ctx.lineWidth=e.size+2;ctx.stroke();
-        // Glow
-        ctx.beginPath();ctx.arc(x,y,e.size+4,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255,.15)';ctx.fill();
-        // Core
-        ctx.beginPath();ctx.arc(x,y,e.size,0,Math.PI*2);ctx.fillStyle='rgba(100,180,255,.9)';ctx.fill();});
-        requestAnimationFrame(draw);}
-    window.addEventListener('resize',resize);resize();draw();}
+// ====== HERO CANVAS ======
+function initHeroCanvas(){var canvas=document.getElementById('heroCanvas'),ctx=canvas.getContext('2d');var w,h,nodes=[],traces=[],electrons=[],pulses=[];
+function resize(){w=canvas.width=canvas.parentElement.offsetWidth;h=canvas.height=canvas.parentElement.offsetHeight;gen();}
+function gen(){var cols=Math.floor(w/70),rows=Math.floor(h/70);nodes=[];traces=[];electrons=[];pulses=[];
+for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)if(Math.random()>.3)nodes.push({x:50+c*70,y:50+r*70,pulse:0,pulseT:Math.random()*100});
+for(var i=0;i<nodes.length;i++)for(var j=i+1;j<nodes.length;j++){var dx=Math.abs(nodes[i].x-nodes[j].x),dy=Math.abs(nodes[i].y-nodes[j].y);
+if((dx===70&&dy===0)||(dx===0&&dy===70))if(Math.random()>.35){traces.push({from:i,to:j});electrons.push({trace:traces.length-1,t:Math.random(),speed:.003+Math.random()*.004,size:1.5+Math.random()*2});}}}
+function draw(){ctx.clearRect(0,0,w,h);
+traces.forEach(function(tr){var a=nodes[tr.from],b=nodes[tr.to];ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle='rgba(10,132,255,.12)';ctx.lineWidth=2;ctx.stroke();});
+for(var i=0;i<nodes.length;i++){var n=nodes[i];n.pulseT+=.02;var p=Math.sin(n.pulseT)*.5+.5;n.pulse=p;if(Math.random()<.002){pulses.push({x:n.x,y:n.y,r:0,maxR:30+Math.random()*20,alpha:1});}}
+pulses.forEach(function(p){p.r+=1.5;p.alpha=1-p.r/p.maxR;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.strokeStyle='rgba(51,153,255,'+p.alpha*.3+')';ctx.lineWidth=1;ctx.stroke();});
+pulses=pulses.filter(function(p){return p.r<p.maxR;});
+nodes.forEach(function(n){var s=3+n.pulse*3;ctx.beginPath();ctx.arc(n.x,n.y,s,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255,'+(0.2+n.pulse*0.4)+')';ctx.fill();});
+electrons.forEach(function(e){e.t+=e.speed;if(e.t>1)e.t=0;var tr=traces[e.trace],a=nodes[tr.from],b=nodes[tr.to],x=a.x+(b.x-a.x)*e.t,y=a.y+(b.y-a.y)*e.t;
+var tx=a.x+(b.x-a.x)*Math.max(0,e.t-.06),ty=a.y+(b.y-a.y)*Math.max(0,e.t-.06);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(x,y);ctx.strokeStyle='rgba(51,153,255,.4)';ctx.lineWidth=e.size+2;ctx.stroke();
+ctx.beginPath();ctx.arc(x,y,e.size+4,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255,.15)';ctx.fill();
+ctx.beginPath();ctx.arc(x,y,e.size,0,Math.PI*2);ctx.fillStyle='rgba(100,180,255,.9)';ctx.fill();});
+requestAnimationFrame(draw);}window.addEventListener('resize',resize);resize();draw();}
 
 // ====== OHM ======
 var solveFor='V';function setSolveFor(val){solveFor=val;document.querySelectorAll('.solve-btn').forEach(function(b){b.className='solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white';});var a=document.getElementById('solve'+val);var cls={V:'border-volt text-volt bg-red-50',I:'border-amps text-amps bg-amber-50',R:'border-ohms text-ohms bg-green-50'};a.className='solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 '+cls[val];var s={V:'rangeV',I:'rangeI',R:'rangeR'};Object.keys(s).forEach(function(k){var el=document.getElementById(s[k]);el.disabled=k===val;el.style.opacity=k===val?'0.4':'1';});updateOhm();}
@@ -355,98 +381,23 @@ function initResistorDecoder(){var b1C=document.getElementById('band1Colors');RC
 function uSA(c,i){c.querySelectorAll('.color-swatch').forEach(function(s,j){s.classList.toggle('active',j===i);});}
 function uR(){var d1=sB.b1,d2=sB.b2,mult=RC.band3[sB.b3].m,tol=RC.band4[sB.b4].t,val=(d1*10+d2)*mult;document.getElementById('rband1').style.background=RC.band1.find(function(c){return c.v===d1;}).c;document.getElementById('rband2').style.background=RC.band1[d2].c;document.getElementById('rband3').style.background=RC.band3[sB.b3].c;document.getElementById('rband4').style.background=RC.band4[sB.b4].c;var d=val>=1e6?(val/1e6).toFixed(val%1e6?1:0)+' MΩ':val>=1e3?(val/1e3).toFixed(val%1e3?1:0)+' kΩ':val+' Ω';document.getElementById('resistorResult').innerHTML='<div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold text-slate-900">'+d+' ± '+tol+'%</div>';}
 
-// ====== CIRCUITOS - PARALELO CORREGIDO ======
+// ====== CIRCUITOS ======
 var cType='serie';function setCircuitType(t){cType=t;document.getElementById('btnSerie').className=t==='serie'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';document.getElementById('btnParalelo').className=t==='paralelo'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';updateCircuit();}
 function initCircuit(){updateCircuit();}
-function updateCircuit(){
-var V=parseFloat(document.getElementById('circV').value)||12,R1=parseFloat(document.getElementById('circR1').value)||100,R2=parseFloat(document.getElementById('circR2').value)||200;
-var canvas=document.getElementById('circuitCanvas'),ctx=canvas.getContext('2d'),cw=canvas.width,ch=canvas.height;
-ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#FAFBFC';ctx.fillRect(0,0,cw,ch);
-// Grid
-ctx.strokeStyle='rgba(10,132,255,.06)';ctx.lineWidth=1;for(var x=0;x<cw;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}for(var y=0;y<ch;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}
+function updateCircuit(){var V=parseFloat(document.getElementById('circV').value)||12,R1=parseFloat(document.getElementById('circR1').value)||100,R2=parseFloat(document.getElementById('circR2').value)||200;var canvas=document.getElementById('circuitCanvas'),ctx=canvas.getContext('2d'),cw=canvas.width,ch=canvas.height;ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#FAFBFC';ctx.fillRect(0,0,cw,ch);ctx.strokeStyle='rgba(10,132,255,.06)';ctx.lineWidth=1;for(var x=0;x<cw;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}for(var y=0;y<ch;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}
 ctx.lineWidth=2.5;ctx.strokeStyle='#64748B';ctx.fillStyle='#64748B';ctx.textAlign='start';ctx.font='14px Space Grotesk';
-
-if(cType==='serie'){
-    // SERIE: batería a la izquierda, R1 y R2 en la línea superior
-    var bx=70,by=90,bw=360,bh=200;
-    // Top wire
-    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw,by);ctx.stroke();
-    // Bottom wire
-    ctx.beginPath();ctx.moveTo(bx,by+bh);ctx.lineTo(bx+bw,by+bh);ctx.stroke();
-    // Left side: battery
-    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx,by+80);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx,by+120);ctx.lineTo(bx,by+bh);ctx.stroke();
-    // Right side: connecting wire
-    ctx.beginPath();ctx.moveTo(bx+bw,by);ctx.lineTo(bx+bw,by+bh);ctx.stroke();
-    // Battery symbol
-    ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-12,by+80);ctx.lineTo(bx+12,by+80);ctx.stroke();// long line +
-    ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-7,by+120);ctx.lineTo(bx+7,by+120);ctx.stroke();// short line -
-    ctx.font='13px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+14,by+84);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+14,by+126);
-    // R1 box
-    ctx.fillStyle='#22C55E';ctx.fillRect(bx+80,by-14,80,28);ctx.strokeStyle='#64748B';ctx.lineWidth=2;
-    ctx.strokeRect(bx+80,by-14,80,28);ctx.fillStyle='white';ctx.font='bold 13px JetBrains Mono';ctx.fillText('R₁='+R1+'Ω',bx+90,by+5);
-    // R2 box
-    ctx.fillStyle='#22C55E';ctx.fillRect(bx+200,by-14,80,28);ctx.strokeStyle='#64792B';ctx.lineWidth=2;
-    ctx.strokeRect(bx+200,by-14,80,28);ctx.fillStyle='white';ctx.font='bold 13px JetBrains Mono';ctx.fillText('R₂='+R2+'Ω',bx+210,by+5);
-    // V label
-    ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-55,by+106);
-    // Direction arrows
-    ctx.fillStyle='#F59E0B';ctx.font='12px Space Grotesk';ctx.fillText('I →',bx+bw/2,by+bh+25);
-}else{
-    // PARALELO: batería a la izquierda, riel superior e inferior, R1 y R2 en ramas verticales
-    var bx=80,by=50,bw=340,bh=280;
-    var railTop=by+30,railBot=by+bh-30;
-    var branch1x=bx+140,branch2x=bx+260;
-    // Top rail
-    ctx.beginPath();ctx.moveTo(bx,railTop);ctx.lineTo(bx+bw,railTop);ctx.stroke();
-    // Bottom rail
-    ctx.beginPath();ctx.moveTo(bx,railBot);ctx.lineTo(bx+bw,railBot);ctx.stroke();
-    // Right side closing wire
-    ctx.beginPath();ctx.moveTo(bx+bw,railTop);ctx.lineTo(bx+bw,railBot);ctx.stroke();
-    // Left side: battery wires
-    ctx.beginPath();ctx.moveTo(bx,railTop);ctx.lineTo(bx,railTop+40);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx,railBot-40);ctx.lineTo(bx,railBot);ctx.stroke();
-    // Battery symbol
-    ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-12,railTop+40);ctx.lineTo(bx+12,railTop+40);ctx.stroke();
-    ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-7,railBot-40);ctx.lineTo(bx+7,railBot-40);ctx.stroke();
-    ctx.font='13px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+14,railTop+44);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+14,railBot-34);
-    // Branch 1 (R1)
-    ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;
-    ctx.beginPath();ctx.moveTo(branch1x,railTop);ctx.lineTo(branch1x,railTop+50);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(branch1x,railTop+100);ctx.lineTo(branch1x,railBot-100);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(branch1x,railBot-50);ctx.lineTo(branch1x,railBot);ctx.stroke();
-    // R1 box
-    ctx.fillStyle='#22C55E';ctx.fillRect(branch1x-30,railTop+50,60,20);ctx.strokeStyle='#64748B';ctx.lineWidth=2;
-    ctx.strokeRect(branch1x-30,railTop+50,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('R₁='+R1+'Ω',branch1x,railTop+64);ctx.textAlign='start';
-    // R1 bottom resistor representation (vertical)
-    ctx.fillStyle='#22C55E';ctx.fillRect(branch1x-30,railBot-100,60,20);ctx.strokeStyle='#64748B';ctx.lineWidth=2;
-    ctx.strokeRect(branch1x-30,railBot-100,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('R₁='+R1+'Ω',branch1x,railBot-86);ctx.textAlign='start';
-    // Branch 2 (R2)
-    ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;
-    ctx.beginPath();ctx.moveTo(branch2x,railTop);ctx.lineTo(branch2x,railTop+50);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(branch2x,railTop+100);ctx.lineTo(branch2x,railBot-100);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(branch2x,railBot-50);ctx.lineTo(branch2x,railBot);ctx.stroke();
-    // R2 box
-    ctx.fillStyle='#F59E0B';ctx.fillRect(branch2x-30,railTop+50,60,20);ctx.strokeStyle='#64748B';ctx.lineWidth=2;
-    ctx.strokeRect(branch2x-30,railTop+50,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('R₂='+R2+'Ω',branch2x,railTop+64);ctx.textAlign='start';
-    // R2 bottom
-    ctx.fillStyle='#F59E0B';ctx.fillRect(branch2x-30,railBot-100,60,20);ctx.strokeStyle='#64748B';ctx.lineWidth=2;
-    ctx.strokeRect(branch2x-30,railBot-100,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('R₂='+R2+'Ω',branch2x,railBot-86);ctx.textAlign='start';
-    // Junction dots
-    ctx.fillStyle='#64748B';[branch1x,branch2x].forEach(function(jx){ctx.beginPath();ctx.arc(jx,railTop,4,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(jx,railBot,4,0,Math.PI*2);ctx.fill();});
-    // V label
-    ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-55,(railTop+railBot)/2+5);
-    // Current arrows
-    ctx.fillStyle='#F59E0B';ctx.font='12px Space Grotesk';ctx.fillText('I →',bx+bw/2,railTop-10);ctx.fillText('← I',bx+bw/2,railBot+20);
-}
-// Calculate
+if(cType==='serie'){var bx=70,by=90,bw=360,bh=200;ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw,by);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by+bh);ctx.lineTo(bx+bw,by+bh);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx,by+80);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by+120);ctx.lineTo(bx,by+bh);ctx.stroke();ctx.beginPath();ctx.moveTo(bx+bw,by);ctx.lineTo(bx+bw,by+bh);ctx.stroke();ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-12,by+80);ctx.lineTo(bx+12,by+80);ctx.stroke();ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-7,by+120);ctx.lineTo(bx+7,by+120);ctx.stroke();ctx.font='13px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+14,by+84);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+14,by+126);ctx.fillStyle='#22C55E';ctx.fillRect(bx+80,by-14,80,28);ctx.strokeStyle='#16a34a';ctx.lineWidth=2;ctx.strokeRect(bx+80,by-14,80,28);ctx.fillStyle='white';ctx.font='bold 13px JetBrains Mono';ctx.fillText('R₁='+R1+'Ω',bx+90,by+5);ctx.fillStyle='#22C55E';ctx.fillRect(bx+200,by-14,80,28);ctx.strokeStyle='#16a34a';ctx.strokeRect(bx+200,by-14,80,28);ctx.fillStyle='white';ctx.fillText('R₂='+R2+'Ω',bx+210,by+5);ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-55,by+106);ctx.fillStyle='#F59E0B';ctx.font='12px Space Grotesk';ctx.fillText('I →',bx+bw/2,by+bh+25);
+}else{var bx=80,by=50,bw=340,bh=280,railTop=by+30,railBot=by+bh-30,b1x=bx+140,b2x=bx+260;
+ctx.beginPath();ctx.moveTo(bx,railTop);ctx.lineTo(bx+bw,railTop);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,railBot);ctx.lineTo(bx+bw,railBot);ctx.stroke();ctx.beginPath();ctx.moveTo(bx+bw,railTop);ctx.lineTo(bx+bw,railBot);ctx.stroke();
+ctx.beginPath();ctx.moveTo(bx,railTop);ctx.lineTo(bx,railTop+40);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,railBot-40);ctx.lineTo(bx,railBot);ctx.stroke();
+ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-12,railTop+40);ctx.lineTo(bx+12,railTop+40);ctx.stroke();ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-7,railBot-40);ctx.lineTo(bx+7,railBot-40);ctx.stroke();ctx.font='13px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+14,railTop+44);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+14,railBot-34);
+[b1x,b2x].forEach(function(jx){ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(jx,railTop);ctx.lineTo(jx,railTop+50);ctx.stroke();ctx.beginPath();ctx.moveTo(jx,railTop+100);ctx.lineTo(jx,railBot-100);ctx.stroke();ctx.beginPath();ctx.moveTo(jx,railBot-50);ctx.lineTo(jx,railBot);ctx.stroke();});
+ctx.fillStyle='#22C55E';ctx.fillRect(b1x-30,railTop+50,60,20);ctx.strokeStyle='#16a34a';ctx.lineWidth=2;ctx.strokeRect(b1x-30,railTop+50,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';ctx.fillText('R₁='+R1+'Ω',b1x,railTop+64);ctx.fillStyle='#F59E0B';ctx.fillRect(b2x-30,railTop+50,60,20);ctx.strokeStyle='#d97706';ctx.strokeRect(b2x-30,railTop+50,60,20);ctx.fillStyle='white';ctx.fillText('R₂='+R2+'Ω',b2x,railTop+64);ctx.textAlign='start';
+ctx.fillStyle='#64748B';[b1x,b2x].forEach(function(jx){ctx.beginPath();ctx.arc(jx,railTop,4,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(jx,railBot,4,0,Math.PI*2);ctx.fill();});
+ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-55,(railTop+railBot)/2+5);ctx.fillStyle='#F59E0B';ctx.font='12px Space Grotesk';ctx.fillText('I →',bx+bw/2,railTop-10);ctx.fillText('← I',bx+bw/2,railBot+20);}
 var Rt,It,V1,V2,I1,I2;if(cType==='serie'){Rt=R1+R2;It=V/Rt;V1=It*R1;V2=It*R2;I1=I2=It;}else{Rt=(R1*R2)/(R1+R2);It=V/Rt;V1=V2=V;I1=V/R1;I2=V/R2;}var P=V*It;
 document.getElementById('circuitResults').innerHTML='<div class="grid grid-cols-2 gap-3"><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">R total</div><div class="font-mono font-bold text-ohms">'+Rt.toFixed(1)+'Ω</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I total</div><div class="font-mono font-bold text-amps">'+It.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2081</div><div class="font-mono font-bold text-volt">'+V1.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2082</div><div class="font-mono font-bold text-volt">'+V2.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2081</div><div class="font-mono font-bold text-amps">'+I1.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2082</div><div class="font-mono font-bold text-amps">'+I2.toFixed(4)+'A</div></div><div class="col-span-2 bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">Potencia</div><div class="font-mono font-bold text-watts">'+P.toFixed(3)+'W</div></div></div>';
-var rules=cType==='serie'?['R<sub>T</sub>=R\u2081+R\u2082 (se suman)','Corriente igual en todos','Voltaje se divide','Si falla uno, todo se detiene']:['1/R<sub>T</sub>=1/R\u2081+1/R\u2082','Voltaje igual en todas las ramas','Corriente se divide entre ramas','Si falla uno, las demás continúan'];
+var rules=cType==='serie'?['R<sub>T</sub>=R\u2081+R\u2082 (se suman)','Corriente igual en todos','Voltaje se divide','Si falla uno, todo se detiene']:['1/R<sub>T</sub>=1/R\u2081+1/R\u2082','Voltaje igual en ramas','Corriente se divide','Si falla uno, demás continúan'];
 document.getElementById('circuitRules').innerHTML=rules.map(function(r){return '<p class="text-sm text-slate-600">\u2022 '+r+'</p>';}).join('');}
 
 // ====== WAVEFORM ======
@@ -455,28 +406,43 @@ function updateWaveParams(){wAmp=parseFloat(document.getElementById('ampSlider')
 function initWaveform(){var canvas=document.getElementById('waveCanvas'),ctx=canvas.getContext('2d');updateWaveParams();function draw(){var cw=canvas.width,ch=canvas.height;ctx.fillStyle='#0C1A2E';ctx.fillRect(0,0,cw,ch);ctx.strokeStyle='rgba(10,132,255,.1)';ctx.lineWidth=1;for(var x=0;x<cw;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}for(var y=0;y<ch;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}ctx.strokeStyle='rgba(10,132,255,.25)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,ch/2);ctx.lineTo(cw,ch/2);ctx.stroke();ctx.beginPath();ctx.strokeStyle='#3399FF';ctx.lineWidth=2.5;ctx.shadowColor='#3399FF';ctx.shadowBlur=8;var midY=ch/2,sY=(ch/2-30)/12;for(var x=0;x<cw;x++){var t=(x/cw)*3+wTime,y,ph=2*Math.PI*wFreq*t;if(wType==='sine')y=midY-wAmp*Math.sin(ph)*sY;else if(wType==='square')y=midY-wAmp*Math.sign(Math.sin(ph))*sY;else if(wType==='triangle')y=midY-wAmp*(2/Math.PI)*Math.asin(Math.sin(ph))*sY;else if(wType==='sawtooth'){var p=(wFreq*t)%1;y=midY-wAmp*(2*p-1)*sY;}else y=midY-wAmp*sY;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.shadowBlur=0;wTime+=.015;requestAnimationFrame(draw);}draw();}
 
 // ====== QUIZ ======
-var QQ=[{cat:'Ley de Ohm',q:'R=100\u03A9, I=0.5A, \u00bfV=?',o:['25V','50V','100V','200V'],c:1,e:'V=I\u00d7R=50V'},{cat:'Componentes',q:'\u00bf1k\u03A9 \u00b15%?',o:['Marr\u00f3n-Negro-Rojo-Oro','Marr\u00f3n-Negro-Naranja-Oro','Rojo-Negro-Marr\u00f3n-Oro','Marr\u00f3n-Rojo-Negro-Oro'],c:0,e:'Marr\u00f3n(1)-Negro(0)-Rojo(\u00d7100)=1k\u03A9'},{cat:'Circuitos',q:'Serie R\u2081=10\u03A9 R\u2082=20\u03A9, \u00bfRT?',o:['6.67\u03A9','30\u03A9','200\u03A9','15\u03A9'],c:1,e:'RT=10+20=30\u03A9'},{cat:'Circuitos',q:'Paralelo: \u00bfqu\u00e9 es igual?',o:['Corriente','Resistencia','Voltaje','Potencia'],c:2,e:'Voltaje igual en ramas'},{cat:'Ohm',q:'\u00bfUnidad de resistencia?',o:['Voltio','Amperio','Ohmio','Vatio'],c:2,e:'Ohmio (\u03A9)'},{cat:'Componentes',q:'\u00bfQu\u00e9 almacena carga?',o:['Resistencia','Inductor','Capacitor','Diodo'],c:2,e:'Capacitor (F)'},{cat:'Se\u00f1ales',q:'T=0.02s, \u00bff?',o:['20Hz','50Hz','100Hz','0.02Hz'],c:1,e:'f=1/0.02=50Hz'},{cat:'Ohm',q:'V=12V R=4\u03A9, \u00bfP?',o:['3W','16W','36W','48W'],c:2,e:'P=V\u00b2/R=36W'}];
-var cQ=0,sc=0,qans=false;
-function initQuiz(){showQ();}
+var QQ=[{cat:'Ohm',q:'R=100\u03A9 I=0.5A \u00bfV=?',o:['25V','50V','100V','200V'],c:1,e:'V=I\u00d7R=50V'},{cat:'Comp.',q:'\u00bf1k\u03A9 \u00b15%?',o:['M-N-R-Oro','M-N-N-Oro','R-N-M-Oro','M-R-N-Oro'],c:0,e:'1-0-\u00d7100=1k\u03A9'},{cat:'Circ.',q:'Serie R\u2081=10 R\u2082=20 \u00bfRT?',o:['6.67','30','200','15'],c:1,e:'RT=30\u03A9'},{cat:'Circ.',q:'Paralelo: \u00bfqu\u00e9 es igual?',o:['Corriente','Resistencia','Voltaje','Potencia'],c:2,e:'Voltaje igual en ramas'},{cat:'Ohm',q:'\u00bfUnidad resistencia?',o:['Voltio','Amperio','Ohmio','Vatio'],c:2,e:'Ohmio'},{cat:'Comp.',q:'\u00bfQu\u00e9 almacena carga?',o:['Resistencia','Inductor','Capacitor','Diodo'],c:2,e:'Capacitor'},{cat:'Se\u00f1al',q:'T=0.02s \u00bff?',o:['20Hz','50Hz','100Hz','0.02Hz'],c:1,e:'f=50Hz'},{cat:'Ohm',q:'V=12 R=4 \u00bfP?',o:['3W','16W','36W','48W'],c:2,e:'P=36W'}];
+var cQ=0,sc=0,qans=false;function initQuiz(){showQ();}
 function showQ(){if(cQ>=QQ.length){document.getElementById('quizCard').style.display='none';document.getElementById('quizComplete').style.display='block';document.getElementById('finalScore').textContent=sc+'/'+QQ.length;var p=sc/QQ.length;document.getElementById('finalMsg').textContent=p>=.8?'\u00a1Excelente!':p>=.5?'Buen trabajo':'Sigue practicando';return;}var q=QQ[cQ];document.getElementById('qNum').textContent=cQ+1;document.getElementById('qTotal').textContent=QQ.length;document.getElementById('qProgress').style.width=((cQ+1)/QQ.length*100)+'%';document.getElementById('quizCategory').textContent=q.cat;document.getElementById('quizQuestion').textContent=q.q;document.getElementById('quizFeedback').style.display='none';document.getElementById('btnNext').style.display='none';document.getElementById('btnSkip').style.display='inline-block';qans=false;document.getElementById('quizOptions').innerHTML=q.o.map(function(o,i){return '<button onclick="ansQ('+i+')" class="quiz-option w-full text-left px-5 py-3.5 rounded-xl border-2 border-slate-200 text-sm font-medium text-slate-700 hover:border-electric-400 hover:bg-electric-50 transition-all flex items-center gap-3"><span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">'+String.fromCharCode(65+i)+'</span>'+o+'</button>';}).join('');}
 function ansQ(i){if(qans)return;qans=true;var q=QQ[cQ];document.querySelectorAll('.quiz-option').forEach(function(o,j){o.style.pointerEvents='none';if(j===q.c)o.classList.add('correct');if(i===j&&j!==q.c)o.classList.add('incorrect');});var fb=document.getElementById('quizFeedback');fb.style.display='block';if(i===q.c){sc++;document.getElementById('qScore').textContent=sc;fb.className='mt-6 rounded-xl p-4 text-sm bg-green-50 border border-green-200 text-green-800';fb.innerHTML='\u2705 '+q.e;}else{fb.className='mt-6 rounded-xl p-4 text-sm bg-red-50 border border-red-200 text-red-800';fb.innerHTML='\u274c '+q.e;}document.getElementById('btnNext').style.display='inline-block';document.getElementById('btnSkip').style.display='none';}
-function skipQuestion(){cQ++;showQ();}
-function nextQuestion(){cQ++;showQ();}
+function skipQuestion(){cQ++;showQ();}function nextQuestion(){cQ++;showQ();}
 function restartQuiz(){cQ=0;sc=0;qans=false;document.getElementById('qScore').textContent='0';document.getElementById('quizCard').style.display='block';document.getElementById('quizComplete').style.display='none';showQ();}
 
-// ====== FIREBASE PRACTICES ======
+// ====== FIREBASE PRACTICES - ROBUST VERSION ======
 function loadFirebasePractices(type){
     var listId=type==='escrita'?'escritasList':'realizarList';
+    // Prevent duplicate listeners
+    if(fbListeners[type]){console.log('[FB] Already listening: '+type);return;}
+    fbListeners[type]=true;
+    console.log('[FB] Setting up listener for: practices/'+type);
+    
     db.ref('practices/'+type).on('value',function(snapshot){
-        var data=snapshot.val()||{};var arr=[];
-        Object.keys(data).forEach(function(k){var d=data[k];arr.push({_id:k,title:d.title||'',area:d.area||'Otros',objetivo:d.objetivo||'',materiales:d.materiales||'',pasos:d.pasos||'',notas:d.notas||'',date:d.date||'',imageUrl:d.imageUrl||''});});
-        arr.reverse();renderPracticeList(listId,type,arr);
-    },function(err){console.warn('Firebase err:',err);document.getElementById(listId).innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Error de conexión</p></div>';});
+        var data=snapshot.val();
+        console.log('[FB] Data received for '+type+':',data?Object.keys(data).length+' items':'null');
+        var arr=[];
+        if(data){Object.keys(data).forEach(function(k){var d=data[k];arr.push({_id:k,title:d.title||'',area:d.area||'Otros',objetivo:d.objetivo||'',materiales:d.materiales||'',pasos:d.pasos||'',notas:d.notas||'',date:d.date||'',imageUrl:d.imageUrl||''});});}
+        arr.reverse();
+        renderPracticeList(listId,type,arr);
+    },function(err){
+        console.error('[FB] Listener error for '+type+':',err.code,err.message);
+        document.getElementById(listId).innerHTML='<div class="text-center py-12 bg-red-50 rounded-2xl border border-red-200"><p class="text-red-600 font-medium">Error Firebase: '+err.message+'</p><p class="text-red-400 text-sm mt-1">Código: '+err.code+'</p></div>';
+    });
 }
 
 function renderPracticeList(containerId,type,practices){
-    var container=document.getElementById(containerId);if(!container)return;
-    if(!practices||practices.length===0){container.innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400 font-medium">No hay prácticas '+(type==='escrita'?'escritas':'a realizar')+'</p></div>';return;}
+    var container=document.getElementById(containerId);
+    if(!container){console.error('[Render] Container not found:',containerId);return;}
+    console.log('[Render] Rendering '+practices.length+' practices to '+containerId);
+    
+    if(!practices||practices.length===0){
+        container.innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400 font-medium">No hay prácticas '+(type==='escrita'?'escritas':'a realizar')+'</p><p class="text-slate-300 text-sm mt-1">Usa el botón "Añadir" para agregar</p></div>';
+        return;
+    }
     var ac={'Ley de Ohm':'bg-red-100 text-red-700','Componentes':'bg-green-100 text-green-700','Circuitos':'bg-amber-100 text-amber-700','Señales':'bg-purple-100 text-purple-700','Otros':'bg-slate-100 text-slate-700'};
     container.innerHTML=practices.map(function(p){var areaClass=ac[p.area]||ac['Otros'];
     return '<div class="practice-card"><div class="flex items-start justify-between gap-3 mb-3"><div><span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full '+areaClass+' mb-2">'+p.area+'</span><h4 class="font-bold text-slate-900">'+p.title+'</h4><p class="text-xs text-slate-400">'+p.date+'</p></div><div class="flex gap-1"><button onclick="editPractice(\''+type+'\',\''+p._id+'\')" class="text-slate-300 hover:text-electric-500 p-1" title="Editar">✏️</button><button onclick="deletePractice(\''+type+'\',\''+p._id+'\')" class="text-slate-300 hover:text-red-500 p-1" title="Eliminar">🗑</button></div></div><div class="space-y-3 text-sm">'
@@ -488,37 +454,34 @@ function renderPracticeList(containerId,type,practices){
     +'</div></div>';}).join('');
 }
 
-function deletePractice(type,id){if(!confirm('\u00bfEliminar esta práctica?'))return;db.ref('practices/'+type+'/'+id).remove().then(function(){showToast('Eliminada');}).catch(function(){showToast('Error');});}
+function deletePractice(type,id){
+    if(!confirm('\u00bfEliminar esta práctica?'))return;
+    console.log('[FB] Deleting:',type,id);
+    db.ref('practices/'+type+'/'+id).remove().then(function(){showToast('Eliminada');console.log('[FB] Deleted successfully');}).catch(function(e){console.error('[FB] Delete error:',e);showToast('Error: '+e.message);});
+}
 
-// ====== EDIT PRACTICE ======
+// ====== EDIT ======
 function editPractice(type,id){
-    // Verify password first
     currentPracticeType=type;editingId=id;
-    db.ref('practices/'+type+'/'+id).once('value',function(snapshot){
-        var d=snapshot.val();if(!d){showToast('Práctica no encontrada');return;}
-        // Open form pre-filled
+    console.log('[Edit] Loading practice:',type,id);
+    db.ref('practices/'+type+'/'+id).once('value').then(function(snapshot){
+        var d=snapshot.val();
+        if(!d){showToast('Práctica no encontrada');return;}
         document.getElementById('practiceFormModal').style.display='flex';
         document.getElementById('pfModalTitle').textContent='Editar Práctica';
         document.getElementById('pfSubmitText').textContent='Actualizar';
-        document.getElementById('pfTitle').value=d.title||'';
-        document.getElementById('pfArea').value=d.area||'Otros';
-        document.getElementById('pfObj').value=d.objetivo||'';
-        document.getElementById('pfMat').value=d.materiales||'';
-        document.getElementById('pfPasos').value=d.pasos||'';
-        document.getElementById('pfNotas').value=d.notas||'';
-        document.getElementById('pfImage').value='';
-        document.getElementById('pfUploadProgress').style.display='none';
-        document.getElementById('pfImagePreview').style.display='none';
-        // Show existing image if any
+        document.getElementById('pfTitle').value=d.title||'';document.getElementById('pfArea').value=d.area||'Otros';
+        document.getElementById('pfObj').value=d.objetivo||'';document.getElementById('pfMat').value=d.materiales||'';document.getElementById('pfPasos').value=d.pasos||'';document.getElementById('pfNotas').value=d.notas||'';
+        document.getElementById('pfImage').value='';document.getElementById('pfUploadProgress').style.display='none';
         if(d.imageUrl){document.getElementById('pfPreviewImg').src=d.imageUrl;document.getElementById('pfImagePreview').style.display='block';}
-    });
+        else{document.getElementById('pfImagePreview').style.display='none';}
+    }).catch(function(e){console.error('[Edit] Error:',e);showToast('Error: '+e.message);});
 }
 
-// ====== PASSWORD MODAL ======
+// ====== PASSWORD ======
 function showPasswordModal(type){
     currentPracticeType=type;editingId=null;
-    document.getElementById('passwordModal').style.display='flex';
-    document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';
+    document.getElementById('passwordModal').style.display='flex';document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';
     setTimeout(function(){document.getElementById('adminPassInput').focus();},100);}
 function closePasswordModal(){document.getElementById('passwordModal').style.display='none';}
 function verifyPassword(){var pass=document.getElementById('adminPassInput').value;if(pass===ADMIN_PASS){closePasswordModal();openPracticeForm();}else{document.getElementById('passError').style.display='block';}}
@@ -534,63 +497,66 @@ function openPracticeForm(){
 }
 function closePracticeForm(){document.getElementById('practiceFormModal').style.display='none';editingId=null;}
 
-// Preview image on file select
-document.addEventListener('change',function(e){
-    if(e.target&&e.target.id==='pfImage'){
-        var file=e.target.files&&e.target.files[0];
-        if(file){
-            if(file.size>2*1024*1024){showToast('Imagen muy grande (máx 2MB)');e.target.value='';return;}
-            var reader=new FileReader();reader.onload=function(ev){document.getElementById('pfPreviewImg').src=ev.target.result;document.getElementById('pfImagePreview').style.display='block';};reader.readAsDataURL(file);
-        }
-    }
-});
+// Image preview
+document.addEventListener('change',function(e){if(e.target&&e.target.id==='pfImage'){var file=e.target.files&&e.target.files[0];if(file){if(file.size>2*1024*1024){showToast('Imagen muy grande (máx 2MB)');e.target.value='';return;}var reader=new FileReader();reader.onload=function(ev){document.getElementById('pfPreviewImg').src=ev.target.result;document.getElementById('pfImagePreview').style.display='block';};reader.readAsDataURL(file);}}});
 
 function submitPractice(){
-    var title=document.getElementById('pfTitle').value.trim();
-    var area=document.getElementById('pfArea').value;
-    var obj=document.getElementById('pfObj').value.trim();
-    var mat=document.getElementById('pfMat').value.trim();
-    var pasos=document.getElementById('pfPasos').value.trim();
-    var notas=document.getElementById('pfNotas').value.trim();
-    var fileInput=document.getElementById('pfImage');
-    var imageFile=fileInput.files&&fileInput.files[0]?fileInput.files[0]:null;
+    var title=document.getElementById('pfTitle').value.trim();var area=document.getElementById('pfArea').value;var obj=document.getElementById('pfObj').value.trim();var mat=document.getElementById('pfMat').value.trim();var pasos=document.getElementById('pfPasos').value.trim();var notas=document.getElementById('pfNotas').value.trim();
+    var fileInput=document.getElementById('pfImage');var imageFile=fileInput.files&&fileInput.files[0]?fileInput.files[0]:null;
     if(!title||!obj||!pasos){showToast('Completa los campos obligatorios (*)');return;}
     var practiceData={title:title,area:area,objetivo:obj,materiales:mat,pasos:pasos,notas:notas,date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})};
-
-    // If editing, keep existing image unless new one selected
-    if(editingId){practiceData._editing=true;}
-
+    
+    console.log('[Submit] Type:',currentPracticeType,'Editing:',editingId);
+    
     if(imageFile){
         document.getElementById('pfUploadProgress').style.display='block';document.getElementById('pfProgressText').textContent='Procesando imagen...';document.getElementById('pfProgressBar').style.width='30%';
-        var reader=new FileReader();
-        reader.onload=function(e){
+        var reader=new FileReader();reader.onload=function(e){
             document.getElementById('pfProgressBar').style.width='60%';
             var img=new Image();img.onload=function(){
                 var maxW=600,w=img.width,h=img.height;if(w>maxW){h=h*(maxW/w);w=maxW;}
-                var canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;var ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,w,h);
-                var base64=canvas.toDataURL('image/jpeg',0.5);
+                var cv=document.createElement('canvas');cv.width=w;cv.height=h;var cx=cv.getContext('2d');cx.drawImage(img,0,0,w,h);
+                var base64=cv.toDataURL('image/jpeg',0.5);
                 document.getElementById('pfProgressBar').style.width='90%';document.getElementById('pfProgressText').textContent='Guardando...';
-                practiceData.imageUrl=base64;savePracticeToDb(practiceData);
-            };img.src=e.target.result;
-        };
-        reader.onerror=function(){showToast('Error con imagen, guardando sin ella');savePracticeToDb(practiceData);};
-        reader.readAsDataURL(imageFile);
+                practiceData.imageUrl=base64;doSave(practiceData);
+            };img.onerror=function(){showToast('Error con imagen');doSave(practiceData);};img.src=e.target.result;
+        };reader.onerror=function(){showToast('Error leyendo imagen');doSave(practiceData);};reader.readAsDataURL(imageFile);
     }else{
-        // If editing and no new image, keep existing
+        // If editing, keep existing image
         if(editingId){
-            db.ref('practices/'+currentPracticeType+'/'+editingId).once('value',function(snap){
+            db.ref('practices/'+currentPracticeType+'/'+editingId).once('value').then(function(snap){
                 var existing=snap.val();if(existing&&existing.imageUrl)practiceData.imageUrl=existing.imageUrl;
-                savePracticeToDb(practiceData);
-            });
-        }else{savePracticeToDb(practiceData);}
+                doSave(practiceData);
+            }).catch(function(){doSave(practiceData);});
+        }else{doSave(practiceData);}
     }
 }
 
-function savePracticeToDb(data){
+function doSave(data){
     var ref;
-    if(editingId){ref=db.ref('practices/'+currentPracticeType+'/'+editingId);}
-    else{ref=db.ref('practices/'+currentPracticeType).push();}
-    ref.set(data).then(function(){closePracticeForm();showToast(editingId?'Práctica actualizada':'Práctica guardada');editingId=null;}).catch(function(e){console.error(e);showToast('Error al guardar');});
+    if(editingId){
+        ref=db.ref('practices/'+currentPracticeType+'/'+editingId);
+        console.log('[Save] Updating:',currentPracticeType,editingId);
+    }else{
+        ref=db.ref('practices/'+currentPracticeType).push();
+        console.log('[Save] Creating new in:',currentPracticeType);
+    }
+    ref.set(data).then(function(){
+        console.log('[Save] Success!');
+        closePracticeForm();
+        showToast(editingId?'Práctica actualizada':'Práctica guardada');
+        editingId=null;
+        // Force immediate refresh with .once()
+        var listId=currentPracticeType==='escrita'?'escritasList':'realizarList';
+        db.ref('practices/'+currentPracticeType).once('value').then(function(snap){
+            var d=snap.val()||{};var arr=[];Object.keys(d).forEach(function(k){var v=d[k];arr.push({_id:k,title:v.title||'',area:v.area||'Otros',objetivo:v.objetivo||'',materiales:v.materiales||'',pasos:v.pasos||'',notas:v.notas||'',date:v.date||'',imageUrl:v.imageUrl||''});});arr.reverse();
+            renderPracticeList(listId,currentPracticeType,arr);
+            console.log('[Refresh] After save, '+arr.length+' items in '+currentPracticeType);
+        });
+    }).catch(function(e){
+        console.error('[Save] Error:',e);
+        showToast('Error al guardar: '+e.message);
+        document.getElementById('pfUploadProgress').style.display='none';
+    });
 }
 
 // ====== KATEX ======
