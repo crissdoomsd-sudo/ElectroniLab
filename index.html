@@ -218,9 +218,9 @@
                 </div>
             </div>
             <div id="panel-escritas" class="sub-panel" style="display:none">
-                <div class="max-w-5xl mx-auto">
-                    <div class="flex justify-between items-center mb-6"><h3 class="text-lg font-semibold">Prácticas Escritas</h3><button onclick="showPasswordModal('escrita')" class="bg-electric-600 hover:bg-electric-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i> Añadir</button></div>
-                    <div id="escritasList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div>
+    <div class="max-w-5xl mx-auto">
+        <div class="flex items-center mb-6"><h3 class="text-lg font-semibold">Prácticas Escritas</h3><span class="ml-3 text-xs font-medium text-slate-400 bg-slate-100 px-3 py-1 rounded-full">Solo lectura</span></div>
+        <div id="escritasList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div>
                 </div>
             </div>
             <div id="panel-realizar" class="sub-panel" style="display:none">
@@ -384,22 +384,148 @@ function uR(){var d1=sB.b1,d2=sB.b2,mult=RC.band3[sB.b3].m,tol=RC.band4[sB.b4].t
 // ====== CIRCUITOS ======
 var cType='serie';function setCircuitType(t){cType=t;document.getElementById('btnSerie').className=t==='serie'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';document.getElementById('btnParalelo').className=t==='paralelo'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';updateCircuit();}
 function initCircuit(){updateCircuit();}
-function updateCircuit(){var V=parseFloat(document.getElementById('circV').value)||12,R1=parseFloat(document.getElementById('circR1').value)||100,R2=parseFloat(document.getElementById('circR2').value)||200;var canvas=document.getElementById('circuitCanvas'),ctx=canvas.getContext('2d'),cw=canvas.width,ch=canvas.height;ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#FAFBFC';ctx.fillRect(0,0,cw,ch);ctx.strokeStyle='rgba(10,132,255,.06)';ctx.lineWidth=1;for(var x=0;x<cw;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}for(var y=0;y<ch;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}
+function updateCircuit(){
+var V=parseFloat(document.getElementById('circV').value)||12,R1=parseFloat(document.getElementById('circR1').value)||100,R2=parseFloat(document.getElementById('circR2').value)||200;
+var canvas=document.getElementById('circuitCanvas'),ctx=canvas.getContext('2d'),cw=canvas.width,ch=canvas.height;
+ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#FAFBFC';ctx.fillRect(0,0,cw,ch);
+// Grid
+ctx.strokeStyle='rgba(10,132,255,.06)';ctx.lineWidth=1;
+for(var x=0;x<cw;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}
+for(var y=0;y<ch;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}
 ctx.lineWidth=2.5;ctx.strokeStyle='#64748B';ctx.fillStyle='#64748B';ctx.textAlign='start';ctx.font='14px Space Grotesk';
-if(cType==='serie'){var bx=70,by=90,bw=360,bh=200;ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw,by);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by+bh);ctx.lineTo(bx+bw,by+bh);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx,by+80);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by+120);ctx.lineTo(bx,by+bh);ctx.stroke();ctx.beginPath();ctx.moveTo(bx+bw,by);ctx.lineTo(bx+bw,by+bh);ctx.stroke();ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-12,by+80);ctx.lineTo(bx+12,by+80);ctx.stroke();ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-7,by+120);ctx.lineTo(bx+7,by+120);ctx.stroke();ctx.font='13px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+14,by+84);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+14,by+126);ctx.fillStyle='#22C55E';ctx.fillRect(bx+80,by-14,80,28);ctx.strokeStyle='#16a34a';ctx.lineWidth=2;ctx.strokeRect(bx+80,by-14,80,28);ctx.fillStyle='white';ctx.font='bold 13px JetBrains Mono';ctx.fillText('R₁='+R1+'Ω',bx+90,by+5);ctx.fillStyle='#22C55E';ctx.fillRect(bx+200,by-14,80,28);ctx.strokeStyle='#16a34a';ctx.strokeRect(bx+200,by-14,80,28);ctx.fillStyle='white';ctx.fillText('R₂='+R2+'Ω',bx+210,by+5);ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-55,by+106);ctx.fillStyle='#F59E0B';ctx.font='12px Space Grotesk';ctx.fillText('I →',bx+bw/2,by+bh+25);
-}else{var bx=80,by=50,bw=340,bh=280,railTop=by+30,railBot=by+bh-30,b1x=bx+140,b2x=bx+260;
-ctx.beginPath();ctx.moveTo(bx,railTop);ctx.lineTo(bx+bw,railTop);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,railBot);ctx.lineTo(bx+bw,railBot);ctx.stroke();ctx.beginPath();ctx.moveTo(bx+bw,railTop);ctx.lineTo(bx+bw,railBot);ctx.stroke();
-ctx.beginPath();ctx.moveTo(bx,railTop);ctx.lineTo(bx,railTop+40);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,railBot-40);ctx.lineTo(bx,railBot);ctx.stroke();
-ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-12,railTop+40);ctx.lineTo(bx+12,railTop+40);ctx.stroke();ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-7,railBot-40);ctx.lineTo(bx+7,railBot-40);ctx.stroke();ctx.font='13px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+14,railTop+44);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+14,railBot-34);
-[b1x,b2x].forEach(function(jx){ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(jx,railTop);ctx.lineTo(jx,railTop+50);ctx.stroke();ctx.beginPath();ctx.moveTo(jx,railTop+100);ctx.lineTo(jx,railBot-100);ctx.stroke();ctx.beginPath();ctx.moveTo(jx,railBot-50);ctx.lineTo(jx,railBot);ctx.stroke();});
-ctx.fillStyle='#22C55E';ctx.fillRect(b1x-30,railTop+50,60,20);ctx.strokeStyle='#16a34a';ctx.lineWidth=2;ctx.strokeRect(b1x-30,railTop+50,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';ctx.fillText('R₁='+R1+'Ω',b1x,railTop+64);ctx.fillStyle='#F59E0B';ctx.fillRect(b2x-30,railTop+50,60,20);ctx.strokeStyle='#d97706';ctx.strokeRect(b2x-30,railTop+50,60,20);ctx.fillStyle='white';ctx.fillText('R₂='+R2+'Ω',b2x,railTop+64);ctx.textAlign='start';
-ctx.fillStyle='#64748B';[b1x,b2x].forEach(function(jx){ctx.beginPath();ctx.arc(jx,railTop,4,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(jx,railBot,4,0,Math.PI*2);ctx.fill();});
-ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-55,(railTop+railBot)/2+5);ctx.fillStyle='#F59E0B';ctx.font='12px Space Grotesk';ctx.fillText('I →',bx+bw/2,railTop-10);ctx.fillText('← I',bx+bw/2,railBot+20);}
-var Rt,It,V1,V2,I1,I2;if(cType==='serie'){Rt=R1+R2;It=V/Rt;V1=It*R1;V2=It*R2;I1=I2=It;}else{Rt=(R1*R2)/(R1+R2);It=V/Rt;V1=V2=V;I1=V/R1;I2=V/R2;}var P=V*It;
-document.getElementById('circuitResults').innerHTML='<div class="grid grid-cols-2 gap-3"><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">R total</div><div class="font-mono font-bold text-ohms">'+Rt.toFixed(1)+'Ω</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I total</div><div class="font-mono font-bold text-amps">'+It.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2081</div><div class="font-mono font-bold text-volt">'+V1.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2082</div><div class="font-mono font-bold text-volt">'+V2.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2081</div><div class="font-mono font-bold text-amps">'+I1.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2082</div><div class="font-mono font-bold text-amps">'+I2.toFixed(4)+'A</div></div><div class="col-span-2 bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">Potencia</div><div class="font-mono font-bold text-watts">'+P.toFixed(3)+'W</div></div></div>';
-var rules=cType==='serie'?['R<sub>T</sub>=R\u2081+R\u2082 (se suman)','Corriente igual en todos','Voltaje se divide','Si falla uno, todo se detiene']:['1/R<sub>T</sub>=1/R\u2081+1/R\u2082','Voltaje igual en ramas','Corriente se divide','Si falla uno, demás continúan'];
-document.getElementById('circuitRules').innerHTML=rules.map(function(r){return '<p class="text-sm text-slate-600">\u2022 '+r+'</p>';}).join('');}
 
+// ===== Function to draw arrow =====
+function drawArrow(fx,fy,tx,ty,color,label,labelColor){
+    var angle=Math.atan2(ty-fy,tx-fx);var headLen=12;
+    ctx.save();ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(fx,fy);ctx.lineTo(tx,ty);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(tx,ty);
+    ctx.lineTo(tx-headLen*Math.cos(angle-Math.PI/6),ty-headLen*Math.sin(angle-Math.PI/6));
+    ctx.lineTo(tx-headLen*Math.cos(angle+Math.PI/6),ty-headLen*Math.sin(angle+Math.PI/6));ctx.closePath();ctx.fill();
+    if(label){
+        var mx=(fx+tx)/2,my=(fy+ty)/2;
+        var ox=-Math.sin(angle)*14,oy=Math.cos(angle)*14;
+        ctx.font='bold 11px Space Grotesk';ctx.fillStyle=labelColor||color;ctx.textAlign='center';
+        ctx.fillText(label,mx+ox,my+oy);
+    }
+    ctx.restore();
+}
+
+if(cType==='serie'){
+    var bx=70,by=110,bw=360,bh=160;
+    // Wires
+    ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw,by);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx,by+bh);ctx.lineTo(bx+bw,by+bh);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx,by-20);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx,by+30);ctx.lineTo(bx,by+bh);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx+bw,by);ctx.lineTo(bx+bw,by+bh);ctx.stroke();
+    // Battery
+    ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-14,by-20);ctx.lineTo(bx+14,by-20);ctx.stroke();
+    ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-8,by+30);ctx.lineTo(bx+8,by+30);ctx.stroke();
+    ctx.font='13px Space Grotesk';ctx.fillStyle='#EF4444';ctx.textAlign='start';ctx.fillText('+',bx+16,by-16);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+16,by+34);
+    // R1
+    ctx.fillStyle='#22C55E';ctx.fillRect(bx+80,by-14,80,28);ctx.strokeStyle='#16a34a';ctx.lineWidth=2;ctx.strokeRect(bx+80,by-14,80,28);
+    ctx.fillStyle='white';ctx.font='bold 13px JetBrains Mono';ctx.fillText('R₁='+R1+'Ω',bx+90,by+5);
+    // R2
+    ctx.fillStyle='#F59E0B';ctx.fillRect(bx+200,by-14,80,28);ctx.strokeStyle='#d97706';ctx.strokeRect(bx+200,by-14,80,28);
+    ctx.fillStyle='white';ctx.fillText('R₂='+R2+'Ω',bx+210,by+5);
+    // V label
+    ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-60,by+10);
+    
+    // ===== CURRENT ARROWS =====
+    // Convencional (de + a -): left to right on top, right to left on bottom
+    drawArrow(bx+10,by-30,bx+70,by-30,'#EF4444','I conv.', '#EF4444');
+    drawArrow(bx+bw-10,by+bh+18,bx+bw-70,by+bh+18,'#EF4444','I conv.', '#EF4444');
+    
+    // Real / electrones (de - a +): right to left on top, left to right on bottom
+    drawArrow(bx+70,by+44,bx+10,by+44,'#3B82F6','I real', '#3B82F6');
+    drawArrow(bx+bw-70,by+bh-18,bx+bw-10,by+bh-18,'#3B82F6','I real', '#3B82F6');
+
+    // Legend box
+    ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillRect(bx+bw-180,by+bh-80,170,48);ctx.strokeStyle='#E2E8F0';ctx.lineWidth=1;ctx.strokeRect(bx+bw-180,by+bh-80,170,48);
+    ctx.font='bold 10px Space Grotesk';
+    ctx.fillStyle='#EF4444';ctx.fillText('→ Convencional (+ a −)',bx+bw-170,by+bh-60);
+    ctx.fillStyle='#3B82F6';ctx.fillText('→ Real / electrones (− a +)',bx+bw-170,by+bh-42);
+
+}else{
+    // ===== PARALELO MEJORADO =====
+    var bx=80,by=30,bw=340,bh=310;
+    var railTop=by+40,railBot=by+bh-40;
+    var b1x=bx+150,b2x=bx+270;
+    // Top & bottom rails
+    ctx.strokeStyle='#64748B';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(bx-10,railTop);ctx.lineTo(bx+bw+10,railTop);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx-10,railBot);ctx.lineTo(bx+bw+10,railBot);ctx.stroke();
+    // Right closing wire
+    ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(bx+bw+10,railTop);ctx.lineTo(bx+bw+10,railBot);ctx.stroke();
+    // Left: battery
+    ctx.beginPath();ctx.moveTo(bx-10,railTop);ctx.lineTo(bx-10,railTop+50);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx-10,railBot-50);ctx.lineTo(bx-10,railBot);ctx.stroke();
+    ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-24,railTop+50);ctx.lineTo(bx+4,railTop+50);ctx.stroke();
+    ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-16,railBot-50);ctx.lineTo(bx-4,railBot-50);ctx.stroke();
+    ctx.font='12px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+8,railTop+54);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+8,railBot-44);
+    ctx.fillStyle='#EF4444';ctx.font='bold 14px Space Grotesk';ctx.fillText(V+'V',bx-50,(railTop+railBot)/2+4);
+    
+    // Branch 1
+    ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(b1x,railTop);ctx.lineTo(b1x,railTop+40);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(b1x,railTop+90);ctx.lineTo(b1x,railBot-90);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(b1x,railBot-40);ctx.lineTo(b1x,railBot);ctx.stroke();
+    ctx.fillStyle='#22C55E';ctx.fillRect(b1x-32,railTop+40,64,22);ctx.strokeStyle='#16a34a';ctx.lineWidth=2;ctx.strokeRect(b1x-32,railTop+40,64,22);
+    ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';ctx.fillText('R₁='+R1+'Ω',b1x,railTop+55);ctx.textAlign='start';
+    
+    // Branch 2
+    ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(b2x,railTop);ctx.lineTo(b2x,railTop+40);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(b2x,railTop+90);ctx.lineTo(b2x,railBot-90);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(b2x,railBot-40);ctx.lineTo(b2x,railBot);ctx.stroke();
+    ctx.fillStyle='#F59E0B';ctx.fillRect(b2x-32,railTop+40,64,22);ctx.strokeStyle='#d97706';ctx.lineWidth=2;ctx.strokeRect(b2x-32,railTop+40,64,22);
+    ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';ctx.fillText('R₂='+R2+'Ω',b2x,railTop+55);ctx.textAlign='start';
+    
+    // Junction dots
+    ctx.fillStyle='#334155';
+    [bx-10,bx+bw+10,b1x,b2x].forEach(function(jx){
+        ctx.beginPath();ctx.arc(jx,railTop,5,0,Math.PI*2);ctx.fill();
+        ctx.beginPath();ctx.arc(jx,railBot,5,0,Math.PI*2);ctx.fill();
+    });
+    
+    // ===== CURRENT ARROWS =====
+    // Convencional on top rail: left to right
+    drawArrow(bx+40,railTop-14,bx+100,railTop-14,'#EF4444','I conv.','#EF4444');
+    // Convencional on bottom rail: right to left
+    drawArrow(bx+bw-40,railBot+16,bx+bw-100,railBot+16,'#EF4444','I conv.','#EF4444');
+    // Convencional branch 1: down
+    drawArrow(b1x+16,railBot-50,b1x+16,railBot-80,'#EF4444','','#EF4444');
+    // Convencional branch 2: down
+    drawArrow(b2x+16,railBot-50,b2x+16,railBot-80,'#EF4444','','#EF4444');
+    
+    // Real on top rail: right to left (below rail)
+    drawArrow(bx+100,railTop+14,bx+40,railTop+14,'#3B82F6','I real','#3B82F6');
+    // Real on bottom rail: left to right
+    drawArrow(bx+bw-100,railBot-16,bx+bw-40,railBot-16,'#3B82F6','I real','#3B82F6');
+    // Real branch 1: up
+    drawArrow(b1x-16,railTop+80,b1x-16,railTop+50,'#3B82F6','','#3B82F6');
+    // Real branch 2: up
+    drawArrow(b2x-16,railTop+80,b2x-16,railTop+50,'#3B82F6','','#3B82F6');
+    
+    // Legend
+    ctx.fillStyle='rgba(255,255,255,.92)';ctx.fillRect(bx+bw-175,railTop+68,165,48);ctx.strokeStyle='#E2E8F0';ctx.lineWidth=1;ctx.strokeRect(bx+bw-175,railTop+68,165,48);
+    ctx.font='bold 10px Space Grotesk';
+    ctx.fillStyle='#EF4444';ctx.fillText('→ Convencional (+ a −)',bx+bw-165,railTop+86);
+    ctx.fillStyle='#3B82F6';ctx.fillText('→ Real / electrones (− a +)',bx+bw-165,railTop+104);
+}
+
+// Calculate
+var Rt,It,V1,V2,I1,I2;
+if(cType==='serie'){Rt=R1+R2;It=V/Rt;V1=It*R1;V2=It*R2;I1=I2=It;}
+else{Rt=(R1*R2)/(R1+R2);It=V/Rt;V1=V2=V;I1=V/R1;I2=V/R2;}
+var P=V*It;
+document.getElementById('circuitResults').innerHTML='<div class="grid grid-cols-2 gap-3"><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">R total</div><div class="font-mono font-bold text-ohms">'+Rt.toFixed(1)+'Ω</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I total</div><div class="font-mono font-bold text-amps">'+It.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2081</div><div class="font-mono font-bold text-volt">'+V1.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2082</div><div class="font-mono font-bold text-volt">'+V2.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2081</div><div class="font-mono font-bold text-amps">'+I1.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2082</div><div class="font-mono font-bold text-amps">'+I2.toFixed(4)+'A</div></div><div class="col-span-2 bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">Potencia</div><div class="font-mono font-bold text-watts">'+P.toFixed(3)+'W</div></div></div>';
+
+var rules=cType==='serie'?['R<sub>T</sub>=R\u2081+R\u2082 (se suman)','Corriente igual en todos','Voltaje se divide','Si falla uno, todo se detiene']:['1/R<sub>T</sub>=1/R\u2081+1/R\u2082','Voltaje igual en ramas','Corriente se divide','Si falla uno, demás continúan'];
+document.getElementById('circuitRules').innerHTML=rules.map(function(r){return '<p class="text-sm text-slate-600">\u2022 '+r+'</p>';}).join('');
+}
 // ====== WAVEFORM ======
 var wType='sine',wAmp=5,wFreq=2,wTime=0;function setWaveType(t){wType=t;document.querySelectorAll('.wave-btn').forEach(function(b){b.className='wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600';});var btn=document.getElementById('btn'+t.charAt(0).toUpperCase()+t.slice(1));if(btn)btn.className='wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-electric-600 text-white';updateWaveParams();}
 function updateWaveParams(){wAmp=parseFloat(document.getElementById('ampSlider').value);wFreq=parseFloat(document.getElementById('freqSlider').value);document.getElementById('ampVal').textContent=wAmp.toFixed(1)+' V';document.getElementById('freqVal').textContent=wFreq.toFixed(1)+' Hz';var T=1/wFreq,Vrms=wType==='sine'?(wAmp/Math.sqrt(2)).toFixed(2):wType==='square'?wAmp.toFixed(2):(wAmp/Math.sqrt(3)).toFixed(2);document.getElementById('waveProps').innerHTML='<div class="flex justify-between"><span class="text-slate-500">Vp</span><span class="font-mono font-semibold">'+wAmp.toFixed(1)+'V</span></div><div class="flex justify-between"><span class="text-slate-500">f</span><span class="font-mono font-semibold">'+wFreq.toFixed(1)+'Hz</span></div><div class="flex justify-between"><span class="text-slate-500">T</span><span class="font-mono font-semibold">'+T.toFixed(3)+'s</span></div><div class="flex justify-between"><span class="text-slate-500">Vrms</span><span class="font-mono font-semibold">'+Vrms+'V</span></div>';}
