@@ -12,7 +12,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
     <script>
         tailwind.config={theme:{extend:{colors:{electric:{50:'#EBF5FF',100:'#D6EBFF',200:'#ADD6FF',300:'#85C2FF',400:'#5CADFF',500:'#3399FF',600:'#0A84FF',700:'#0066CC',800:'#004D99',900:'#003366'},volt:'#EF4444',amps:'#F59E0B',ohms:'#22C55E',watts:'#8B5CF6'},fontFamily:{heading:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
     </script>
@@ -32,14 +31,12 @@
         .formula-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:20px;text-align:center;transition:all .3s}
         .formula-card:hover{border-color:#0A84FF;box-shadow:0 4px 20px rgba(10,132,255,.12);transform:translateY(-2px)}
         .shield-img{filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))}
-        .view{display:none;min-height:100vh}
-        .view.active{display:block}
+        .view{display:none;min-height:100vh}.view.active{display:block}
         .nav-tab{transition:all .2s;cursor:pointer;position:relative}
         .nav-tab.active{color:#0A84FF;background:rgba(10,132,255,.08)}
         .nav-tab.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:#0A84FF;border-radius:3px 3px 0 0}
         .nav-tab:hover:not(.active){background:rgba(10,132,255,.04)}
-        .content-page{display:none;animation:fadeIn .3s ease}
-        .content-page.active{display:block}
+        .content-page{display:none;animation:fadeIn .3s ease}.content-page.active{display:block}
         @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
         .section-title::before{content:'';display:block;width:40px;height:4px;background:#0A84FF;border-radius:2px;margin-bottom:12px}
         .area-card{transition:all .3s;cursor:pointer}
@@ -50,17 +47,29 @@
         .practice-card:hover{border-color:#0A84FF;box-shadow:0 2px 12px rgba(10,132,255,.1)}
         .graph-paper{background-color:#F8FAFC;background-image:linear-gradient(rgba(10,132,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(10,132,255,.04) 1px,transparent 1px);background-size:24px 24px}
         ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#F1F5F9}::-webkit-scrollbar-thumb{background:#94A3B8;border-radius:4px}
+        @keyframes pulse-ring{0%{transform:scale(.8);opacity:.6}50%{transform:scale(1.2);opacity:.2}100%{transform:scale(.8);opacity:.6}}
+        @keyframes float-shape{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(5deg)}}
+        .hero-shape{position:absolute;border:1px solid rgba(51,153,255,.15);border-radius:50%;animation:pulse-ring 4s ease-in-out infinite}
+        .float-geo{position:absolute;opacity:.06;animation:float-shape 6s ease-in-out infinite}
     </style>
 </head>
 <body class="graph-paper text-slate-800">
 
-<!-- ============================================================ -->
-<!-- VIEW: INICIO                                                  -->
-<!-- ============================================================ -->
+<!-- VIEW: INICIO -->
 <div id="view-inicio" class="view active">
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
         <canvas id="heroCanvas"></canvas>
         <div class="absolute inset-0 bg-gradient-to-b from-electric-900/80 via-electric-900/60 to-electric-900/90 z-[1]"></div>
+        <!-- Floating geometric shapes for dynamism -->
+        <div class="hero-shape w-40 h-40 top-[10%] left-[5%] z-[2]" style="animation-delay:0s"></div>
+        <div class="hero-shape w-24 h-24 top-[60%] right-[8%] z-[2]" style="animation-delay:1.5s"></div>
+        <div class="hero-shape w-56 h-56 bottom-[15%] left-[15%] z-[2]" style="animation-delay:3s"></div>
+        <div class="hero-shape w-16 h-16 top-[25%] right-[25%] z-[2]" style="animation-delay:2s"></div>
+        <div class="hero-shape w-32 h-32 bottom-[30%] right-[20%] z-[2]" style="animation-delay:.5s"></div>
+        <svg class="float-geo w-48 h-48 top-[8%] right-[12%] z-[2]" style="animation-delay:1s" viewBox="0 0 100 100"><polygon points="50,5 95,75 5,75" fill="none" stroke="#3399FF" stroke-width="1"/></svg>
+        <svg class="float-geo w-36 h-36 bottom-[12%] left-[8%] z-[2]" style="animation-delay:2s" viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" fill="none" stroke="#3399FF" stroke-width="1" rx="5"/></svg>
+        <svg class="float-geo w-28 h-28 top-[45%] left-[3%] z-[2]" style="animation-delay:3s" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#3399FF" stroke-width="1"/></svg>
+
         <div class="relative z-10 text-center px-6 max-w-4xl">
             <div class="flex items-center justify-center gap-6 mb-8">
                 <img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" alt="ESFM" class="shield-img h-24 md:h-28 object-contain">
@@ -74,7 +83,7 @@
             <p class="text-xl md:text-2xl text-electric-200 font-light mb-2">Electrónica Básica Interactiva</p>
             <p class="text-base text-slate-300/80 mb-4">Escuela Superior de Formación de Maestros Mariscal Sucre</p>
             <p class="text-base text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">Explora los fundamentos de la electrónica de forma visual e interactiva.</p>
-            <button onclick="navigateTo('areas')" class="inline-flex items-center justify-center gap-2 bg-electric-600 hover:bg-electric-700 text-white font-semibold py-4 px-10 rounded-xl transition-all duration-300 shadow-lg shadow-electric-600/30 text-lg">
+            <button onclick="navigateTo('areas')" class="inline-flex items-center justify-center gap-2 bg-electric-600 hover:bg-electric-700 text-white font-semibold py-4 px-10 rounded-xl transition-all duration-300 shadow-lg shadow-electric-600/30 text-lg hover:scale-105">
                 <i data-lucide="layout-grid" class="w-5 h-5"></i> ÁREAS DE APRENDIZAJE
             </button>
             <div class="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
@@ -91,9 +100,7 @@
     </section>
 </div>
 
-<!-- ============================================================ -->
-<!-- APP SHELL                                                     -->
-<!-- ============================================================ -->
+<!-- APP SHELL -->
 <div id="app-shell" style="display:none">
     <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4"><div class="flex items-center gap-1 overflow-x-auto py-0">
@@ -115,8 +122,8 @@
             <div class="text-center mb-14"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-4 justify-items-center">Áreas de Aprendizaje</h2><p class="text-slate-500 max-w-2xl mx-auto">Domina los fundamentos de la electrónica con herramientas visuales e interactivas</p></div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
                 <div onclick="navigateTo('ohm')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-volt"><div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-red-100 transition-colors"><i data-lucide="zap" class="w-7 h-7 text-volt"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Ley de Ohm</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Relación entre voltaje, corriente y resistencia.</p><span class="text-xs font-semibold text-volt flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
-                <div onclick="navigateTo('componentes')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-ohms"><div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-100 transition-colors"><i data-lucide="cpu" class="w-7 h-7 text-ohms"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Componentes</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Resistencias, capacitores, LEDs. Código de colores.</p><span class="text-xs font-semibold text-ohms flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
-                <div onclick="navigateTo('circuitos')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-amps"><div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-amber-100 transition-colors"><i data-lucide="git-branch" class="w-7 h-7 text-amps"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Circuitos</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Serie y paralelo. Distribución de V, I y R.</p><span class="text-xs font-semibold text-amps flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
+                <div onclick="navigateTo('componentes')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-ohms"><div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-100 transition-colors"><i data-lucide="cpu" class="w-7 h-7 text-ohms"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Componentes</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Resistencias, capacitores, LEDs.</p><span class="text-xs font-semibold text-ohms flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
+                <div onclick="navigateTo('circuitos')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-amps"><div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-amber-100 transition-colors"><i data-lucide="git-branch" class="w-7 h-7 text-amps"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Circuitos</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Serie y paralelo.</p><span class="text-xs font-semibold text-amps flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
                 <div onclick="navigateTo('senales')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-watts"><div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-100 transition-colors"><i data-lucide="activity" class="w-7 h-7 text-watts"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Señales</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Ondas senoidales, cuadradas, triangulares.</p><span class="text-xs font-semibold text-watts flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
                 <div onclick="navigateTo('practica')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-electric-400"><div class="w-14 h-14 bg-electric-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-electric-100 transition-colors"><i data-lucide="brain" class="w-7 h-7 text-electric-600"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Práctica</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Cuestionarios y prácticas de laboratorio.</p><span class="text-xs font-semibold text-electric-600 flex items-center gap-1">Explorar <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
                 <div onclick="navigateTo('inicio')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-slate-400"><div class="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-slate-100 transition-colors"><i data-lucide="home" class="w-7 h-7 text-slate-500"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Inicio</h3><p class="text-sm text-slate-500 leading-relaxed mb-4">Volver a la pantalla principal.</p><span class="text-xs font-semibold text-slate-500 flex items-center gap-1">Volver <i data-lucide="arrow-right" class="w-3 h-3"></i></span></div>
@@ -127,12 +134,12 @@
     <!-- PAGE: LEY DE OHM -->
     <div id="page-ohm" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Ley de Ohm</h2><p class="text-slate-500 max-w-2xl">Relación entre voltaje (V), corriente (I) y resistencia (R).</p></div>
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Ley de Ohm</h2></div>
             <div class="grid lg:grid-cols-2 gap-10">
                 <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8">
-                    <h3 class="text-lg font-semibold mb-6 flex items-center gap-2"><i data-lucide="calculator" class="w-5 h-5 text-electric-600"></i> Calculadora Interactiva</h3>
+                    <h3 class="text-lg font-semibold mb-6">Calculadora Interactiva</h3>
                     <div class="flex justify-center mb-8"><svg width="220" height="180" viewBox="0 0 220 180"><polygon points="110,10 10,170 210,170" fill="none" stroke="#0A84FF" stroke-width="2.5"/><line x1="10" y1="170" x2="210" y2="170" stroke="#0A84FF" stroke-width="2.5"/><line x1="60" y1="90" x2="160" y2="90" stroke="#0A84FF" stroke-width="1.5" stroke-dasharray="5,5"/><text x="110" y="70" text-anchor="middle" fill="#EF4444" font-size="32" font-weight="bold" font-family="Space Grotesk">V</text><text x="60" y="145" text-anchor="middle" fill="#F59E0B" font-size="28" font-weight="bold" font-family="Space Grotesk">I</text><text x="160" y="145" text-anchor="middle" fill="#22C55E" font-size="28" font-weight="bold" font-family="Space Grotesk">R</text></svg></div>
-                    <div class="flex justify-center gap-2 mb-6"><button onclick="setSolveFor('V')" id="solveV" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-volt text-volt bg-volt/10">Calcular V</button><button onclick="setSolveFor('I')" id="solveI" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white">Calcular I</button><button onclick="setSolveFor('R')" id="solveR" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white">Calcular R</button></div>
+                    <div class="flex justify-center gap-2 mb-6"><button onclick="setSolveFor('V')" id="solveV" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-volt text-volt bg-red-50">V</button><button onclick="setSolveFor('I')" id="solveI" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white">I</button><button onclick="setSolveFor('R')" id="solveR" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white">R</button></div>
                     <div class="space-y-5">
                         <div id="sliderV"><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-volt">⚡ Voltaje</label><span id="valV" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">12.0 V</span></div><input type="range" id="rangeV" min="0" max="48" step="0.1" value="12" class="w-full" oninput="updateOhm()"></div>
                         <div id="sliderI"><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-amps">💡 Corriente</label><span id="valI" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">2.0 A</span></div><input type="range" id="rangeI" min="0.01" max="10" step="0.01" value="2" class="w-full" oninput="updateOhm()"></div>
@@ -142,7 +149,7 @@
                 </div>
                 <div class="space-y-6">
                     <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Fórmulas</h3><div class="grid grid-cols-2 gap-4"><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Ohm</div><div id="f1"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Corriente</div><div id="f2"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Resistencia</div><div id="f3"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Potencia</div><div id="f4"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f5"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f6"></div></div></div></div>
-                    <div class="bg-gradient-to-br from-electric-50 to-blue-50 rounded-2xl border border-electric-200 p-8"><h3 class="text-lg font-semibold mb-4">Concepto Clave</h3><div class="space-y-3 text-sm text-slate-600"><p><strong class="text-volt">Voltaje</strong> — presión eléctrica (V)</p><p><strong class="text-amps">Corriente</strong> — flujo de electrones (A)</p><p><strong class="text-ohms">Resistencia</strong> — oposición al flujo (Ω)</p><div class="bg-white/60 rounded-lg p-4 border border-electric-200 mt-3"><p class="font-medium text-electric-800">📌 Analogía: V = presión · I = caudal · R = estrechez</p></div></div></div>
+                    <div class="bg-gradient-to-br from-electric-50 to-blue-50 rounded-2xl border border-electric-200 p-8"><h3 class="text-lg font-semibold mb-4">Concepto Clave</h3><div class="space-y-3 text-sm text-slate-600"><p><strong class="text-volt">Voltaje</strong> — presión eléctrica (V)</p><p><strong class="text-amps">Corriente</strong> — flujo de electrones (A)</p><p><strong class="text-ohms">Resistencia</strong> — oposición al flujo (Ω)</p><div class="bg-white/60 rounded-lg p-4 border border-electric-200 mt-3"><p class="font-medium text-electric-800">📌 V = presión · I = caudal · R = estrechez</p></div></div></div>
                 </div>
             </div>
         </div>
@@ -151,21 +158,20 @@
     <!-- PAGE: COMPONENTES -->
     <div id="page-componentes" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Componentes Electrónicos</h2></div>
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Componentes</h2></div>
             <div class="grid lg:grid-cols-2 gap-10">
                 <div class="bg-white rounded-2xl border border-slate-200 p-8">
                     <h3 class="text-lg font-semibold mb-2">Decodificador de Resistencias</h3>
-                    <p class="text-sm text-slate-500 mb-6">Selecciona los colores de las bandas.</p>
                     <div class="flex justify-center mb-8"><div class="flex items-center"><div class="resistor-lead"></div><div class="resistor-body"><div id="rband1" class="resistor-band" style="background:#8B4513"></div><div id="rband2" class="resistor-band" style="background:#000"></div><div id="rband3" class="resistor-band" style="background:#FF0000"></div><div style="width:12px"></div><div id="rband4" class="resistor-band" style="background:#FFD700"></div></div><div class="resistor-lead"></div></div></div>
                     <div class="space-y-4"><div><label class="text-xs font-semibold text-slate-500 mb-2 block">Banda 1</label><div class="flex flex-wrap gap-2" id="band1Colors"></div></div><div><label class="text-xs font-semibold text-slate-500 mb-2 block">Banda 2</label><div class="flex flex-wrap gap-2" id="band2Colors"></div></div><div><label class="text-xs font-semibold text-slate-500 mb-2 block">Multiplicador</label><div class="flex flex-wrap gap-2" id="band3Colors"></div></div><div><label class="text-xs font-semibold text-slate-500 mb-2 block">Tolerancia</label><div class="flex flex-wrap gap-2" id="band4Colors"></div></div></div>
                     <div id="resistorResult" class="mt-6 bg-ohms/10 border border-ohms/30 rounded-xl p-5 text-center"><div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold text-slate-900">1.0 kΩ ± 5%</div></div>
                 </div>
                 <div class="space-y-4">
-                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex gap-4"><div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center flex-shrink-0"><svg width="32" height="32" viewBox="0 0 32 32"><rect x="8" y="10" width="16" height="12" fill="none" stroke="#EF4444" stroke-width="2"/><text x="16" y="20" text-anchor="middle" fill="#EF4444" font-size="8" font-weight="bold">R</text></svg></div><div><h4 class="font-semibold">Resistencia</h4><p class="text-sm text-slate-500 mt-1">Limita corriente. Ohmios (Ω).</p><div id="fc_r" class="mt-2 text-sm"></div></div></div>
-                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex gap-4"><div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0"><svg width="32" height="32" viewBox="0 0 32 32"><line x1="10" y1="8" x2="10" y2="24" stroke="#0A84FF" stroke-width="2.5"/><line x1="22" y1="8" x2="22" y2="24" stroke="#0A84FF" stroke-width="2.5"/></svg></div><div><h4 class="font-semibold">Capacitor</h4><p class="text-sm text-slate-500 mt-1">Almacena carga. Faradios (F).</p><div id="fc_c" class="mt-2 text-sm"></div></div></div>
-                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex gap-4"><div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0"><svg width="32" height="32" viewBox="0 0 32 32"><polygon points="12,8 12,24 26,16" fill="none" stroke="#F59E0B" stroke-width="2"/><line x1="26" y1="8" x2="26" y2="24" stroke="#F59E0B" stroke-width="2.5"/></svg></div><div><h4 class="font-semibold">LED</h4><p class="text-sm text-slate-500 mt-1">Emite luz. Corriente en una dirección.</p><div id="fc_led" class="mt-2 text-sm"></div></div></div>
-                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex gap-4"><div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0"><svg width="32" height="32" viewBox="0 0 32 32"><path d="M8,16 Q16,4 24,16 Q16,28 8,16 Z" fill="none" stroke="#22C55E" stroke-width="2"/></svg></div><div><h4 class="font-semibold">Inductor</h4><p class="text-sm text-slate-500 mt-1">Campo magnético. Henrios (H).</p><div id="fc_l" class="mt-2 text-sm"></div></div></div>
-                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex gap-4"><div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center flex-shrink-0"><svg width="32" height="32" viewBox="0 0 32 32"><polygon points="10,10 22,16 10,22" fill="none" stroke="#8B5CF6" stroke-width="2"/></svg></div><div><h4 class="font-semibold">Diodo</h4><p class="text-sm text-slate-500 mt-1">Flujo en una dirección.</p><div id="fc_d" class="mt-2 text-sm"></div></div></div>
+                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex gap-4"><div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center flex-shrink-0"><svg width="32" height="32" viewBox="0 0 32 32"><rect x="8" y="10" width="16" height="12" fill="none" stroke="#EF4444" stroke-width="2"/></svg></div><div><h4 class="font-semibold">Resistencia</h4><p class="text-sm text-slate-500 mt-1">Limita corriente (Ω)</p><div id="fc_r" class="mt-2 text-sm"></div></div></div>
+                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex gap-4"><div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0"><svg width="32" height="32" viewBox="0 0 32 32"><line x1="10" y1="8" x2="10" y2="24" stroke="#0A84FF" stroke-width="2.5"/><line x1="22" y1="8" x2="22" y2="24" stroke="#0A84FF" stroke-width="2.5"/></svg></div><div><h4 class="font-semibold">Capacitor</h4><p class="text-sm text-slate-500 mt-1">Almacena carga (F)</p><div id="fc_c" class="mt-2 text-sm"></div></div></div>
+                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex gap-4"><div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0"><svg width="32" height="32" viewBox="0 0 32 32"><polygon points="12,8 12,24 26,16" fill="none" stroke="#F59E0B" stroke-width="2"/></svg></div><div><h4 class="font-semibold">LED</h4><p class="text-sm text-slate-500 mt-1">Emite luz</p><div id="fc_led" class="mt-2 text-sm"></div></div></div>
+                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex gap-4"><div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0"><svg width="32" height="32" viewBox="0 0 32 32"><path d="M8,16 Q16,4 24,16 Q16,28 8,16 Z" fill="none" stroke="#22C55E" stroke-width="2"/></svg></div><div><h4 class="font-semibold">Inductor</h4><p class="text-sm text-slate-500 mt-1">Campo magnético (H)</p><div id="fc_l" class="mt-2 text-sm"></div></div></div>
+                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex gap-4"><div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center flex-shrink-0"><svg width="32" height="32" viewBox="0 0 32 32"><polygon points="10,10 22,16 10,22" fill="none" stroke="#8B5CF6" stroke-width="2"/></svg></div><div><h4 class="font-semibold">Diodo</h4><p class="text-sm text-slate-500 mt-1">Flujo en una dirección</p><div id="fc_d" class="mt-2 text-sm"></div></div></div>
                 </div>
             </div>
         </div>
@@ -177,7 +183,7 @@
             <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Circuitos Serie y Paralelo</h2></div>
             <div class="flex justify-center mb-10"><div class="bg-slate-100 rounded-xl p-1 flex gap-1"><button onclick="setCircuitType('serie')" id="btnSerie" class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md">Serie</button><button onclick="setCircuitType('paralelo')" id="btnParalelo" class="px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500">Paralelo</button></div></div>
             <div class="grid lg:grid-cols-2 gap-10">
-                <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6"><canvas id="circuitCanvas" width="500" height="350" class="w-full rounded-xl bg-white border border-slate-100"></canvas><div class="mt-4 grid grid-cols-3 gap-3"><div><label class="text-xs font-semibold text-volt block mb-1">V</label><input type="number" id="circV" value="12" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono" onchange="updateCircuit()"></div><div><label class="text-xs font-semibold text-ohms block mb-1">R₁</label><input type="number" id="circR1" value="100" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono" onchange="updateCircuit()"></div><div><label class="text-xs font-semibold text-ohms block mb-1">R₂</label><input type="number" id="circR2" value="200" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono" onchange="updateCircuit()"></div></div></div>
+                <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6"><canvas id="circuitCanvas" width="500" height="380" class="w-full rounded-xl bg-white border border-slate-100"></canvas><div class="mt-4 grid grid-cols-3 gap-3"><div><label class="text-xs font-semibold text-volt block mb-1">V</label><input type="number" id="circV" value="12" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono" onchange="updateCircuit()"></div><div><label class="text-xs font-semibold text-ohms block mb-1">R₁</label><input type="number" id="circR1" value="100" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono" onchange="updateCircuit()"></div><div><label class="text-xs font-semibold text-ohms block mb-1">R₂</label><input type="number" id="circR2" value="200" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono" onchange="updateCircuit()"></div></div></div>
                 <div class="space-y-4"><div class="bg-gradient-to-br from-electric-50 to-blue-50 rounded-2xl border border-electric-200 p-8"><h3 class="text-lg font-semibold mb-4">Resultados</h3><div id="circuitResults"></div></div><div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Reglas</h3><div id="circuitRules" class="space-y-2 text-sm text-slate-600"></div></div></div>
             </div>
         </div>
@@ -199,55 +205,48 @@
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Módulo de Práctica</h2></div>
             <div class="flex gap-2 mb-8 flex-wrap">
-                <button onclick="switchSubTab('quiz')" id="subQuiz" class="sub-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md"><span class="flex items-center gap-2"><i data-lucide="help-circle" class="w-4 h-4"></i> Cuestionario</span></button>
-                <button onclick="switchSubTab('escritas')" id="subEscritas" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600"><span class="flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Prácticas Escritas</span></button>
-                <button onclick="switchSubTab('realizar')" id="subRealizar" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600"><span class="flex items-center gap-2"><i data-lucide="clipboard-check" class="w-4 h-4"></i> Prácticas a Realizar</span></button>
+                <button onclick="switchSubTab('quiz')" id="subQuiz" class="sub-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Cuestionario</button>
+                <button onclick="switchSubTab('escritas')" id="subEscritas" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Prácticas Escritas</button>
+                <button onclick="switchSubTab('realizar')" id="subRealizar" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Prácticas a Realizar</button>
             </div>
-            <!-- QUIZ -->
-            <div id="panel-quiz" class="sub-panel">
+            <div id="panel-quiz" class="sub-panel" style="display:block">
                 <div class="max-w-4xl mx-auto">
                     <div class="mb-8"><div class="flex justify-between text-sm text-slate-500 mb-2"><span>Pregunta <span id="qNum">1</span> de <span id="qTotal">8</span></span><span>Puntuación: <span id="qScore" class="font-bold text-electric-600">0</span></span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div id="qProgress" class="h-full bg-electric-600 rounded-full transition-all duration-500" style="width:12.5%"></div></div></div>
-                    <div id="quizCard" class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><div id="quizCategory" class="inline-block bg-electric-100 text-electric-700 text-xs font-semibold px-3 py-1 rounded-full mb-4"></div><h3 id="quizQuestion" class="text-xl font-semibold text-slate-900 mb-6"></h3><div id="quizOptions" class="space-y-3"></div><div id="quizFeedback" class="hidden mt-6 rounded-xl p-4 text-sm"></div><div class="flex justify-between mt-6"><button id="btnSkip" onclick="skipQuestion()" class="px-5 py-2.5 text-sm font-semibold text-slate-500">Saltar →</button><button id="btnNext" onclick="nextQuestion()" class="hidden px-6 py-2.5 text-sm font-semibold bg-electric-600 text-white rounded-xl shadow-md">Siguiente →</button></div></div>
-                    <div id="quizComplete" class="hidden text-center py-12"><div class="text-5xl font-bold text-electric-600 mb-2" id="finalScore">0/8</div><p id="finalMsg" class="text-slate-500 mb-8"></p><button onclick="restartQuiz()" class="px-8 py-3 bg-electric-600 text-white font-semibold rounded-xl shadow-md">Reintentar</button></div>
+                    <div id="quizCard" class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><div id="quizCategory" class="inline-block bg-electric-100 text-electric-700 text-xs font-semibold px-3 py-1 rounded-full mb-4"></div><h3 id="quizQuestion" class="text-xl font-semibold text-slate-900 mb-6"></h3><div id="quizOptions" class="space-y-3"></div><div id="quizFeedback" style="display:none" class="mt-6 rounded-xl p-4 text-sm"></div><div class="flex justify-between mt-6"><button id="btnSkip" onclick="skipQuestion()" class="px-5 py-2.5 text-sm font-semibold text-slate-500">Saltar →</button><button id="btnNext" onclick="nextQuestion()" style="display:none" class="px-6 py-2.5 text-sm font-semibold bg-electric-600 text-white rounded-xl shadow-md">Siguiente →</button></div></div>
+                    <div id="quizComplete" style="display:none" class="text-center py-12"><div class="text-5xl font-bold text-electric-600 mb-2" id="finalScore">0/8</div><p id="finalMsg" class="text-slate-500 mb-8"></p><button onclick="restartQuiz()" class="px-8 py-3 bg-electric-600 text-white font-semibold rounded-xl shadow-md">Reintentar</button></div>
                 </div>
             </div>
-            <!-- ESCRITAS -->
-            <div id="panel-escritas" class="sub-panel hidden">
+            <div id="panel-escritas" class="sub-panel" style="display:none">
                 <div class="max-w-5xl mx-auto">
                     <div class="flex justify-between items-center mb-6"><h3 class="text-lg font-semibold">Prácticas Escritas</h3><button onclick="showPasswordModal('escrita')" class="bg-electric-600 hover:bg-electric-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i> Añadir</button></div>
-                    <div id="escritasList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando prácticas...</p></div></div>
+                    <div id="escritasList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div>
                 </div>
             </div>
-            <!-- REALIZAR -->
-            <div id="panel-realizar" class="sub-panel hidden">
+            <div id="panel-realizar" class="sub-panel" style="display:none">
                 <div class="max-w-5xl mx-auto">
                     <div class="flex justify-between items-center mb-6"><h3 class="text-lg font-semibold">Prácticas a Realizar</h3><button onclick="showPasswordModal('realizar')" class="bg-electric-600 hover:bg-electric-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i> Añadir</button></div>
-                    <div id="realizarList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando prácticas...</p></div></div>
+                    <div id="realizarList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
-<!-- ====== PASSWORD MODAL - display:none por defecto ====== -->
+<!-- PASSWORD MODAL -->
 <div id="passwordModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center">
     <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
-        <h3 class="text-lg font-bold text-slate-900 mb-2">🔒 Acceso de Administrador</h3>
-        <p class="text-sm text-slate-500 mb-4">Ingresa la contraseña para añadir prácticas</p>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">🔒 Acceso Admin</h3>
+        <p class="text-sm text-slate-500 mb-4">Contraseña para añadir/editar prácticas</p>
         <input type="password" id="adminPassInput" placeholder="Contraseña" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-electric-500 mb-2" onkeydown="if(event.key==='Enter')verifyPassword()">
         <p id="passError" style="display:none" class="text-red-500 text-xs mb-3">Contraseña incorrecta</p>
-        <div class="flex gap-3">
-            <button onclick="closePasswordModal()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button>
-            <button onclick="verifyPassword()" class="flex-1 px-4 py-2.5 bg-electric-600 text-white rounded-xl text-sm font-semibold hover:bg-electric-700">Ingresar</button>
-        </div>
+        <div class="flex gap-3"><button onclick="closePasswordModal()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600">Cancelar</button><button onclick="verifyPassword()" class="flex-1 px-4 py-2.5 bg-electric-600 text-white rounded-xl text-sm font-semibold">Ingresar</button></div>
     </div>
 </div>
 
-<!-- ====== PRACTICE FORM MODAL - display:none por defecto ====== -->
-<div id="practiceFormModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:210;align-items:center;justify-content:center;overflow-y:auto;padding:20px 0">
-    <div class="bg-white rounded-2xl p-8 max-w-lg w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
-        <h3 class="text-lg font-bold text-slate-900 mb-4">Nueva Práctica <span id="pfTypeLabel" class="text-sm font-normal text-slate-400"></span></h3>
+<!-- PRACTICE FORM MODAL -->
+<div id="practiceFormModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:210;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 0">
+    <div class="bg-white rounded-2xl p-8 max-w-lg w-full mx-4 shadow-2xl">
+        <h3 class="text-lg font-bold text-slate-900 mb-4" id="pfModalTitle">Nueva Práctica</h3>
         <div class="space-y-4">
             <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Título *</label><input type="text" id="pfTitle" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm" placeholder="Título"></div>
             <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Área</label><select id="pfArea" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm"><option>Ley de Ohm</option><option>Componentes</option><option>Circuitos</option><option>Señales</option><option>Otros</option></select></div>
@@ -255,11 +254,12 @@
             <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Materiales</label><textarea id="pfMat" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none" placeholder="Lista de materiales..."></textarea></div>
             <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Procedimiento *</label><textarea id="pfPasos" rows="4" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none" placeholder="1. ...&#10;2. ..."></textarea></div>
             <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Observaciones</label><textarea id="pfNotas" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none" placeholder="Notas..."></textarea></div>
-            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Imagen (opcional)</label><input type="file" id="pfImage" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-electric-50 file:text-electric-700"></div>
-            <div id="pfUploadProgress" style="display:none"><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div id="pfProgressBar" class="h-full bg-electric-600 rounded-full transition-all" style="width:0%"></div></div><p class="text-xs text-slate-400 mt-1">Subiendo imagen...</p></div>
+            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Imagen (opcional, máx 2MB)</label><input type="file" id="pfImage" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-electric-50 file:text-electric-700"></div>
+            <div id="pfImagePreview" style="display:none"><img id="pfPreviewImg" class="rounded-lg max-h-32 border border-slate-200" alt="Preview"></div>
+            <div id="pfUploadProgress" style="display:none"><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div id="pfProgressBar" class="h-full bg-electric-600 rounded-full transition-all" style="width:0%"></div></div><p class="text-xs text-slate-400 mt-1" id="pfProgressText">Procesando imagen...</p></div>
             <div class="flex gap-3 pt-2">
-                <button onclick="closePracticeForm()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button>
-                <button onclick="submitPractice()" class="flex-1 px-4 py-2.5 bg-electric-600 text-white rounded-xl text-sm font-semibold hover:bg-electric-700 flex items-center justify-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> Guardar</button>
+                <button onclick="closePracticeForm()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600">Cancelar</button>
+                <button onclick="submitPractice()" class="flex-1 px-4 py-2.5 bg-electric-600 text-white rounded-xl text-sm font-semibold hover:bg-electric-700 flex items-center justify-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> <span id="pfSubmitText">Guardar</span></button>
             </div>
         </div>
     </div>
@@ -281,55 +281,68 @@
 </footer>
 
 <script>
-// ====== FIREBASE ======
+// ====== FIREBASE (solo Realtime Database, sin Storage) ======
 var firebaseConfig={apiKey:"AIzaSyCZbKU27EngACUMP1FNBxA0N3HabxcBPZg",authDomain:"electronilab-aa4da.firebaseapp.com",databaseURL:"https://electronilab-aa4da-default-rtdb.firebaseio.com/",projectId:"electronilab-aa4da",storageBucket:"electronilab-aa4da.firebasestorage.app",messagingSenderId:"1009038542986",appId:"1:1009038542986:web:2ca34ff0ab861637eb0573",measurementId:"G-15Z1B5MMR6"};
 firebase.initializeApp(firebaseConfig);
 var db=firebase.database();
-// No usamos Storage, imágenes van como base64 en Realtime Database
 var ADMIN_PASS="amolacocaconfernet22";
 var currentPracticeType="";
+var editingId=null;
 
 document.addEventListener('DOMContentLoaded',function(){
     lucide.createIcons();
     initHeroCanvas();initResistorDecoder();initOhm();initCircuit();initWaveform();initQuiz();renderFormulas();
-    loadFirebasePractices('escrita');
-    loadFirebasePractices('realizar');
+    loadFirebasePractices('escrita');loadFirebasePractices('realizar');
 });
 
 // ====== NAVIGATION ======
 function navigateTo(page){
-    if(page==='inicio'){
-        document.getElementById('view-inicio').style.display='block';
-        document.getElementById('app-shell').style.display='none';
-        document.getElementById('appFooter').style.display='none';
-    }else{
-        document.getElementById('view-inicio').style.display='none';
-        document.getElementById('app-shell').style.display='block';
-        document.getElementById('appFooter').style.display='block';
-        document.querySelectorAll('.content-page').forEach(function(p){p.classList.remove('active');});
-        var target=document.getElementById('page-'+page);
-        if(target)target.classList.add('active');
-        document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
-        var navBtn=document.querySelector('.nav-tab[data-nav="'+page+'"]');
-        if(navBtn)navBtn.classList.add('active');
-        if(page==='circuitos')setTimeout(updateCircuit,100);
-        if(page==='senales')setTimeout(updateWaveParams,100);
-    }
-    window.scrollTo({top:0,behavior:'smooth'});
-}
+    if(page==='inicio'){document.getElementById('view-inicio').style.display='block';document.getElementById('app-shell').style.display='none';document.getElementById('appFooter').style.display='none';}
+    else{document.getElementById('view-inicio').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('appFooter').style.display='block';
+    document.querySelectorAll('.content-page').forEach(function(p){p.classList.remove('active');});var t=document.getElementById('page-'+page);if(t)t.classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});var n=document.querySelector('.nav-tab[data-nav="'+page+'"]');if(n)n.classList.add('active');
+    if(page==='circuitos')setTimeout(updateCircuit,100);if(page==='senales')setTimeout(updateWaveParams,100);}window.scrollTo({top:0,behavior:'smooth'});}
 
 function switchSubTab(sub){
-    document.querySelectorAll('.sub-panel').forEach(function(p){p.style.display='none';});
-    document.querySelectorAll('.sub-tab').forEach(function(b){b.classList.remove('active');b.style.background='#F1F5F9';b.style.color='#475569';b.style.boxShadow='none';});
+    document.getElementById('panel-quiz').style.display='none';document.getElementById('panel-escritas').style.display='none';document.getElementById('panel-realizar').style.display='none';
     document.getElementById('panel-'+sub).style.display='block';
-    var btn=document.getElementById('sub'+sub.charAt(0).toUpperCase()+sub.slice(1));
-    btn.classList.add('active');btn.style.background='#0A84FF';btn.style.color='#fff';btn.style.boxShadow='0 2px 8px rgba(10,132,255,.3)';
-}
+    document.querySelectorAll('.sub-tab').forEach(function(b){b.classList.remove('active');b.style.background='#F1F5F9';b.style.color='#475569';b.style.boxShadow='none';});
+    var btn=document.getElementById('sub'+sub.charAt(0).toUpperCase()+sub.slice(1));btn.classList.add('active');btn.style.background='#0A84FF';btn.style.color='#fff';btn.style.boxShadow='0 2px 8px rgba(10,132,255,.3)';}
 
 function showToast(msg){var t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},3000);}
 
-// ====== HERO CANVAS ======
-function initHeroCanvas(){var canvas=document.getElementById('heroCanvas'),ctx=canvas.getContext('2d');var w,h,nodes,traces,electrons;function resize(){w=canvas.width=canvas.parentElement.offsetWidth;h=canvas.height=canvas.parentElement.offsetHeight;gen();}function gen(){var cols=Math.floor(w/80),rows=Math.floor(h/80);nodes=[];traces=[];electrons=[];for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)if(Math.random()>.35)nodes.push({x:60+c*80,y:60+r*80});for(var i=0;i<nodes.length;i++)for(var j=i+1;j<nodes.length;j++){var dx=Math.abs(nodes[i].x-nodes[j].x),dy=Math.abs(nodes[i].y-nodes[j].y);if((dx===80&&dy===0)||(dx===0&&dy===80))if(Math.random()>.4){traces.push({from:i,to:j});electrons.push({trace:traces.length-1,t:Math.random(),speed:.002+Math.random()*.003});}}}function draw(){ctx.clearRect(0,0,w,h);traces.forEach(function(tr){var a=nodes[tr.from],b=nodes[tr.to];ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle='rgba(10,132,255,.15)';ctx.lineWidth=1.5;ctx.stroke();});nodes.forEach(function(n){ctx.beginPath();ctx.arc(n.x,n.y,3,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255,.3)';ctx.fill();});electrons.forEach(function(e){e.t+=e.speed;if(e.t>1)e.t=0;var tr=traces[e.trace],a=nodes[tr.from],b=nodes[tr.to],x=a.x+(b.x-a.x)*e.t,y=a.y+(b.y-a.y)*e.t;ctx.beginPath();ctx.arc(x,y,2.5,0,Math.PI*2);ctx.fillStyle='rgba(51,153,255,.8)';ctx.fill();ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255,.15)';ctx.fill();});requestAnimationFrame(draw);}window.addEventListener('resize',resize);resize();draw();}
+// ====== HERO CANVAS - DINÁMICO MEJORADO ======
+function initHeroCanvas(){
+    var canvas=document.getElementById('heroCanvas'),ctx=canvas.getContext('2d');
+    var w,h,nodes=[],traces=[],electrons=[],pulses=[];
+    function resize(){w=canvas.width=canvas.parentElement.offsetWidth;h=canvas.height=canvas.parentElement.offsetHeight;gen();}
+    function gen(){
+        var cols=Math.floor(w/70),rows=Math.floor(h/70);nodes=[];traces=[];electrons=[];pulses=[];
+        for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)if(Math.random()>.3)nodes.push({x:50+c*70,y:50+r*70,pulse:0,pulseT:Math.random()*100});
+        for(var i=0;i<nodes.length;i++)for(var j=i+1;j<nodes.length;j++){
+            var dx=Math.abs(nodes[i].x-nodes[j].x),dy=Math.abs(nodes[i].y-nodes[j].y);
+            if((dx===70&&dy===0)||(dx===0&&dy===70))if(Math.random()>.35){traces.push({from:i,to:j});electrons.push({trace:traces.length-1,t:Math.random(),speed:.003+Math.random()*.004,size:1.5+Math.random()*2});}}
+    }
+    function draw(){
+        ctx.clearRect(0,0,w,h);
+        // Draw traces with glow
+        traces.forEach(function(tr){var a=nodes[tr.from],b=nodes[tr.to];ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle='rgba(10,132,255,.12)';ctx.lineWidth=2;ctx.stroke();});
+        // Draw pulses on random nodes
+        for(var i=0;i<nodes.length;i++){var n=nodes[i];n.pulseT+=.02;var p=Math.sin(n.pulseT)*.5+.5;n.pulse=p;if(Math.random()<.002){pulses.push({x:n.x,y:n.y,r:0,maxR:30+Math.random()*20,alpha:1});}}
+        pulses.forEach(function(p,i){p.r+=1.5;p.alpha=1-p.r/p.maxR;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.strokeStyle='rgba(51,153,255,'+p.alpha*.3+')';ctx.lineWidth=1;ctx.stroke();});
+        pulses=pulses.filter(function(p){return p.r<p.maxR;});
+        // Draw nodes
+        nodes.forEach(function(n){var s=3+n.pulse*3;ctx.beginPath();ctx.arc(n.x,n.y,s,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255,'+(0.2+n.pulse*0.4)+')';ctx.fill();});
+        // Draw electrons with trails
+        electrons.forEach(function(e){e.t+=e.speed;if(e.t>1)e.t=0;var tr=traces[e.trace],a=nodes[tr.from],b=nodes[tr.to],x=a.x+(b.x-a.x)*e.t,y=a.y+(b.y-a.y)*e.t;
+        // Trail
+        var tx=a.x+(b.x-a.x)*Math.max(0,e.t-.06),ty=a.y+(b.y-a.y)*Math.max(0,e.t-.06);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(x,y);ctx.strokeStyle='rgba(51,153,255,.4)';ctx.lineWidth=e.size+2;ctx.stroke();
+        // Glow
+        ctx.beginPath();ctx.arc(x,y,e.size+4,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255,.15)';ctx.fill();
+        // Core
+        ctx.beginPath();ctx.arc(x,y,e.size,0,Math.PI*2);ctx.fillStyle='rgba(100,180,255,.9)';ctx.fill();});
+        requestAnimationFrame(draw);}
+    window.addEventListener('resize',resize);resize();draw();}
 
 // ====== OHM ======
 var solveFor='V';function setSolveFor(val){solveFor=val;document.querySelectorAll('.solve-btn').forEach(function(b){b.className='solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white';});var a=document.getElementById('solve'+val);var cls={V:'border-volt text-volt bg-red-50',I:'border-amps text-amps bg-amber-50',R:'border-ohms text-ohms bg-green-50'};a.className='solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 '+cls[val];var s={V:'rangeV',I:'rangeI',R:'rangeR'};Object.keys(s).forEach(function(k){var el=document.getElementById(s[k]);el.disabled=k===val;el.style.opacity=k===val?'0.4':'1';});updateOhm();}
@@ -340,12 +353,101 @@ function updateOhm(){var V=parseFloat(document.getElementById('rangeV').value),I
 var RC={band1:[{n:'Negro',c:'#1a1a1a',v:0},{n:'Marrón',c:'#8B4513',v:1},{n:'Rojo',c:'#FF0000',v:2},{n:'Naranja',c:'#FF8C00',v:3},{n:'Amarillo',c:'#FFD700',v:4},{n:'Verde',c:'#228B22',v:5},{n:'Azul',c:'#0000FF',v:6},{n:'Violeta',c:'#8B008B',v:7},{n:'Gris',c:'#808080',v:8},{n:'Blanco',c:'#F0F0F0',v:9}],band3:[{n:'Negro',c:'#1a1a1a',m:1},{n:'Marrón',c:'#8B4513',m:10},{n:'Rojo',c:'#FF0000',m:100},{n:'Naranja',c:'#FF8C00',m:1e3},{n:'Amarillo',c:'#FFD700',m:1e4},{n:'Verde',c:'#228B22',m:1e5},{n:'Azul',c:'#0000FF',m:1e6},{n:'Violeta',c:'#8B008B',m:1e7},{n:'Gris',c:'#808080',m:1e8},{n:'Blanco',c:'#F0F0F0',m:1e9}],band4:[{n:'Oro',c:'#FFD700',t:5},{n:'Plata',c:'#C0C0C0',t:10},{n:'Ninguno',c:'#D4A76A',t:20}]};var sB={b1:1,b2:0,b3:2,b4:0};
 function initResistorDecoder(){var b1C=document.getElementById('band1Colors');RC.band1.slice(1).forEach(function(c,i){var el=document.createElement('div');el.className='color-swatch '+(i===0?'active':'');el.style.background=c.c;el.title=c.n;el.onclick=function(){sB.b1=c.v;uSA(b1C,i);uR();};b1C.appendChild(el);});var b2C=document.getElementById('band2Colors');RC.band1.forEach(function(c,i){var el=document.createElement('div');el.className='color-swatch '+(i===0?'active':'');el.style.background=c.c;el.title=c.n;el.onclick=function(){sB.b2=c.v;uSA(b2C,i);uR();};b2C.appendChild(el);});var b3C=document.getElementById('band3Colors');RC.band3.forEach(function(c,i){var el=document.createElement('div');el.className='color-swatch '+(i===2?'active':'');el.style.background=c.c;el.title=c.n;el.onclick=function(){sB.b3=i;uSA(b3C,i);uR();};b3C.appendChild(el);});var b4C=document.getElementById('band4Colors');RC.band4.forEach(function(c,i){var el=document.createElement('div');el.className='color-swatch '+(i===0?'active':'');el.style.background=c.c;el.title=c.n;el.onclick=function(){sB.b4=i;uSA(b4C,i);uR();};b4C.appendChild(el);});uR();}
 function uSA(c,i){c.querySelectorAll('.color-swatch').forEach(function(s,j){s.classList.toggle('active',j===i);});}
-function uR(){var d1=sB.b1,d2=sB.b2,mult=RC.band3[sB.b3].m,tol=RC.band4[sB.b4].t,val=(d1*10+d2)*mult;document.getElementById('rband1').style.background=RC.band1.find(function(c){return c.v===d1;}).c;document.getElementById('rband2').style.background=RC.band1[d2].c;document.getElementById('rband3').style.background=RC.band3[sB.b3].c;document.getElementById('rband4').style.background=RC.band4[sB.b4].c;var d=val>=1e6?(val/1e6).toFixed(val%1e6?1:0)+' MΩ':val>=1e3?(val/1e3).toFixed(val%1e3?1:0)+' kΩ':val+' Ω';var mn=val*(1-tol/100),mx=val*(1+tol/100);document.getElementById('resistorResult').innerHTML='<div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold text-slate-900">'+d+' ± '+tol+'%</div><div class="text-xs text-slate-500 mt-1">Rango: '+(mn>=1e3?(mn/1e3).toFixed(1)+'kΩ':mn.toFixed(0)+'Ω')+' — '+(mx>=1e3?(mx/1e3).toFixed(1)+'kΩ':mx.toFixed(0)+'Ω')+'</div>';}
+function uR(){var d1=sB.b1,d2=sB.b2,mult=RC.band3[sB.b3].m,tol=RC.band4[sB.b4].t,val=(d1*10+d2)*mult;document.getElementById('rband1').style.background=RC.band1.find(function(c){return c.v===d1;}).c;document.getElementById('rband2').style.background=RC.band1[d2].c;document.getElementById('rband3').style.background=RC.band3[sB.b3].c;document.getElementById('rband4').style.background=RC.band4[sB.b4].c;var d=val>=1e6?(val/1e6).toFixed(val%1e6?1:0)+' MΩ':val>=1e3?(val/1e3).toFixed(val%1e3?1:0)+' kΩ':val+' Ω';document.getElementById('resistorResult').innerHTML='<div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold text-slate-900">'+d+' ± '+tol+'%</div>';}
 
-// ====== CIRCUITS ======
+// ====== CIRCUITOS - PARALELO CORREGIDO ======
 var cType='serie';function setCircuitType(t){cType=t;document.getElementById('btnSerie').className=t==='serie'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';document.getElementById('btnParalelo').className=t==='paralelo'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';updateCircuit();}
 function initCircuit(){updateCircuit();}
-function updateCircuit(){var V=parseFloat(document.getElementById('circV').value)||12,R1=parseFloat(document.getElementById('circR1').value)||100,R2=parseFloat(document.getElementById('circR2').value)||200;var canvas=document.getElementById('circuitCanvas'),ctx=canvas.getContext('2d'),cw=canvas.width,ch=canvas.height;ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#FAFBFC';ctx.fillRect(0,0,cw,ch);ctx.strokeStyle='rgba(10,132,255,.06)';ctx.lineWidth=1;for(var x=0;x<cw;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}for(var y=0;y<ch;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}ctx.lineWidth=2.5;ctx.strokeStyle='#64748B';if(cType==='serie'){var bx=80,by=80,bw=340,bh=200;ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw,by);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by+bh);ctx.lineTo(bx+bw,by+bh);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx,by+80);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by+120);ctx.lineTo(bx,by+bh);ctx.stroke();ctx.beginPath();ctx.moveTo(bx+bw,by);ctx.lineTo(bx+bw,by+bh);ctx.stroke();ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(bx-15,by+80);ctx.lineTo(bx+15,by+80);ctx.stroke();ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(bx-8,by+120);ctx.lineTo(bx+8,by+120);ctx.stroke();ctx.font='14px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+10,by+76);ctx.fillStyle='#0A84FF';ctx.fillText('\u2212',bx+10,by+134);ctx.fillStyle='#22C55E';ctx.fillRect(bx+80,by-12,80,24);ctx.fillStyle='white';ctx.font='bold 13px JetBrains Mono';ctx.fillText('R\u2081='+R1+'\u03A9',bx+88,by+5);ctx.fillStyle='#22C55E';ctx.fillRect(bx+200,by-12,80,24);ctx.fillStyle='white';ctx.fillText('R\u2082='+R2+'\u03A9',bx+208,by+5);ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-50,by+105);}else{var bx=100,by=50;ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+300,by);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by+260);ctx.lineTo(bx+300,by+260);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx,by+100);ctx.stroke();ctx.beginPath();ctx.moveTo(bx,by+160);ctx.lineTo(bx,by+260);ctx.stroke();ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(bx-15,by+100);ctx.lineTo(bx+15,by+100);ctx.stroke();ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(bx-8,by+160);ctx.lineTo(bx+8,by+160);ctx.stroke();ctx.font='14px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+10,by+96);ctx.fillStyle='#0A84FF';ctx.fillText('\u2212',bx+10,by+174);ctx.fillStyle='#22C55E';ctx.fillRect(bx+110,by+70,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';ctx.fillText('R\u2081='+R1+'\u03A9',bx+140,by+84);ctx.fillStyle='#22C55E';ctx.fillRect(bx+230,by+70,60,20);ctx.fillText('R\u2082='+R2+'\u03A9',bx+260,by+84);ctx.textAlign='start';ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-50,by+135);}var Rt,It,V1,V2,I1,I2;if(cType==='serie'){Rt=R1+R2;It=V/Rt;V1=It*R1;V2=It*R2;I1=I2=It;}else{Rt=(R1*R2)/(R1+R2);It=V/Rt;V1=V2=V;I1=V/R1;I2=V/R2;}var P=V*It;document.getElementById('circuitResults').innerHTML='<div class="grid grid-cols-2 gap-3"><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">R total</div><div class="font-mono font-bold text-ohms">'+Rt.toFixed(1)+'\u03A9</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I total</div><div class="font-mono font-bold text-amps">'+It.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2081</div><div class="font-mono font-bold text-volt">'+V1.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2082</div><div class="font-mono font-bold text-volt">'+V2.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2081</div><div class="font-mono font-bold text-amps">'+I1.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2082</div><div class="font-mono font-bold text-amps">'+I2.toFixed(4)+'A</div></div><div class="col-span-2 bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">Potencia</div><div class="font-mono font-bold text-watts">'+P.toFixed(3)+'W</div></div></div>';var rules=cType==='serie'?['R<sub>T</sub>=R\u2081+R\u2082 (se suman)','Corriente igual en todos','Voltaje se divide','Si falla uno, todo se detiene']:['1/R<sub>T</sub>=1/R\u2081+1/R\u2082','Voltaje igual en todas las ramas','Corriente se divide','Si falla uno, las demás continúan'];document.getElementById('circuitRules').innerHTML=rules.map(function(r){return '<p class="text-sm text-slate-600">\u2022 '+r+'</p>';}).join('');}
+function updateCircuit(){
+var V=parseFloat(document.getElementById('circV').value)||12,R1=parseFloat(document.getElementById('circR1').value)||100,R2=parseFloat(document.getElementById('circR2').value)||200;
+var canvas=document.getElementById('circuitCanvas'),ctx=canvas.getContext('2d'),cw=canvas.width,ch=canvas.height;
+ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#FAFBFC';ctx.fillRect(0,0,cw,ch);
+// Grid
+ctx.strokeStyle='rgba(10,132,255,.06)';ctx.lineWidth=1;for(var x=0;x<cw;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}for(var y=0;y<ch;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}
+ctx.lineWidth=2.5;ctx.strokeStyle='#64748B';ctx.fillStyle='#64748B';ctx.textAlign='start';ctx.font='14px Space Grotesk';
+
+if(cType==='serie'){
+    // SERIE: batería a la izquierda, R1 y R2 en la línea superior
+    var bx=70,by=90,bw=360,bh=200;
+    // Top wire
+    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw,by);ctx.stroke();
+    // Bottom wire
+    ctx.beginPath();ctx.moveTo(bx,by+bh);ctx.lineTo(bx+bw,by+bh);ctx.stroke();
+    // Left side: battery
+    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx,by+80);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx,by+120);ctx.lineTo(bx,by+bh);ctx.stroke();
+    // Right side: connecting wire
+    ctx.beginPath();ctx.moveTo(bx+bw,by);ctx.lineTo(bx+bw,by+bh);ctx.stroke();
+    // Battery symbol
+    ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-12,by+80);ctx.lineTo(bx+12,by+80);ctx.stroke();// long line +
+    ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-7,by+120);ctx.lineTo(bx+7,by+120);ctx.stroke();// short line -
+    ctx.font='13px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+14,by+84);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+14,by+126);
+    // R1 box
+    ctx.fillStyle='#22C55E';ctx.fillRect(bx+80,by-14,80,28);ctx.strokeStyle='#64748B';ctx.lineWidth=2;
+    ctx.strokeRect(bx+80,by-14,80,28);ctx.fillStyle='white';ctx.font='bold 13px JetBrains Mono';ctx.fillText('R₁='+R1+'Ω',bx+90,by+5);
+    // R2 box
+    ctx.fillStyle='#22C55E';ctx.fillRect(bx+200,by-14,80,28);ctx.strokeStyle='#64792B';ctx.lineWidth=2;
+    ctx.strokeRect(bx+200,by-14,80,28);ctx.fillStyle='white';ctx.font='bold 13px JetBrains Mono';ctx.fillText('R₂='+R2+'Ω',bx+210,by+5);
+    // V label
+    ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-55,by+106);
+    // Direction arrows
+    ctx.fillStyle='#F59E0B';ctx.font='12px Space Grotesk';ctx.fillText('I →',bx+bw/2,by+bh+25);
+}else{
+    // PARALELO: batería a la izquierda, riel superior e inferior, R1 y R2 en ramas verticales
+    var bx=80,by=50,bw=340,bh=280;
+    var railTop=by+30,railBot=by+bh-30;
+    var branch1x=bx+140,branch2x=bx+260;
+    // Top rail
+    ctx.beginPath();ctx.moveTo(bx,railTop);ctx.lineTo(bx+bw,railTop);ctx.stroke();
+    // Bottom rail
+    ctx.beginPath();ctx.moveTo(bx,railBot);ctx.lineTo(bx+bw,railBot);ctx.stroke();
+    // Right side closing wire
+    ctx.beginPath();ctx.moveTo(bx+bw,railTop);ctx.lineTo(bx+bw,railBot);ctx.stroke();
+    // Left side: battery wires
+    ctx.beginPath();ctx.moveTo(bx,railTop);ctx.lineTo(bx,railTop+40);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx,railBot-40);ctx.lineTo(bx,railBot);ctx.stroke();
+    // Battery symbol
+    ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-12,railTop+40);ctx.lineTo(bx+12,railTop+40);ctx.stroke();
+    ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-7,railBot-40);ctx.lineTo(bx+7,railBot-40);ctx.stroke();
+    ctx.font='13px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+14,railTop+44);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+14,railBot-34);
+    // Branch 1 (R1)
+    ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(branch1x,railTop);ctx.lineTo(branch1x,railTop+50);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(branch1x,railTop+100);ctx.lineTo(branch1x,railBot-100);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(branch1x,railBot-50);ctx.lineTo(branch1x,railBot);ctx.stroke();
+    // R1 box
+    ctx.fillStyle='#22C55E';ctx.fillRect(branch1x-30,railTop+50,60,20);ctx.strokeStyle='#64748B';ctx.lineWidth=2;
+    ctx.strokeRect(branch1x-30,railTop+50,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('R₁='+R1+'Ω',branch1x,railTop+64);ctx.textAlign='start';
+    // R1 bottom resistor representation (vertical)
+    ctx.fillStyle='#22C55E';ctx.fillRect(branch1x-30,railBot-100,60,20);ctx.strokeStyle='#64748B';ctx.lineWidth=2;
+    ctx.strokeRect(branch1x-30,railBot-100,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('R₁='+R1+'Ω',branch1x,railBot-86);ctx.textAlign='start';
+    // Branch 2 (R2)
+    ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(branch2x,railTop);ctx.lineTo(branch2x,railTop+50);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(branch2x,railTop+100);ctx.lineTo(branch2x,railBot-100);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(branch2x,railBot-50);ctx.lineTo(branch2x,railBot);ctx.stroke();
+    // R2 box
+    ctx.fillStyle='#F59E0B';ctx.fillRect(branch2x-30,railTop+50,60,20);ctx.strokeStyle='#64748B';ctx.lineWidth=2;
+    ctx.strokeRect(branch2x-30,railTop+50,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('R₂='+R2+'Ω',branch2x,railTop+64);ctx.textAlign='start';
+    // R2 bottom
+    ctx.fillStyle='#F59E0B';ctx.fillRect(branch2x-30,railBot-100,60,20);ctx.strokeStyle='#64748B';ctx.lineWidth=2;
+    ctx.strokeRect(branch2x-30,railBot-100,60,20);ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('R₂='+R2+'Ω',branch2x,railBot-86);ctx.textAlign='start';
+    // Junction dots
+    ctx.fillStyle='#64748B';[branch1x,branch2x].forEach(function(jx){ctx.beginPath();ctx.arc(jx,railTop,4,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(jx,railBot,4,0,Math.PI*2);ctx.fill();});
+    // V label
+    ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-55,(railTop+railBot)/2+5);
+    // Current arrows
+    ctx.fillStyle='#F59E0B';ctx.font='12px Space Grotesk';ctx.fillText('I →',bx+bw/2,railTop-10);ctx.fillText('← I',bx+bw/2,railBot+20);
+}
+// Calculate
+var Rt,It,V1,V2,I1,I2;if(cType==='serie'){Rt=R1+R2;It=V/Rt;V1=It*R1;V2=It*R2;I1=I2=It;}else{Rt=(R1*R2)/(R1+R2);It=V/Rt;V1=V2=V;I1=V/R1;I2=V/R2;}var P=V*It;
+document.getElementById('circuitResults').innerHTML='<div class="grid grid-cols-2 gap-3"><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">R total</div><div class="font-mono font-bold text-ohms">'+Rt.toFixed(1)+'Ω</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I total</div><div class="font-mono font-bold text-amps">'+It.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2081</div><div class="font-mono font-bold text-volt">'+V1.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2082</div><div class="font-mono font-bold text-volt">'+V2.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2081</div><div class="font-mono font-bold text-amps">'+I1.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2082</div><div class="font-mono font-bold text-amps">'+I2.toFixed(4)+'A</div></div><div class="col-span-2 bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">Potencia</div><div class="font-mono font-bold text-watts">'+P.toFixed(3)+'W</div></div></div>';
+var rules=cType==='serie'?['R<sub>T</sub>=R\u2081+R\u2082 (se suman)','Corriente igual en todos','Voltaje se divide','Si falla uno, todo se detiene']:['1/R<sub>T</sub>=1/R\u2081+1/R\u2082','Voltaje igual en todas las ramas','Corriente se divide entre ramas','Si falla uno, las demás continúan'];
+document.getElementById('circuitRules').innerHTML=rules.map(function(r){return '<p class="text-sm text-slate-600">\u2022 '+r+'</p>';}).join('');}
 
 // ====== WAVEFORM ======
 var wType='sine',wAmp=5,wFreq=2,wTime=0;function setWaveType(t){wType=t;document.querySelectorAll('.wave-btn').forEach(function(b){b.className='wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600';});var btn=document.getElementById('btn'+t.charAt(0).toUpperCase()+t.slice(1));if(btn)btn.className='wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-electric-600 text-white';updateWaveParams();}
@@ -353,7 +455,7 @@ function updateWaveParams(){wAmp=parseFloat(document.getElementById('ampSlider')
 function initWaveform(){var canvas=document.getElementById('waveCanvas'),ctx=canvas.getContext('2d');updateWaveParams();function draw(){var cw=canvas.width,ch=canvas.height;ctx.fillStyle='#0C1A2E';ctx.fillRect(0,0,cw,ch);ctx.strokeStyle='rgba(10,132,255,.1)';ctx.lineWidth=1;for(var x=0;x<cw;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}for(var y=0;y<ch;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}ctx.strokeStyle='rgba(10,132,255,.25)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,ch/2);ctx.lineTo(cw,ch/2);ctx.stroke();ctx.beginPath();ctx.strokeStyle='#3399FF';ctx.lineWidth=2.5;ctx.shadowColor='#3399FF';ctx.shadowBlur=8;var midY=ch/2,sY=(ch/2-30)/12;for(var x=0;x<cw;x++){var t=(x/cw)*3+wTime,y,ph=2*Math.PI*wFreq*t;if(wType==='sine')y=midY-wAmp*Math.sin(ph)*sY;else if(wType==='square')y=midY-wAmp*Math.sign(Math.sin(ph))*sY;else if(wType==='triangle')y=midY-wAmp*(2/Math.PI)*Math.asin(Math.sin(ph))*sY;else if(wType==='sawtooth'){var p=(wFreq*t)%1;y=midY-wAmp*(2*p-1)*sY;}else y=midY-wAmp*sY;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.shadowBlur=0;wTime+=.015;requestAnimationFrame(draw);}draw();}
 
 // ====== QUIZ ======
-var QQ=[{cat:'Ley de Ohm',q:'R=100\u03A9, I=0.5A, \u00bfV=?',o:['25V','50V','100V','200V'],c:1,e:'V=I\u00d7R=50V'},{cat:'Componentes',q:'\u00bf1k\u03A9 \u00b15%?',o:['Marr\u00f3n-Negro-Rojo-Oro','Marr\u00f3n-Negro-Naranja-Oro','Rojo-Negro-Marr\u00f3n-Oro','Marr\u00f3n-Rojo-Negro-Oro'],c:0,e:'Marr\u00f3n(1)-Negro(0)-Rojo(\u00d7100)=1k\u03A9'},{cat:'Circuitos',q:'Serie R\u2081=10\u03A9 R\u2082=20\u03A9, \u00bfRT?',o:['6.67\u03A9','30\u03A9','200\u03A9','15\u03A9'],c:1,e:'RT=10+20=30\u03A9'},{cat:'Circuitos',q:'Paralelo: \u00bfqu\u00e9 es igual?',o:['Corriente','Resistencia','Voltaje','Potencia'],c:2,e:'Voltaje igual en todas las ramas'},{cat:'Ohm',q:'\u00bfUnidad de resistencia?',o:['Voltio','Amperio','Ohmio','Vatio'],c:2,e:'Ohmio (\u03A9)'},{cat:'Componentes',q:'\u00bfQu\u00e9 almacena carga?',o:['Resistencia','Inductor','Capacitor','Diodo'],c:2,e:'Capacitor (F)'},{cat:'Se\u00f1ales',q:'T=0.02s, \u00bff?',o:['20Hz','50Hz','100Hz','0.02Hz'],c:1,e:'f=1/0.02=50Hz'},{cat:'Ohm',q:'V=12V R=4\u03A9, \u00bfP?',o:['3W','16W','36W','48W'],c:2,e:'P=V\u00b2/R=36W'}];
+var QQ=[{cat:'Ley de Ohm',q:'R=100\u03A9, I=0.5A, \u00bfV=?',o:['25V','50V','100V','200V'],c:1,e:'V=I\u00d7R=50V'},{cat:'Componentes',q:'\u00bf1k\u03A9 \u00b15%?',o:['Marr\u00f3n-Negro-Rojo-Oro','Marr\u00f3n-Negro-Naranja-Oro','Rojo-Negro-Marr\u00f3n-Oro','Marr\u00f3n-Rojo-Negro-Oro'],c:0,e:'Marr\u00f3n(1)-Negro(0)-Rojo(\u00d7100)=1k\u03A9'},{cat:'Circuitos',q:'Serie R\u2081=10\u03A9 R\u2082=20\u03A9, \u00bfRT?',o:['6.67\u03A9','30\u03A9','200\u03A9','15\u03A9'],c:1,e:'RT=10+20=30\u03A9'},{cat:'Circuitos',q:'Paralelo: \u00bfqu\u00e9 es igual?',o:['Corriente','Resistencia','Voltaje','Potencia'],c:2,e:'Voltaje igual en ramas'},{cat:'Ohm',q:'\u00bfUnidad de resistencia?',o:['Voltio','Amperio','Ohmio','Vatio'],c:2,e:'Ohmio (\u03A9)'},{cat:'Componentes',q:'\u00bfQu\u00e9 almacena carga?',o:['Resistencia','Inductor','Capacitor','Diodo'],c:2,e:'Capacitor (F)'},{cat:'Se\u00f1ales',q:'T=0.02s, \u00bff?',o:['20Hz','50Hz','100Hz','0.02Hz'],c:1,e:'f=1/0.02=50Hz'},{cat:'Ohm',q:'V=12V R=4\u03A9, \u00bfP?',o:['3W','16W','36W','48W'],c:2,e:'P=V\u00b2/R=36W'}];
 var cQ=0,sc=0,qans=false;
 function initQuiz(){showQ();}
 function showQ(){if(cQ>=QQ.length){document.getElementById('quizCard').style.display='none';document.getElementById('quizComplete').style.display='block';document.getElementById('finalScore').textContent=sc+'/'+QQ.length;var p=sc/QQ.length;document.getElementById('finalMsg').textContent=p>=.8?'\u00a1Excelente!':p>=.5?'Buen trabajo':'Sigue practicando';return;}var q=QQ[cQ];document.getElementById('qNum').textContent=cQ+1;document.getElementById('qTotal').textContent=QQ.length;document.getElementById('qProgress').style.width=((cQ+1)/QQ.length*100)+'%';document.getElementById('quizCategory').textContent=q.cat;document.getElementById('quizQuestion').textContent=q.q;document.getElementById('quizFeedback').style.display='none';document.getElementById('btnNext').style.display='none';document.getElementById('btnSkip').style.display='inline-block';qans=false;document.getElementById('quizOptions').innerHTML=q.o.map(function(o,i){return '<button onclick="ansQ('+i+')" class="quiz-option w-full text-left px-5 py-3.5 rounded-xl border-2 border-slate-200 text-sm font-medium text-slate-700 hover:border-electric-400 hover:bg-electric-50 transition-all flex items-center gap-3"><span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">'+String.fromCharCode(65+i)+'</span>'+o+'</button>';}).join('');}
@@ -366,46 +468,82 @@ function restartQuiz(){cQ=0;sc=0;qans=false;document.getElementById('qScore').te
 function loadFirebasePractices(type){
     var listId=type==='escrita'?'escritasList':'realizarList';
     db.ref('practices/'+type).on('value',function(snapshot){
-        var data=snapshot.val()||{};
-        var arr=Object.keys(data).map(function(k){var d=data[k];d._id=k;return d;});
-        arr.reverse();
-        renderPracticeList(listId,type,arr);
-    },function(err){
-        console.warn('Firebase load error:',err);
-        document.getElementById(listId).innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Sin conexión a la base de datos</p></div>';
-    });
+        var data=snapshot.val()||{};var arr=[];
+        Object.keys(data).forEach(function(k){var d=data[k];arr.push({_id:k,title:d.title||'',area:d.area||'Otros',objetivo:d.objetivo||'',materiales:d.materiales||'',pasos:d.pasos||'',notas:d.notas||'',date:d.date||'',imageUrl:d.imageUrl||''});});
+        arr.reverse();renderPracticeList(listId,type,arr);
+    },function(err){console.warn('Firebase err:',err);document.getElementById(listId).innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Error de conexión</p></div>';});
 }
 
 function renderPracticeList(containerId,type,practices){
-    var container=document.getElementById(containerId);
-    if(!practices||practices.length===0){container.innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400 font-medium">No hay pr\u00e1cticas '+(type==='escrita'?'escritas':'a realizar')+'</p></div>';return;}
-    var ac={'Ley de Ohm':'bg-red-100 text-red-700','Componentes':'bg-green-100 text-green-700','Circuitos':'bg-amber-100 text-amber-700','Se\u00f1ales':'bg-purple-100 text-purple-700','Otros':'bg-slate-100 text-slate-700'};
-    container.innerHTML=practices.map(function(p){return '<div class="practice-card"><div class="flex items-start justify-between gap-3 mb-3"><div><span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full '+(ac[p.area]||ac['Otros'])+' mb-2">'+p.area+'</span><h4 class="font-bold text-slate-900">'+p.title+'</h4><p class="text-xs text-slate-400">'+(p.date||'')+'</p></div><button onclick="deletePractice(\''+type+'\',\''+p._id+'\')" class="text-slate-300 hover:text-red-500 p-1" title="Eliminar">\uD83D\uDDD1</button></div><div class="space-y-3 text-sm"><div><p class="font-semibold text-slate-600 mb-1">\uD83C\uDFAF Objetivo</p><p class="text-slate-500">'+p.objetivo+'</p></div>'+(p.materiales?'<div><p class="font-semibold text-slate-600 mb-1">\uD83D\uDD27 Materiales</p><p class="text-slate-500 whitespace-pre-line">'+p.materiales+'</p></div>':'')+'<div><p class="font-semibold text-slate-600 mb-1">\uD83D\uDCCB Procedimiento</p><div class="bg-slate-50 rounded-lg p-3 text-slate-600 whitespace-pre-line font-mono text-xs">'+p.pasos+'</div></div>'+(p.notas?'<div><p class="font-semibold text-slate-600 mb-1">\uD83D\uDCDD Observaciones</p><p class="text-slate-500">'+p.notas+'</p></div>':'')+(p.imageUrl?'<div><p class="font-semibold text-slate-600 mb-1">\uD83D\uDDBC Imagen</p><img src="'+p.imageUrl+'" class="rounded-lg max-h-64 w-auto border border-slate-200" alt="Imagen"></div>':'')+'</div></div>';}).join('');
+    var container=document.getElementById(containerId);if(!container)return;
+    if(!practices||practices.length===0){container.innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400 font-medium">No hay prácticas '+(type==='escrita'?'escritas':'a realizar')+'</p></div>';return;}
+    var ac={'Ley de Ohm':'bg-red-100 text-red-700','Componentes':'bg-green-100 text-green-700','Circuitos':'bg-amber-100 text-amber-700','Señales':'bg-purple-100 text-purple-700','Otros':'bg-slate-100 text-slate-700'};
+    container.innerHTML=practices.map(function(p){var areaClass=ac[p.area]||ac['Otros'];
+    return '<div class="practice-card"><div class="flex items-start justify-between gap-3 mb-3"><div><span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full '+areaClass+' mb-2">'+p.area+'</span><h4 class="font-bold text-slate-900">'+p.title+'</h4><p class="text-xs text-slate-400">'+p.date+'</p></div><div class="flex gap-1"><button onclick="editPractice(\''+type+'\',\''+p._id+'\')" class="text-slate-300 hover:text-electric-500 p-1" title="Editar">✏️</button><button onclick="deletePractice(\''+type+'\',\''+p._id+'\')" class="text-slate-300 hover:text-red-500 p-1" title="Eliminar">🗑</button></div></div><div class="space-y-3 text-sm">'
+    +(p.objetivo?'<div><p class="font-semibold text-slate-600 mb-1">🎯 Objetivo</p><p class="text-slate-500">'+p.objetivo+'</p></div>':'')
+    +(p.materiales?'<div><p class="font-semibold text-slate-600 mb-1">🔧 Materiales</p><p class="text-slate-500 whitespace-pre-line">'+p.materiales+'</p></div>':'')
+    +(p.pasos?'<div><p class="font-semibold text-slate-600 mb-1">📋 Procedimiento</p><div class="bg-slate-50 rounded-lg p-3 text-slate-600 whitespace-pre-line font-mono text-xs">'+p.pasos+'</div></div>':'')
+    +(p.notas?'<div><p class="font-semibold text-slate-600 mb-1">📝 Observaciones</p><p class="text-slate-500">'+p.notas+'</p></div>':'')
+    +(p.imageUrl?'<div><p class="font-semibold text-slate-600 mb-1">🖼 Imagen</p><img src="'+p.imageUrl+'" class="rounded-lg max-h-64 w-auto border border-slate-200" alt="Imagen" loading="lazy"></div>':'')
+    +'</div></div>';}).join('');
 }
 
-function deletePractice(type,id){if(!confirm('\u00bfEliminar esta pr\u00e1ctica?'))return;db.ref('practices/'+type+'/'+id).remove().then(function(){showToast('Eliminada');}).catch(function(e){showToast('Error al eliminar');});}
+function deletePractice(type,id){if(!confirm('\u00bfEliminar esta práctica?'))return;db.ref('practices/'+type+'/'+id).remove().then(function(){showToast('Eliminada');}).catch(function(){showToast('Error');});}
+
+// ====== EDIT PRACTICE ======
+function editPractice(type,id){
+    // Verify password first
+    currentPracticeType=type;editingId=id;
+    db.ref('practices/'+type+'/'+id).once('value',function(snapshot){
+        var d=snapshot.val();if(!d){showToast('Práctica no encontrada');return;}
+        // Open form pre-filled
+        document.getElementById('practiceFormModal').style.display='flex';
+        document.getElementById('pfModalTitle').textContent='Editar Práctica';
+        document.getElementById('pfSubmitText').textContent='Actualizar';
+        document.getElementById('pfTitle').value=d.title||'';
+        document.getElementById('pfArea').value=d.area||'Otros';
+        document.getElementById('pfObj').value=d.objetivo||'';
+        document.getElementById('pfMat').value=d.materiales||'';
+        document.getElementById('pfPasos').value=d.pasos||'';
+        document.getElementById('pfNotas').value=d.notas||'';
+        document.getElementById('pfImage').value='';
+        document.getElementById('pfUploadProgress').style.display='none';
+        document.getElementById('pfImagePreview').style.display='none';
+        // Show existing image if any
+        if(d.imageUrl){document.getElementById('pfPreviewImg').src=d.imageUrl;document.getElementById('pfImagePreview').style.display='block';}
+    });
+}
 
 // ====== PASSWORD MODAL ======
 function showPasswordModal(type){
-    currentPracticeType=type;
+    currentPracticeType=type;editingId=null;
     document.getElementById('passwordModal').style.display='flex';
-    document.getElementById('adminPassInput').value='';
-    document.getElementById('passError').style.display='none';
-    setTimeout(function(){document.getElementById('adminPassInput').focus();},100);
-}
+    document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';
+    setTimeout(function(){document.getElementById('adminPassInput').focus();},100);}
 function closePasswordModal(){document.getElementById('passwordModal').style.display='none';}
 function verifyPassword(){var pass=document.getElementById('adminPassInput').value;if(pass===ADMIN_PASS){closePasswordModal();openPracticeForm();}else{document.getElementById('passError').style.display='block';}}
 
 // ====== PRACTICE FORM ======
 function openPracticeForm(){
+    editingId=null;
     document.getElementById('practiceFormModal').style.display='flex';
-    document.getElementById('pfTypeLabel').textContent='('+(currentPracticeType==='escrita'?'Pr\u00e1ctica Escrita':'Pr\u00e1ctica a Realizar')+')';
+    document.getElementById('pfModalTitle').textContent='Nueva Práctica ('+(currentPracticeType==='escrita'?'Escrita':'A Realizar')+')';
+    document.getElementById('pfSubmitText').textContent='Guardar';
     document.getElementById('pfTitle').value='';document.getElementById('pfObj').value='';document.getElementById('pfMat').value='';document.getElementById('pfPasos').value='';document.getElementById('pfNotas').value='';
-    var fileInput=document.getElementById('pfImage');fileInput.value='';
-    document.getElementById('pfUploadProgress').style.display='none';
-    document.getElementById('pfProgressBar').style.width='0%';
+    document.getElementById('pfImage').value='';document.getElementById('pfUploadProgress').style.display='none';document.getElementById('pfImagePreview').style.display='none';
 }
-function closePracticeForm(){document.getElementById('practiceFormModal').style.display='none';}
+function closePracticeForm(){document.getElementById('practiceFormModal').style.display='none';editingId=null;}
+
+// Preview image on file select
+document.addEventListener('change',function(e){
+    if(e.target&&e.target.id==='pfImage'){
+        var file=e.target.files&&e.target.files[0];
+        if(file){
+            if(file.size>2*1024*1024){showToast('Imagen muy grande (máx 2MB)');e.target.value='';return;}
+            var reader=new FileReader();reader.onload=function(ev){document.getElementById('pfPreviewImg').src=ev.target.result;document.getElementById('pfImagePreview').style.display='block';};reader.readAsDataURL(file);
+        }
+    }
+});
 
 function submitPractice(){
     var title=document.getElementById('pfTitle').value.trim();
@@ -416,60 +554,43 @@ function submitPractice(){
     var notas=document.getElementById('pfNotas').value.trim();
     var fileInput=document.getElementById('pfImage');
     var imageFile=fileInput.files&&fileInput.files[0]?fileInput.files[0]:null;
-
     if(!title||!obj||!pasos){showToast('Completa los campos obligatorios (*)');return;}
+    var practiceData={title:title,area:area,objetivo:obj,materiales:mat,pasos:pasos,notas:notas,date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})};
 
-    var practiceData={title:title,area:area,objetivo:obj,materiales:mat,pasos:pasos,notas:notas,date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}),imageUrl:''};
+    // If editing, keep existing image unless new one selected
+    if(editingId){practiceData._editing=true;}
 
     if(imageFile){
-        document.getElementById('pfUploadProgress').style.display='block';
-        document.getElementById('pfProgressBar').style.width='30%';
-        
-        // Leer y comprimir imagen como base64
+        document.getElementById('pfUploadProgress').style.display='block';document.getElementById('pfProgressText').textContent='Procesando imagen...';document.getElementById('pfProgressBar').style.width='30%';
         var reader=new FileReader();
         reader.onload=function(e){
             document.getElementById('pfProgressBar').style.width='60%';
-            
-            // Crear imagen temporal para redimensionar
-            var img=new Image();
-            img.onload=function(){
-                // Redimensionar: máximo 800px de ancho
-                var maxW=800;
-                var w=img.width;
-                var h=img.height;
-                if(w>maxW){h=h*(maxW/w);w=maxW;}
-                
-                // Dibujar en canvas comprimido
-                var canvas=document.createElement('canvas');
-                canvas.width=w;
-                canvas.height=h;
-                var ctx=canvas.getContext('2d');
-                ctx.drawImage(img,0,0,w,h);
-                
-                // Convertir a JPEG con calidad 0.6 (aprox 50-150KB)
-                var base64=canvas.toDataURL('image/jpeg',0.6);
-                
-                document.getElementById('pfProgressBar').style.width='90%';
-                
-                practiceData.imageUrl=base64;
-                savePracticeToDb(practiceData);
-            };
-            img.src=e.target.result;
+            var img=new Image();img.onload=function(){
+                var maxW=600,w=img.width,h=img.height;if(w>maxW){h=h*(maxW/w);w=maxW;}
+                var canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;var ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,w,h);
+                var base64=canvas.toDataURL('image/jpeg',0.5);
+                document.getElementById('pfProgressBar').style.width='90%';document.getElementById('pfProgressText').textContent='Guardando...';
+                practiceData.imageUrl=base64;savePracticeToDb(practiceData);
+            };img.src=e.target.result;
         };
-        reader.onerror=function(){
-            showToast('Error al leer imagen. Se guardar\u00e1 sin imagen.');
-            savePracticeToDb(practiceData);
-        };
+        reader.onerror=function(){showToast('Error con imagen, guardando sin ella');savePracticeToDb(practiceData);};
         reader.readAsDataURL(imageFile);
     }else{
-        savePracticeToDb(practiceData);
+        // If editing and no new image, keep existing
+        if(editingId){
+            db.ref('practices/'+currentPracticeType+'/'+editingId).once('value',function(snap){
+                var existing=snap.val();if(existing&&existing.imageUrl)practiceData.imageUrl=existing.imageUrl;
+                savePracticeToDb(practiceData);
+            });
+        }else{savePracticeToDb(practiceData);}
     }
 }
 
 function savePracticeToDb(data){
-    db.ref('practices/'+currentPracticeType).push(data).then(function(){
-        closePracticeForm();showToast('Pr\u00e1ctica guardada');
-    }).catch(function(e){console.error('Save error:',e);showToast('Error al guardar');});
+    var ref;
+    if(editingId){ref=db.ref('practices/'+currentPracticeType+'/'+editingId);}
+    else{ref=db.ref('practices/'+currentPracticeType).push();}
+    ref.set(data).then(function(){closePracticeForm();showToast(editingId?'Práctica actualizada':'Práctica guardada');editingId=null;}).catch(function(e){console.error(e);showToast('Error al guardar');});
 }
 
 // ====== KATEX ======
