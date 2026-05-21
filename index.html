@@ -13,10 +13,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
     <script>
-        tailwind.config={theme:{extend:{colors:{electric:{50:'#EBF5FF',100:'#D6EBFF',200:'#ADD6FF',300:'#85C2FF',400:'#5CADFF',500:'#3399FF',600:'#0A84FF',700:'#0066CC',800:'#004D99',900:'#003366'},volt:'#EF4444',amps:'#F59E0B',ohms:'#22C55E',watts:'#8B5CF6'},fontFamily:{heading:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+        tailwind.config={darkMode:'class',theme:{extend:{colors:{electric:{50:'#EBF5FF',100:'#D6EBFF',200:'#ADD6FF',300:'#85C2FF',400:'#5CADFF',500:'#3399FF',600:'#0A84FF',700:'#0066CC',800:'#004D99',900:'#003366'},volt:'#EF4444',amps:'#F59E0B',ohms:'#22C55E',watts:'#8B5CF6'},fontFamily:{heading:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
     </script>
     <style>
-        body{font-family:'Space Grotesk',sans-serif;margin:0;overflow-x:hidden}
+        body{font-family:'Space Grotesk',sans-serif;margin:0;overflow-x:hidden;transition:background-color 0.3s, color 0.3s}
         .font-mono{font-family:'JetBrains Mono',monospace}
         #heroCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}
         .resistor-body{display:flex;align-items:center;gap:3px;padding:12px 24px;background:linear-gradient(180deg,#D4A76A,#C49555,#B8894A);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
@@ -51,6 +51,23 @@
         @keyframes float-shape{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(5deg)}}
         .hero-shape{position:absolute;border:1px solid rgba(51,153,255,.15);border-radius:50%;animation:pulse-ring 4s ease-in-out infinite}
         .float-geo{position:absolute;opacity:.06;animation:float-shape 6s ease-in-out infinite}
+
+        /* DARK MODE */
+        .dark body, .dark .graph-paper{background-color:#0F172A;color:#E2E8F0;background-image:none}
+        .dark .bg-white{background-color:#1E293B!important}
+        .dark .bg-slate-50{background-color:#1E293B!important}
+        .dark .bg-slate-100{background-color:#334155!important}
+        .dark .text-slate-900{color:#F8FAFC!important}
+        .dark .text-slate-800{color:#E2E8F0!important}
+        .dark .text-slate-700{color:#CBD5E1!important}
+        .dark .text-slate-600{color:#94A3B8!important}
+        .dark .text-slate-500{color:#94A3B8!important}
+        .dark .border-slate-200{border-color:#334155!important}
+        .dark .border-slate-100{border-color:#334155!important}
+        .dark .border-slate-300{border-color:#475569!important}
+        .dark input[type=range]{background:#475569}
+        .dark .formula-card{background:#1E293B;border-color:#334155}
+        .dark .practice-card{background:#1E293B;border-color:#334155}
     </style>
 </head>
 <body class="graph-paper text-slate-800">
@@ -69,6 +86,7 @@
         <svg class="float-geo w-36 h-36 bottom-[12%] left-[8%] z-[2]" style="animation-delay:2s" viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" fill="none" stroke="#3399FF" stroke-width="1" rx="5"/></svg>
         <svg class="float-geo w-28 h-28 top-[45%] left-[3%] z-[2]" style="animation-delay:3s" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#3399FF" stroke-width="1"/></svg>
         <div class="relative z-10 text-center px-6 max-w-4xl">
+            <p class="text-sm text-slate-300/80 tracking-widest uppercase mb-6 font-semibold">ESCUELA SUPERIOR DE FORMACIÓN DE MAESTROS MARISCAL SUCRE - ELECTRICIDAD Y ELECTRÓNICA</p>
             <div class="flex items-center justify-center gap-6 mb-8">
                 <img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" alt="ESFM" class="shield-img h-24 md:h-28 object-contain">
                 <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" alt="Especialidad" class="shield-img h-24 md:h-28 object-contain">
@@ -79,8 +97,7 @@
             </div>
             <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight">Electroni<span class="text-electric-400">Lab</span></h1>
             <p class="text-xl md:text-2xl text-electric-200 font-light mb-2">Electrónica Básica Interactiva</p>
-            <p class="text-base text-slate-300/80 mb-4">Escuela Superior de Formación de Maestros Mariscal Sucre</p>
-            <p class="text-base text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">Explora los fundamentos de la electrónica de forma visual e interactiva.</p>
+            <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">Adéntrate en el fascinante mundo de la electrónica. Comprende cómo fluye la corriente a través de los circuitos, descubre la función de cada componente y domina las leyes fundamentales que impulsan la tecnología moderna. Una experiencia diseñada para aprender haciendo.</p>
             <button onclick="navigateTo('areas')" class="inline-flex items-center justify-center gap-2 bg-electric-600 hover:bg-electric-700 text-white font-semibold py-4 px-10 rounded-xl transition-all duration-300 shadow-lg shadow-electric-600/30 text-lg hover:scale-105">
                 <i data-lucide="layout-grid" class="w-5 h-5"></i> ÁREAS DE APRENDIZAJE
             </button>
@@ -88,11 +105,6 @@
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center"><p class="text-white font-semibold text-sm">Cristian Medina Torres</p><p class="text-electric-300 text-xs">Maestro en Formación</p></div>
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center"><p class="text-white font-semibold text-sm">Wilder R. Panique Chama</p><p class="text-electric-300 text-xs">Maestro en Formación</p></div>
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center"><p class="text-white font-semibold text-sm">Jhonny S. Taboada Padilla</p><p class="text-electric-300 text-xs">Maestro en Formación</p></div>
-            </div>
-            <div class="flex flex-wrap justify-center gap-6 mt-10">
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-6 py-3 text-center"><div class="text-2xl font-bold text-white">4</div><div class="text-xs text-slate-400">Módulos</div></div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-6 py-3 text-center"><div class="text-2xl font-bold text-white">∞</div><div class="text-xs text-slate-400">Experimentos</div></div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-6 py-3 text-center"><div class="text-2xl font-bold text-white">8</div><div class="text-xs text-slate-400">Cuestionarios</div></div>
             </div>
         </div>
     </section>
@@ -110,6 +122,13 @@
             <button onclick="navigateTo('circuitos')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="circuitos"><i data-lucide="git-branch" class="w-4 h-4"></i> Circuitos</button>
             <button onclick="navigateTo('senales')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="senales"><i data-lucide="activity" class="w-4 h-4"></i> Señales</button>
             <button onclick="navigateTo('practica')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="practica"><i data-lucide="brain" class="w-4 h-4"></i> Práctica</button>
+            
+            <div class="ml-auto flex items-center gap-3 flex-shrink-0 pl-4 border-l border-slate-200 py-3">
+                <span id="liveClock" class="font-mono text-xs text-slate-500 font-semibold"></span>
+                <button onclick="toggleDarkMode()" id="darkModeBtn" class="p-2 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors">
+                    <i data-lucide="moon" class="w-5 h-5" id="themeIcon"></i>
+                </button>
+            </div>
         </div></div>
     </nav>
     <div class="py-2 px-6 bg-gradient-to-r from-electric-700 via-electric-600 to-electric-700 text-white text-center text-xs"><span class="opacity-80">IEPC - PEC · U.E. Max Fernandez Rojas · ESFM Mariscal Sucre</span></div>
@@ -129,7 +148,7 @@
         </div>
     </div>
 
-    <!-- PAGE: OHM -->
+    <!-- PAGE: OHM (SIN CAMBIOS) -->
     <div id="page-ohm" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Ley de Ohm</h2></div>
@@ -153,7 +172,7 @@
         </div>
     </div>
 
-    <!-- PAGE: COMPONENTES -->
+    <!-- PAGE: COMPONENTES (SIN CAMBIOS) -->
     <div id="page-componentes" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Componentes</h2></div>
@@ -175,19 +194,34 @@
         </div>
     </div>
 
-    <!-- PAGE: CIRCUITOS -->
+    <!-- PAGE: CIRCUITOS (MODIFICADO) -->
     <div id="page-circuitos" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Circuitos Serie y Paralelo</h2></div>
-            <div class="flex justify-center mb-10"><div class="bg-slate-100 rounded-xl p-1 flex gap-1"><button onclick="setCircuitType('serie')" id="btnSerie" class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md">Serie</button><button onclick="setCircuitType('paralelo')" id="btnParalelo" class="px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500">Paralelo</button></div></div>
+            <div class="flex justify-center mb-10 gap-3 flex-wrap">
+                <div class="bg-slate-100 rounded-xl p-1 flex gap-1">
+                    <button onclick="setCircuitType('serie')" id="btnSerie" class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md">Serie</button>
+                    <button onclick="setCircuitType('paralelo')" id="btnParalelo" class="px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500">Paralelo</button>
+                </div>
+                <button onclick="toggleFlowType()" id="btnFlowType" class="px-5 py-2.5 rounded-lg text-sm font-semibold border-2 border-electric-600 text-electric-600 bg-white hover:bg-electric-50 flex items-center gap-2">
+                    <i data-lucide="shuffle" class="w-4 h-4"></i> <span id="flowLabel">Sentido Convencional</span>
+                </button>
+            </div>
             <div class="grid lg:grid-cols-2 gap-10">
-                <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6"><canvas id="circuitCanvas" width="500" height="380" class="w-full rounded-xl bg-white border border-slate-100"></canvas><div class="mt-4 grid grid-cols-3 gap-3"><div><label class="text-xs font-semibold text-volt block mb-1">V</label><input type="number" id="circV" value="12" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono" onchange="updateCircuit()"></div><div><label class="text-xs font-semibold text-ohms block mb-1">R₁</label><input type="number" id="circR1" value="100" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono" onchange="updateCircuit()"></div><div><label class="text-xs font-semibold text-ohms block mb-1">R₂</label><input type="number" id="circR2" value="200" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono" onchange="updateCircuit()"></div></div></div>
+                <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+                    <canvas id="circuitCanvas" width="500" height="380" class="w-full rounded-xl bg-white border border-slate-100"></canvas>
+                    <div class="mt-4 grid grid-cols-3 gap-3">
+                        <div><label class="text-xs font-semibold text-volt block mb-1">V</label><input type="number" id="circV" value="12" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="drawCircuit()"></div>
+                        <div><label class="text-xs font-semibold text-ohms block mb-1">R₁</label><input type="number" id="circR1" value="100" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="drawCircuit()"></div>
+                        <div><label class="text-xs font-semibold text-ohms block mb-1">R₂</label><input type="number" id="circR2" value="200" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="drawCircuit()"></div>
+                    </div>
+                </div>
                 <div class="space-y-4"><div class="bg-gradient-to-br from-electric-50 to-blue-50 rounded-2xl border border-electric-200 p-8"><h3 class="text-lg font-semibold mb-4">Resultados</h3><div id="circuitResults"></div></div><div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Reglas</h3><div id="circuitRules" class="space-y-2 text-sm text-slate-600"></div></div></div>
             </div>
         </div>
     </div>
 
-    <!-- PAGE: SEÑALES -->
+    <!-- PAGE: SEÑALES (SIN CAMBIOS) -->
     <div id="page-senales" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Señales Eléctricas</h2></div>
@@ -198,11 +232,10 @@
         </div>
     </div>
 
-    <!-- PAGE: PRÁCTICA -->
+    <!-- PAGE: PRÁCTICA (MODIFICADO) -->
     <div id="page-practica" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Módulo de Práctica</h2></div>
-            <!-- Firebase Status -->
             <div id="fbStatus" class="mb-4 px-4 py-2 rounded-lg text-xs font-mono flex items-center gap-2 bg-slate-100 text-slate-500"><span class="w-2 h-2 rounded-full bg-yellow-400" id="fbDot"></span><span id="fbText">Conectando a Firebase...</span></div>
             <div class="flex gap-2 mb-8 flex-wrap">
                 <button onclick="switchSubTab('quiz')" id="subQuiz" class="sub-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Cuestionario</button>
@@ -210,6 +243,7 @@
                 <button onclick="switchSubTab('realizar')" id="subRealizar" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Prácticas a Realizar</button>
                 <button onclick="refreshAllPractices()" class="ml-auto px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center gap-1"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refrescar</button>
             </div>
+            
             <div id="panel-quiz" class="sub-panel" style="display:block">
                 <div class="max-w-4xl mx-auto">
                     <div class="mb-8"><div class="flex justify-between text-sm text-slate-500 mb-2"><span>Pregunta <span id="qNum">1</span> de <span id="qTotal">8</span></span><span>Puntuación: <span id="qScore" class="font-bold text-electric-600">0</span></span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div id="qProgress" class="h-full bg-electric-600 rounded-full transition-all duration-500" style="width:12.5%"></div></div></div>
@@ -217,12 +251,17 @@
                     <div id="quizComplete" style="display:none" class="text-center py-12"><div class="text-5xl font-bold text-electric-600 mb-2" id="finalScore">0/8</div><p id="finalMsg" class="text-slate-500 mb-8"></p><button onclick="restartQuiz()" class="px-8 py-3 bg-electric-600 text-white font-semibold rounded-xl shadow-md">Reintentar</button></div>
                 </div>
             </div>
+
             <div id="panel-escritas" class="sub-panel" style="display:none">
-    <div class="max-w-5xl mx-auto">
-        <div class="flex items-center mb-6"><h3 class="text-lg font-semibold">Prácticas Escritas</h3><span class="ml-3 text-xs font-medium text-slate-400 bg-slate-100 px-3 py-1 rounded-full">Solo lectura</span></div>
-        <div id="escritasList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div>
+                <div class="max-w-5xl mx-auto">
+                    <div class="mb-6 bg-blue-50 border border-blue-200 text-blue-800 text-sm p-4 rounded-xl flex items-center gap-3">
+                        <i data-lucide="info" class="w-5 h-5 flex-shrink-0"></i>
+                        <span>Estas prácticas son de solo lectura. Ve a "Prácticas a Realizar" para crear o editar.</span>
+                    </div>
+                    <div id="escritasList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div>
                 </div>
             </div>
+
             <div id="panel-realizar" class="sub-panel" style="display:none">
                 <div class="max-w-5xl mx-auto">
                     <div class="flex justify-between items-center mb-6"><h3 class="text-lg font-semibold">Prácticas a Realizar</h3><button onclick="showPasswordModal('realizar')" class="bg-electric-600 hover:bg-electric-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i> Añadir</button></div>
@@ -244,7 +283,7 @@
     </div>
 </div>
 
-<!-- PRACTICE FORM MODAL -->
+<!-- PRACTICE FORM MODAL (SIN IMAGEN) -->
 <div id="practiceFormModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:210;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 0">
     <div class="bg-white rounded-2xl p-8 max-w-lg w-full mx-4 shadow-2xl">
         <h3 class="text-lg font-bold text-slate-900 mb-4" id="pfModalTitle">Nueva Práctica</h3>
@@ -255,9 +294,6 @@
             <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Materiales</label><textarea id="pfMat" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none"></textarea></div>
             <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Procedimiento *</label><textarea id="pfPasos" rows="4" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none"></textarea></div>
             <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Observaciones</label><textarea id="pfNotas" rows="2" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm resize-none"></textarea></div>
-            <div><label class="text-xs font-semibold text-slate-500 mb-1 block">Imagen (opcional, máx 2MB)</label><input type="file" id="pfImage" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-electric-50 file:text-electric-700"></div>
-            <div id="pfImagePreview" style="display:none"><img id="pfPreviewImg" class="rounded-lg max-h-32 border border-slate-200"></div>
-            <div id="pfUploadProgress" style="display:none"><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div id="pfProgressBar" class="h-full bg-electric-600 rounded-full transition-all" style="width:0%"></div></div><p class="text-xs text-slate-400 mt-1" id="pfProgressText">Procesando...</p></div>
             <div class="flex gap-3 pt-2">
                 <button onclick="closePracticeForm()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600">Cancelar</button>
                 <button onclick="submitPractice()" class="flex-1 px-4 py-2.5 bg-electric-600 text-white rounded-xl text-sm font-semibold hover:bg-electric-700 flex items-center justify-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> <span id="pfSubmitText">Guardar</span></button>
@@ -286,11 +322,33 @@ var firebaseConfig={apiKey:"AIzaSyCZbKU27EngACUMP1FNBxA0N3HabxcBPZg",authDomain:
 firebase.initializeApp(firebaseConfig);
 var db=firebase.database();
 var ADMIN_PASS="amolacocaconfernet22";
-var currentPracticeType="";
+var currentPracticeType="realizar"; // Guardar en realizar
 var editingId=null;
-var fbListeners={escrita:false,realizar:false};
+var fbListenerSetup=false;
+
+// ====== DARK MODE & CLOCK ======
+function toggleDarkMode(){
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    updateThemeIcon();
+}
+function updateThemeIcon(){
+    var isDark = document.documentElement.classList.contains('dark');
+    var icon = document.getElementById('themeIcon');
+    if(icon){
+        icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+        lucide.createIcons();
+    }
+}
+function updateClock(){
+    var now = new Date();
+    var h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+    document.getElementById('liveClock').textContent = (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+}
 
 document.addEventListener('DOMContentLoaded',function(){
+    if(localStorage.getItem('theme')==='dark'){document.documentElement.classList.add('dark');}
+    updateThemeIcon(); setInterval(updateClock, 1000); updateClock();
     lucide.createIcons();
     initHeroCanvas();initResistorDecoder();initOhm();initCircuit();initWaveform();initQuiz();renderFormulas();
     testFirebaseConnection();
@@ -303,9 +361,7 @@ function testFirebaseConnection(){
         if(snap.val()===true){
             document.getElementById('fbDot').className='w-2 h-2 rounded-full bg-green-400';
             document.getElementById('fbText').textContent='Conectado a Firebase ✓';
-            // Load practices AFTER confirming connection
-            loadFirebasePractices('escrita');
-            loadFirebasePractices('realizar');
+            loadFirebasePractices();
         }else{
             document.getElementById('fbDot').className='w-2 h-2 rounded-full bg-red-400';
             document.getElementById('fbText').textContent='Sin conexión a Firebase ✗';
@@ -313,26 +369,75 @@ function testFirebaseConnection(){
     });
 }
 
-function refreshAllPractices(){
-    document.getElementById('fbText').textContent='Refrescando...';
-    document.getElementById('fbDot').className='w-2 h-2 rounded-full bg-yellow-400';
-    // Force reload using .once() for immediate results
-    ['escrita','realizar'].forEach(function(type){
-        var listId=type==='escrita'?'escritasList':'realizarList';
-        db.ref('practices/'+type).once('value').then(function(snapshot){
-            var data=snapshot.val()||{};var arr=[];
-            Object.keys(data).forEach(function(k){var d=data[k];arr.push({_id:k,title:d.title||'',area:d.area||'Otros',objetivo:d.objetivo||'',materiales:d.materiales||'',pasos:d.pasos||'',notas:d.notas||'',date:d.date||'',imageUrl:d.imageUrl||''});});
-            arr.reverse();
-            renderPracticeList(listId,type,arr);
-            console.log('[Firebase] Refreshed '+type+': '+arr.length+' practices');
-        }).catch(function(e){
-            console.error('[Firebase] Refresh error:',e);
-            document.getElementById(listId).innerHTML='<div class="text-center py-12 bg-red-50 rounded-2xl border border-red-200"><p class="text-red-500">Error: '+e.message+'</p></div>';
-        });
+function refreshAllPractices(){ loadFirebasePractices(); showToast('Listas actualizadas'); }
+
+function loadFirebasePractices(){
+    if(fbListenerSetup) return; fbListenerSetup=true;
+    db.ref('practices/realizar').on('value',function(snapshot){
+        var data=snapshot.val()||{};var arr=[];
+        Object.keys(data).forEach(function(k){var d=data[k];arr.push({_id:k,title:d.title||'',area:d.area||'Otros',objetivo:d.objetivo||'',materiales:d.materiales||'',pasos:d.pasos||'',notas:d.notas||'',date:d.date||''});});
+        arr.reverse();
+        renderPracticeList('escritasList','lectura',arr);
+        renderPracticeList('realizarList','admin',arr);
     });
-    document.getElementById('fbText').textContent='Refrescado ✓';
-    document.getElementById('fbDot').className='w-2 h-2 rounded-full bg-green-400';
-    showToast('Listas actualizadas');
+}
+
+function renderPracticeList(containerId,type,practices){
+    var container=document.getElementById(containerId); if(!container) return;
+    if(!practices||practices.length===0){
+        container.innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400 font-medium">No hay prácticas '+(type==='admin'?'creadas':'asignadas')+' aún.</p></div>'; return;
+    }
+    var ac={'Ley de Ohm':'bg-red-100 text-red-700','Componentes':'bg-green-100 text-green-700','Circuitos':'bg-amber-100 text-amber-700','Señales':'bg-purple-100 text-purple-700','Otros':'bg-slate-100 text-slate-700'};
+    container.innerHTML=practices.map(function(p){var areaClass=ac[p.area]||ac['Otros'];
+    var adminBtns = type==='admin' ? '<div class="flex gap-1"><button onclick="editPractice(\'realizar\',\''+p._id+'\')" class="text-slate-300 hover:text-electric-500 p-1" title="Editar">✏️</button><button onclick="deletePractice(\'realizar\',\''+p._id+'\')" class="text-slate-300 hover:text-red-500 p-1" title="Eliminar">🗑</button></div>' : '';
+    return '<div class="practice-card"><div class="flex items-start justify-between gap-3 mb-3"><div><span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full '+areaClass+' mb-2">'+p.area+'</span><h4 class="font-bold text-slate-900">'+p.title+'</h4><p class="text-xs text-slate-400">'+p.date+'</p></div>'+adminBtns+'</div><div class="space-y-3 text-sm">'
+    +(p.objetivo?'<div><p class="font-semibold text-slate-600 mb-1">🎯 Objetivo</p><p class="text-slate-500">'+p.objetivo+'</p></div>':'')
+    +(p.materiales?'<div><p class="font-semibold text-slate-600 mb-1">🔧 Materiales</p><p class="text-slate-500 whitespace-pre-line">'+p.materiales+'</p></div>':'')
+    +(p.pasos?'<div><p class="font-semibold text-slate-600 mb-1">📋 Procedimiento</p><div class="bg-slate-50 rounded-lg p-3 text-slate-600 whitespace-pre-line font-mono text-xs">'+p.pasos+'</div></div>':'')
+    +(p.notas?'<div><p class="font-semibold text-slate-600 mb-1">📝 Observaciones</p><p class="text-slate-500">'+p.notas+'</p></div>':'')
+    +'</div></div>';}).join('');
+}
+
+function deletePractice(type,id){
+    if(!confirm('¿Eliminar esta práctica?'))return;
+    db.ref('practices/realizar/'+id).remove().then(function(){showToast('Eliminada');});
+}
+
+function editPractice(type,id){
+    editingId=id;
+    db.ref('practices/realizar/'+id).once('value').then(function(snapshot){
+        var d=snapshot.val(); if(!d){showToast('No encontrada');return;}
+        document.getElementById('practiceFormModal').style.display='flex';
+        document.getElementById('pfModalTitle').textContent='Editar Práctica';
+        document.getElementById('pfSubmitText').textContent='Actualizar';
+        document.getElementById('pfTitle').value=d.title||'';document.getElementById('pfArea').value=d.area||'Otros';
+        document.getElementById('pfObj').value=d.objetivo||'';document.getElementById('pfMat').value=d.materiales||'';document.getElementById('pfPasos').value=d.pasos||'';document.getElementById('pfNotas').value=d.notas||'';
+    });
+}
+
+function showPasswordModal(type){
+    editingId=null;
+    document.getElementById('passwordModal').style.display='flex';document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';
+    setTimeout(function(){document.getElementById('adminPassInput').focus();},100);
+}
+function closePasswordModal(){document.getElementById('passwordModal').style.display='none';}
+function verifyPassword(){var pass=document.getElementById('adminPassInput').value;if(pass===ADMIN_PASS){closePasswordModal();openPracticeForm();}else{document.getElementById('passError').style.display='block';}}
+
+function openPracticeForm(){
+    editingId=null;
+    document.getElementById('practiceFormModal').style.display='flex';
+    document.getElementById('pfModalTitle').textContent='Nueva Práctica';
+    document.getElementById('pfSubmitText').textContent='Guardar';
+    document.getElementById('pfTitle').value='';document.getElementById('pfObj').value='';document.getElementById('pfMat').value='';document.getElementById('pfPasos').value='';document.getElementById('pfNotas').value='';
+}
+function closePracticeForm(){document.getElementById('practiceFormModal').style.display='none';editingId=null;}
+
+function submitPractice(){
+    var title=document.getElementById('pfTitle').value.trim();var area=document.getElementById('pfArea').value;var obj=document.getElementById('pfObj').value.trim();var mat=document.getElementById('pfMat').value.trim();var pasos=document.getElementById('pfPasos').value.trim();var notas=document.getElementById('pfNotas').value.trim();
+    if(!title||!obj||!pasos){showToast('Completa los campos obligatorios (*)');return;}
+    var practiceData={title:title,area:area,objetivo:obj,materiales:mat,pasos:pasos,notas:notas,date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})};
+    var ref = editingId ? db.ref('practices/realizar/'+editingId) : db.ref('practices/realizar').push();
+    ref.set(practiceData).then(function(){ closePracticeForm(); showToast(editingId?'Práctica actualizada':'Práctica guardada'); editingId=null; });
 }
 
 // ====== NAVIGATION ======
@@ -341,7 +446,7 @@ function navigateTo(page){
     else{document.getElementById('view-inicio').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('appFooter').style.display='block';
     document.querySelectorAll('.content-page').forEach(function(p){p.classList.remove('active');});var t=document.getElementById('page-'+page);if(t)t.classList.add('active');
     document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});var n=document.querySelector('.nav-tab[data-nav="'+page+'"]');if(n)n.classList.add('active');
-    if(page==='circuitos')setTimeout(updateCircuit,100);if(page==='senales')setTimeout(updateWaveParams,100);}window.scrollTo({top:0,behavior:'smooth'});}
+    if(page==='circuitos')drawCircuit();if(page==='senales')setTimeout(updateWaveParams,100);}window.scrollTo({top:0,behavior:'smooth'});}
 
 function switchSubTab(sub){
     document.getElementById('panel-quiz').style.display='none';document.getElementById('panel-escritas').style.display='none';document.getElementById('panel-realizar').style.display='none';
@@ -351,7 +456,7 @@ function switchSubTab(sub){
 
 function showToast(msg){var t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},3000);}
 
-// ====== HERO CANVAS ======
+// ====== HERO CANVAS (ORIGINAL) ======
 function initHeroCanvas(){var canvas=document.getElementById('heroCanvas'),ctx=canvas.getContext('2d');var w,h,nodes=[],traces=[],electrons=[],pulses=[];
 function resize(){w=canvas.width=canvas.parentElement.offsetWidth;h=canvas.height=canvas.parentElement.offsetHeight;gen();}
 function gen(){var cols=Math.floor(w/70),rows=Math.floor(h/70);nodes=[];traces=[];electrons=[];pulses=[];
@@ -361,8 +466,7 @@ if((dx===70&&dy===0)||(dx===0&&dy===70))if(Math.random()>.35){traces.push({from:
 function draw(){ctx.clearRect(0,0,w,h);
 traces.forEach(function(tr){var a=nodes[tr.from],b=nodes[tr.to];ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle='rgba(10,132,255,.12)';ctx.lineWidth=2;ctx.stroke();});
 for(var i=0;i<nodes.length;i++){var n=nodes[i];n.pulseT+=.02;var p=Math.sin(n.pulseT)*.5+.5;n.pulse=p;if(Math.random()<.002){pulses.push({x:n.x,y:n.y,r:0,maxR:30+Math.random()*20,alpha:1});}}
-pulses.forEach(function(p){p.r+=1.5;p.alpha=1-p.r/p.maxR;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.strokeStyle='rgba(51,153,255,'+p.alpha*.3+')';ctx.lineWidth=1;ctx.stroke();});
-pulses=pulses.filter(function(p){return p.r<p.maxR;});
+pulses.forEach(function(p){p.r+=1.5;p.alpha=1-p.r/p.maxR;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.strokeStyle='rgba(51,153,255,'+p.alpha*.3+')';ctx.lineWidth=1;ctx.stroke();});pulses=pulses.filter(function(p){return p.r<p.maxR;});
 nodes.forEach(function(n){var s=3+n.pulse*3;ctx.beginPath();ctx.arc(n.x,n.y,s,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255,'+(0.2+n.pulse*0.4)+')';ctx.fill();});
 electrons.forEach(function(e){e.t+=e.speed;if(e.t>1)e.t=0;var tr=traces[e.trace],a=nodes[tr.from],b=nodes[tr.to],x=a.x+(b.x-a.x)*e.t,y=a.y+(b.y-a.y)*e.t;
 var tx=a.x+(b.x-a.x)*Math.max(0,e.t-.06),ty=a.y+(b.y-a.y)*Math.max(0,e.t-.06);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(x,y);ctx.strokeStyle='rgba(51,153,255,.4)';ctx.lineWidth=e.size+2;ctx.stroke();
@@ -370,168 +474,145 @@ ctx.beginPath();ctx.arc(x,y,e.size+4,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255
 ctx.beginPath();ctx.arc(x,y,e.size,0,Math.PI*2);ctx.fillStyle='rgba(100,180,255,.9)';ctx.fill();});
 requestAnimationFrame(draw);}window.addEventListener('resize',resize);resize();draw();}
 
-// ====== OHM ======
+// ====== OHM (ORIGINAL) ======
 var solveFor='V';function setSolveFor(val){solveFor=val;document.querySelectorAll('.solve-btn').forEach(function(b){b.className='solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white';});var a=document.getElementById('solve'+val);var cls={V:'border-volt text-volt bg-red-50',I:'border-amps text-amps bg-amber-50',R:'border-ohms text-ohms bg-green-50'};a.className='solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 '+cls[val];var s={V:'rangeV',I:'rangeI',R:'rangeR'};Object.keys(s).forEach(function(k){var el=document.getElementById(s[k]);el.disabled=k===val;el.style.opacity=k===val?'0.4':'1';});updateOhm();}
 function initOhm(){setSolveFor('V');}
 function updateOhm(){var V=parseFloat(document.getElementById('rangeV').value),I=parseFloat(document.getElementById('rangeI').value),R=parseFloat(document.getElementById('rangeR').value),P;if(solveFor==='V'){V=I*R;P=V*I;}else if(solveFor==='I'){I=V/R;P=V*I;}else{R=V/I;P=V*I;}document.getElementById('valV').textContent=V.toFixed(1)+' V';document.getElementById('valI').textContent=I.toFixed(2)+' A';document.getElementById('valR').textContent=R.toFixed(1)+' Ω';var r=document.getElementById('ohmResult');var label=solveFor==='V'?'V = I×R = '+V.toFixed(1)+' V':solveFor==='I'?'I = V/R = '+I.toFixed(3)+' A':'R = V/I = '+R.toFixed(1)+' Ω';r.innerHTML='<div class="text-sm opacity-80 mb-1">Resultado</div><div class="font-mono text-2xl font-bold">'+label+'</div><div class="text-sm mt-2 opacity-80">P = '+P.toFixed(2)+' W</div>';}
 
-// ====== RESISTOR ======
+// ====== RESISTOR (ORIGINAL) ======
 var RC={band1:[{n:'Negro',c:'#1a1a1a',v:0},{n:'Marrón',c:'#8B4513',v:1},{n:'Rojo',c:'#FF0000',v:2},{n:'Naranja',c:'#FF8C00',v:3},{n:'Amarillo',c:'#FFD700',v:4},{n:'Verde',c:'#228B22',v:5},{n:'Azul',c:'#0000FF',v:6},{n:'Violeta',c:'#8B008B',v:7},{n:'Gris',c:'#808080',v:8},{n:'Blanco',c:'#F0F0F0',v:9}],band3:[{n:'Negro',c:'#1a1a1a',m:1},{n:'Marrón',c:'#8B4513',m:10},{n:'Rojo',c:'#FF0000',m:100},{n:'Naranja',c:'#FF8C00',m:1e3},{n:'Amarillo',c:'#FFD700',m:1e4},{n:'Verde',c:'#228B22',m:1e5},{n:'Azul',c:'#0000FF',m:1e6},{n:'Violeta',c:'#8B008B',m:1e7},{n:'Gris',c:'#808080',m:1e8},{n:'Blanco',c:'#F0F0F0',m:1e9}],band4:[{n:'Oro',c:'#FFD700',t:5},{n:'Plata',c:'#C0C0C0',t:10},{n:'Ninguno',c:'#D4A76A',t:20}]};var sB={b1:1,b2:0,b3:2,b4:0};
 function initResistorDecoder(){var b1C=document.getElementById('band1Colors');RC.band1.slice(1).forEach(function(c,i){var el=document.createElement('div');el.className='color-swatch '+(i===0?'active':'');el.style.background=c.c;el.title=c.n;el.onclick=function(){sB.b1=c.v;uSA(b1C,i);uR();};b1C.appendChild(el);});var b2C=document.getElementById('band2Colors');RC.band1.forEach(function(c,i){var el=document.createElement('div');el.className='color-swatch '+(i===0?'active':'');el.style.background=c.c;el.title=c.n;el.onclick=function(){sB.b2=c.v;uSA(b2C,i);uR();};b2C.appendChild(el);});var b3C=document.getElementById('band3Colors');RC.band3.forEach(function(c,i){var el=document.createElement('div');el.className='color-swatch '+(i===2?'active':'');el.style.background=c.c;el.title=c.n;el.onclick=function(){sB.b3=i;uSA(b3C,i);uR();};b3C.appendChild(el);});var b4C=document.getElementById('band4Colors');RC.band4.forEach(function(c,i){var el=document.createElement('div');el.className='color-swatch '+(i===0?'active':'');el.style.background=c.c;el.title=c.n;el.onclick=function(){sB.b4=i;uSA(b4C,i);uR();};b4C.appendChild(el);});uR();}
 function uSA(c,i){c.querySelectorAll('.color-swatch').forEach(function(s,j){s.classList.toggle('active',j===i);});}
 function uR(){var d1=sB.b1,d2=sB.b2,mult=RC.band3[sB.b3].m,tol=RC.band4[sB.b4].t,val=(d1*10+d2)*mult;document.getElementById('rband1').style.background=RC.band1.find(function(c){return c.v===d1;}).c;document.getElementById('rband2').style.background=RC.band1[d2].c;document.getElementById('rband3').style.background=RC.band3[sB.b3].c;document.getElementById('rband4').style.background=RC.band4[sB.b4].c;var d=val>=1e6?(val/1e6).toFixed(val%1e6?1:0)+' MΩ':val>=1e3?(val/1e3).toFixed(val%1e3?1:0)+' kΩ':val+' Ω';document.getElementById('resistorResult').innerHTML='<div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold text-slate-900">'+d+' ± '+tol+'%</div>';}
 
-// ====== CIRCUITOS ======
-var cType='serie';function setCircuitType(t){cType=t;document.getElementById('btnSerie').className=t==='serie'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';document.getElementById('btnParalelo').className=t==='paralelo'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';updateCircuit();}
-function initCircuit(){updateCircuit();}
-function updateCircuit(){
-var V=parseFloat(document.getElementById('circV').value)||12,R1=parseFloat(document.getElementById('circR1').value)||100,R2=parseFloat(document.getElementById('circR2').value)||200;
-var canvas=document.getElementById('circuitCanvas'),ctx=canvas.getContext('2d'),cw=canvas.width,ch=canvas.height;
-ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#FAFBFC';ctx.fillRect(0,0,cw,ch);
-// Grid
-ctx.strokeStyle='rgba(10,132,255,.06)';ctx.lineWidth=1;
-for(var x=0;x<cw;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}
-for(var y=0;y<ch;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}
-ctx.lineWidth=2.5;ctx.strokeStyle='#64748B';ctx.fillStyle='#64748B';ctx.textAlign='start';ctx.font='14px Space Grotesk';
+// ====== CIRCUITOS (MODIFICADO COMPLETAMENTE) ======
+var cType='serie';
+var flowType='convencional';
+var circAnimFrame;
+var electronPos = 0;
 
-// ===== Function to draw arrow =====
-function drawArrow(fx,fy,tx,ty,color,label,labelColor){
-    var angle=Math.atan2(ty-fy,tx-fx);var headLen=12;
-    ctx.save();ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(fx,fy);ctx.lineTo(tx,ty);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(tx,ty);
-    ctx.lineTo(tx-headLen*Math.cos(angle-Math.PI/6),ty-headLen*Math.sin(angle-Math.PI/6));
-    ctx.lineTo(tx-headLen*Math.cos(angle+Math.PI/6),ty-headLen*Math.sin(angle+Math.PI/6));ctx.closePath();ctx.fill();
-    if(label){
-        var mx=(fx+tx)/2,my=(fy+ty)/2;
-        var ox=-Math.sin(angle)*14,oy=Math.cos(angle)*14;
-        ctx.font='bold 11px Space Grotesk';ctx.fillStyle=labelColor||color;ctx.textAlign='center';
-        ctx.fillText(label,mx+ox,my+oy);
+function toggleFlowType(){
+    flowType = flowType === 'convencional' ? 'electrones' : 'convencional';
+    document.getElementById('flowLabel').textContent = flowType === 'convencional' ? 'Sentido Convencional' : 'Sentido Real (e⁻)';
+    lucide.createIcons();
+}
+
+function setCircuitType(t){cType=t;document.getElementById('btnSerie').className=t==='serie'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';document.getElementById('btnParalelo').className=t==='paralelo'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';drawCircuit();}
+
+function initCircuit(){drawCircuit();}
+
+function drawCircuit(){
+    if(circAnimFrame) cancelAnimationFrame(circAnimFrame);
+    var V=parseFloat(document.getElementById('circV').value)||12,R1=parseFloat(document.getElementById('circR1').value)||100,R2=parseFloat(document.getElementById('circR2').value)||200;
+    var canvas=document.getElementById('circuitCanvas'),ctx=canvas.getContext('2d'),cw=canvas.width,ch=canvas.height;
+    var Rt,It,V1,V2,I1,I2; if(cType==='serie'){Rt=R1+R2;It=V/Rt;V1=It*R1;V2=It*R2;I1=I2=It;}else{Rt=(R1*R2)/(R1+R2);It=V/Rt;V1=V2=V;I1=V/R1;I2=V/R2;} var P=V*It;
+    document.getElementById('circuitResults').innerHTML='<div class="grid grid-cols-2 gap-3"><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">R total</div><div class="font-mono font-bold text-ohms">'+Rt.toFixed(1)+'Ω</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I total</div><div class="font-mono font-bold text-amps">'+It.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2081</div><div class="font-mono font-bold text-volt">'+V1.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2082</div><div class="font-mono font-bold text-volt">'+V2.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2081</div><div class="font-mono font-bold text-amps">'+I1.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2082</div><div class="font-mono font-bold text-amps">'+I2.toFixed(4)+'A</div></div><div class="col-span-2 bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">Potencia</div><div class="font-mono font-bold text-watts">'+P.toFixed(3)+'W</div></div></div>';
+    var rules=cType==='serie'?['R<sub>T</sub>=R\u2081+R\u2082 (se suman)','Corriente igual en todos','Voltaje se divide','Si falla uno, todo se detiene']:['1/R<sub>T</sub>=1/R\u2081+1/R\u2082','Voltaje igual en ramas','Corriente se divide','Si falla uno, demás continúan'];
+    document.getElementById('circuitRules').innerHTML=rules.map(function(r){return '<p class="text-sm text-slate-600">\u2022 '+r+'</p>';}).join('');
+
+    electronPos += 0.004; if(electronPos > 1) electronPos = 0;
+    
+    ctx.clearRect(0,0,cw,ch); ctx.fillStyle='#FAFBFC'; ctx.fillRect(0,0,cw,ch);
+    ctx.strokeStyle='rgba(10,132,255,.06)'; ctx.lineWidth=1; for(var x=0;x<cw;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();} for(var y=0;y<ch;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}
+    ctx.strokeStyle='#334155'; ctx.lineWidth=3; ctx.lineCap='round'; ctx.lineJoin='round';
+
+    var bx=100, by=100, bw=300, bh=180;
+    var isConv = flowType === 'convencional';
+
+    function drawZigzagResistor(x, y, width, label, val){
+        ctx.strokeStyle='#16a34a'; ctx.lineWidth=2.5;
+        var zigzags=6, step=width/zigzags, amp=12;
+        ctx.beginPath(); ctx.moveTo(x, y);
+        for(var i=0;i<zigzags;i++){ ctx.lineTo(x+step*i+step/2, y+(i%2===0?-amp:amp)); }
+        ctx.lineTo(x+width, y); ctx.stroke();
+        ctx.fillStyle='#334155'; ctx.font='bold 12px JetBrains Mono'; ctx.textAlign='center';
+        ctx.fillText(label+'='+val+'Ω', x+width/2, y-20);
+        ctx.strokeStyle='#334155'; ctx.lineWidth=3;
     }
-    ctx.restore();
+
+    function drawBattery(x, y){
+        ctx.lineWidth=3; ctx.strokeStyle='#334155';
+        // Líneas superior e inferior
+        ctx.beginPath(); ctx.moveTo(x, y-40); ctx.lineTo(x, y-8); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x, y+8); ctx.lineTo(x, y+40); ctx.stroke();
+        // Símbolos
+        ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(x-15, y-8); ctx.lineTo(x+15, y-8); ctx.stroke(); // Línea larga (+)
+        ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x-8, y+8); ctx.lineTo(x+8, y+8); ctx.stroke();   // Línea corta (-)
+        ctx.fillStyle='#EF4444'; ctx.font='bold 14px Space Grotesk'; ctx.textAlign='left'; ctx.fillText('+', x+18, y-4);
+        ctx.fillStyle='#3B82F6'; ctx.fillText('−', x+10, y+20);
+        ctx.fillStyle='#EF4444'; ctx.font='bold 16px Space Grotesk'; ctx.textAlign='center'; ctx.fillText(V+'V', x, y+60);
+    }
+
+    function drawFlowingElectrons(pathPoints){
+        var numElectrons = 5;
+        for(var i=0; i<numElectrons; i++){
+            var t = (electronPos + i/numElectrons) % 1;
+            if(!isConv) t = 1 - t; // Invertir dirección si es sentido real
+            var pos = t * (pathPoints.length - 1);
+            var idx = Math.floor(pos);
+            var frac = pos - idx;
+            if(idx >= pathPoints.length - 1) { idx = pathPoints.length - 2; frac = 1; }
+            var ax = pathPoints[idx].x, ay = pathPoints[idx].y;
+            var bx = pathPoints[idx+1].x, by = pathPoints[idx+1].y;
+            var ex = ax + (bx - ax)*frac;
+            var ey = ay + (by - ay)*frac;
+            
+            ctx.beginPath(); ctx.arc(ex, ey, 5, 0, Math.PI*2);
+            ctx.fillStyle='rgba(59,130,246,0.3)'; ctx.fill();
+            ctx.beginPath(); ctx.arc(ex, ey, 3, 0, Math.PI*2);
+            ctx.fillStyle='#60A5FA'; ctx.fill();
+        }
+    }
+
+    if(cType==='serie'){
+        // Cables
+        ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx+60, by); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx+160, by); ctx.lineTo(bx+220, by); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx+320, by); ctx.lineTo(bx+bw, by); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx+bw, by); ctx.lineTo(bx+bw, by+bh); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx+bw, by+bh); ctx.lineTo(bx, by+bh); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx, by+bh); ctx.lineTo(bx, by+40); ctx.stroke();
+        // Componentes
+        drawZigzagResistor(bx+60, by, 100, 'R\u2081', R1);
+        drawZigzagResistor(bx+220, by, 100, 'R\u2082', R2);
+        drawBattery(bx, by+bh/2);
+        drawFlowingElectrons([{x:bx, y:by}, {x:bx+60, y:by}, {x:bx+160, y:by}, {x:bx+220, y:by}, {x:bx+320, y:by}, {x:bx+bw, y:by}, {x:bx+bw, y:by+bh}, {x:bx, y:by+bh}, {x:bx, y:by}]);
+    } else {
+        // Cables superiores e inferiores
+        ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx+bw, by); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx, by+bh); ctx.lineTo(bx+bw, by+bh); ctx.stroke();
+        // Derivaciones
+        ctx.beginPath(); ctx.moveTo(bx+bw/3, by); ctx.lineTo(bx+bw/3, by+50); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx+bw/3, by+90); ctx.lineTo(bx+bw/3, by+bh); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx+2*bw/3, by); ctx.lineTo(bx+2*bw/3, by+50); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx+2*bw/3, by+90); ctx.lineTo(bx+2*bw/3, by+bh); ctx.stroke();
+        // Batería lateral
+        ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx, by+bh/2-40); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(bx, by+bh/2+40); ctx.lineTo(bx, by+bh); ctx.stroke();
+        // Componentes
+        drawBattery(bx, by+bh/2);
+        drawZigzagResistor(bx+bw/3-50, by+50, 100, 'R\u2081', R1);
+        drawZigzagResistor(bx+2*bw/3-50, by+50, 100, 'R\u2082', R2);
+        // Electrones Rama 1
+        drawFlowingElectrons([{x:bx, y:by}, {x:bx+bw/3, y:by}, {x:bx+bw/3, y:by+50}, {x:bx+bw/3, y:by+90}, {x:bx+bw/3, y:by+bh}, {x:bx, y:by+bh}, {x:bx, y:by}]);
+        // Electrones Rama 2
+        drawFlowingElectrons([{x:bx+bw/3, y:by}, {x:bx+2*bw/3, y:by}, {x:bx+2*bw/3, y:by+50}, {x:bx+2*bw/3, y:by+90}, {x:bx+2*bw/3, y:by+bh}, {x:bx+bw/3, y:by+bh}]);
+    }
+
+    // Etiqueta de flujo
+    ctx.fillStyle='#F59E0B'; ctx.font='bold 13px Space Grotesk'; ctx.textAlign='center';
+    if(isConv) ctx.fillText('I Convencional (+ → −)', cw/2, ch-15);
+    else ctx.fillText('I Real Electrones (− → +)', cw/2, ch-15);
+
+    circAnimFrame = requestAnimationFrame(drawCircuit);
 }
 
-if(cType==='serie'){
-    var bx=70,by=110,bw=360,bh=160;
-    // Wires
-    ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;
-    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+bw,by);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx,by+bh);ctx.lineTo(bx+bw,by+bh);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx,by-20);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx,by+30);ctx.lineTo(bx,by+bh);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx+bw,by);ctx.lineTo(bx+bw,by+bh);ctx.stroke();
-    // Battery
-    ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-14,by-20);ctx.lineTo(bx+14,by-20);ctx.stroke();
-    ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-8,by+30);ctx.lineTo(bx+8,by+30);ctx.stroke();
-    ctx.font='13px Space Grotesk';ctx.fillStyle='#EF4444';ctx.textAlign='start';ctx.fillText('+',bx+16,by-16);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+16,by+34);
-    // R1
-    ctx.fillStyle='#22C55E';ctx.fillRect(bx+80,by-14,80,28);ctx.strokeStyle='#16a34a';ctx.lineWidth=2;ctx.strokeRect(bx+80,by-14,80,28);
-    ctx.fillStyle='white';ctx.font='bold 13px JetBrains Mono';ctx.fillText('R₁='+R1+'Ω',bx+90,by+5);
-    // R2
-    ctx.fillStyle='#F59E0B';ctx.fillRect(bx+200,by-14,80,28);ctx.strokeStyle='#d97706';ctx.strokeRect(bx+200,by-14,80,28);
-    ctx.fillStyle='white';ctx.fillText('R₂='+R2+'Ω',bx+210,by+5);
-    // V label
-    ctx.fillStyle='#EF4444';ctx.font='bold 16px Space Grotesk';ctx.fillText(V+'V',bx-60,by+10);
-    
-    // ===== CURRENT ARROWS =====
-    // Convencional (de + a -): left to right on top, right to left on bottom
-    drawArrow(bx+10,by-30,bx+70,by-30,'#EF4444','I conv.', '#EF4444');
-    drawArrow(bx+bw-10,by+bh+18,bx+bw-70,by+bh+18,'#EF4444','I conv.', '#EF4444');
-    
-    // Real / electrones (de - a +): right to left on top, left to right on bottom
-    drawArrow(bx+70,by+44,bx+10,by+44,'#3B82F6','I real', '#3B82F6');
-    drawArrow(bx+bw-70,by+bh-18,bx+bw-10,by+bh-18,'#3B82F6','I real', '#3B82F6');
-
-    // Legend box
-    ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillRect(bx+bw-180,by+bh-80,170,48);ctx.strokeStyle='#E2E8F0';ctx.lineWidth=1;ctx.strokeRect(bx+bw-180,by+bh-80,170,48);
-    ctx.font='bold 10px Space Grotesk';
-    ctx.fillStyle='#EF4444';ctx.fillText('→ Convencional (+ a −)',bx+bw-170,by+bh-60);
-    ctx.fillStyle='#3B82F6';ctx.fillText('→ Real / electrones (− a +)',bx+bw-170,by+bh-42);
-
-}else{
-    // ===== PARALELO MEJORADO =====
-    var bx=80,by=30,bw=340,bh=310;
-    var railTop=by+40,railBot=by+bh-40;
-    var b1x=bx+150,b2x=bx+270;
-    // Top & bottom rails
-    ctx.strokeStyle='#64748B';ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(bx-10,railTop);ctx.lineTo(bx+bw+10,railTop);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx-10,railBot);ctx.lineTo(bx+bw+10,railBot);ctx.stroke();
-    // Right closing wire
-    ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(bx+bw+10,railTop);ctx.lineTo(bx+bw+10,railBot);ctx.stroke();
-    // Left: battery
-    ctx.beginPath();ctx.moveTo(bx-10,railTop);ctx.lineTo(bx-10,railTop+50);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx-10,railBot-50);ctx.lineTo(bx-10,railBot);ctx.stroke();
-    ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx-24,railTop+50);ctx.lineTo(bx+4,railTop+50);ctx.stroke();
-    ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-16,railBot-50);ctx.lineTo(bx-4,railBot-50);ctx.stroke();
-    ctx.font='12px Space Grotesk';ctx.fillStyle='#EF4444';ctx.fillText('+',bx+8,railTop+54);ctx.fillStyle='#0A84FF';ctx.fillText('−',bx+8,railBot-44);
-    ctx.fillStyle='#EF4444';ctx.font='bold 14px Space Grotesk';ctx.fillText(V+'V',bx-50,(railTop+railBot)/2+4);
-    
-    // Branch 1
-    ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;
-    ctx.beginPath();ctx.moveTo(b1x,railTop);ctx.lineTo(b1x,railTop+40);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(b1x,railTop+90);ctx.lineTo(b1x,railBot-90);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(b1x,railBot-40);ctx.lineTo(b1x,railBot);ctx.stroke();
-    ctx.fillStyle='#22C55E';ctx.fillRect(b1x-32,railTop+40,64,22);ctx.strokeStyle='#16a34a';ctx.lineWidth=2;ctx.strokeRect(b1x-32,railTop+40,64,22);
-    ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';ctx.fillText('R₁='+R1+'Ω',b1x,railTop+55);ctx.textAlign='start';
-    
-    // Branch 2
-    ctx.strokeStyle='#64748B';ctx.lineWidth=2.5;
-    ctx.beginPath();ctx.moveTo(b2x,railTop);ctx.lineTo(b2x,railTop+40);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(b2x,railTop+90);ctx.lineTo(b2x,railBot-90);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(b2x,railBot-40);ctx.lineTo(b2x,railBot);ctx.stroke();
-    ctx.fillStyle='#F59E0B';ctx.fillRect(b2x-32,railTop+40,64,22);ctx.strokeStyle='#d97706';ctx.lineWidth=2;ctx.strokeRect(b2x-32,railTop+40,64,22);
-    ctx.fillStyle='white';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';ctx.fillText('R₂='+R2+'Ω',b2x,railTop+55);ctx.textAlign='start';
-    
-    // Junction dots
-    ctx.fillStyle='#334155';
-    [bx-10,bx+bw+10,b1x,b2x].forEach(function(jx){
-        ctx.beginPath();ctx.arc(jx,railTop,5,0,Math.PI*2);ctx.fill();
-        ctx.beginPath();ctx.arc(jx,railBot,5,0,Math.PI*2);ctx.fill();
-    });
-    
-    // ===== CURRENT ARROWS =====
-    // Convencional on top rail: left to right
-    drawArrow(bx+40,railTop-14,bx+100,railTop-14,'#EF4444','I conv.','#EF4444');
-    // Convencional on bottom rail: right to left
-    drawArrow(bx+bw-40,railBot+16,bx+bw-100,railBot+16,'#EF4444','I conv.','#EF4444');
-    // Convencional branch 1: down
-    drawArrow(b1x+16,railBot-50,b1x+16,railBot-80,'#EF4444','','#EF4444');
-    // Convencional branch 2: down
-    drawArrow(b2x+16,railBot-50,b2x+16,railBot-80,'#EF4444','','#EF4444');
-    
-    // Real on top rail: right to left (below rail)
-    drawArrow(bx+100,railTop+14,bx+40,railTop+14,'#3B82F6','I real','#3B82F6');
-    // Real on bottom rail: left to right
-    drawArrow(bx+bw-100,railBot-16,bx+bw-40,railBot-16,'#3B82F6','I real','#3B82F6');
-    // Real branch 1: up
-    drawArrow(b1x-16,railTop+80,b1x-16,railTop+50,'#3B82F6','','#3B82F6');
-    // Real branch 2: up
-    drawArrow(b2x-16,railTop+80,b2x-16,railTop+50,'#3B82F6','','#3B82F6');
-    
-    // Legend
-    ctx.fillStyle='rgba(255,255,255,.92)';ctx.fillRect(bx+bw-175,railTop+68,165,48);ctx.strokeStyle='#E2E8F0';ctx.lineWidth=1;ctx.strokeRect(bx+bw-175,railTop+68,165,48);
-    ctx.font='bold 10px Space Grotesk';
-    ctx.fillStyle='#EF4444';ctx.fillText('→ Convencional (+ a −)',bx+bw-165,railTop+86);
-    ctx.fillStyle='#3B82F6';ctx.fillText('→ Real / electrones (− a +)',bx+bw-165,railTop+104);
-}
-
-// Calculate
-var Rt,It,V1,V2,I1,I2;
-if(cType==='serie'){Rt=R1+R2;It=V/Rt;V1=It*R1;V2=It*R2;I1=I2=It;}
-else{Rt=(R1*R2)/(R1+R2);It=V/Rt;V1=V2=V;I1=V/R1;I2=V/R2;}
-var P=V*It;
-document.getElementById('circuitResults').innerHTML='<div class="grid grid-cols-2 gap-3"><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">R total</div><div class="font-mono font-bold text-ohms">'+Rt.toFixed(1)+'Ω</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I total</div><div class="font-mono font-bold text-amps">'+It.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2081</div><div class="font-mono font-bold text-volt">'+V1.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2082</div><div class="font-mono font-bold text-volt">'+V2.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2081</div><div class="font-mono font-bold text-amps">'+I1.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I R\u2082</div><div class="font-mono font-bold text-amps">'+I2.toFixed(4)+'A</div></div><div class="col-span-2 bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">Potencia</div><div class="font-mono font-bold text-watts">'+P.toFixed(3)+'W</div></div></div>';
-
-var rules=cType==='serie'?['R<sub>T</sub>=R\u2081+R\u2082 (se suman)','Corriente igual en todos','Voltaje se divide','Si falla uno, todo se detiene']:['1/R<sub>T</sub>=1/R\u2081+1/R\u2082','Voltaje igual en ramas','Corriente se divide','Si falla uno, demás continúan'];
-document.getElementById('circuitRules').innerHTML=rules.map(function(r){return '<p class="text-sm text-slate-600">\u2022 '+r+'</p>';}).join('');
-}
-// ====== WAVEFORM ======
+// ====== WAVEFORM (ORIGINAL) ======
 var wType='sine',wAmp=5,wFreq=2,wTime=0;function setWaveType(t){wType=t;document.querySelectorAll('.wave-btn').forEach(function(b){b.className='wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600';});var btn=document.getElementById('btn'+t.charAt(0).toUpperCase()+t.slice(1));if(btn)btn.className='wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-electric-600 text-white';updateWaveParams();}
 function updateWaveParams(){wAmp=parseFloat(document.getElementById('ampSlider').value);wFreq=parseFloat(document.getElementById('freqSlider').value);document.getElementById('ampVal').textContent=wAmp.toFixed(1)+' V';document.getElementById('freqVal').textContent=wFreq.toFixed(1)+' Hz';var T=1/wFreq,Vrms=wType==='sine'?(wAmp/Math.sqrt(2)).toFixed(2):wType==='square'?wAmp.toFixed(2):(wAmp/Math.sqrt(3)).toFixed(2);document.getElementById('waveProps').innerHTML='<div class="flex justify-between"><span class="text-slate-500">Vp</span><span class="font-mono font-semibold">'+wAmp.toFixed(1)+'V</span></div><div class="flex justify-between"><span class="text-slate-500">f</span><span class="font-mono font-semibold">'+wFreq.toFixed(1)+'Hz</span></div><div class="flex justify-between"><span class="text-slate-500">T</span><span class="font-mono font-semibold">'+T.toFixed(3)+'s</span></div><div class="flex justify-between"><span class="text-slate-500">Vrms</span><span class="font-mono font-semibold">'+Vrms+'V</span></div>';}
 function initWaveform(){var canvas=document.getElementById('waveCanvas'),ctx=canvas.getContext('2d');updateWaveParams();function draw(){var cw=canvas.width,ch=canvas.height;ctx.fillStyle='#0C1A2E';ctx.fillRect(0,0,cw,ch);ctx.strokeStyle='rgba(10,132,255,.1)';ctx.lineWidth=1;for(var x=0;x<cw;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}for(var y=0;y<ch;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}ctx.strokeStyle='rgba(10,132,255,.25)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,ch/2);ctx.lineTo(cw,ch/2);ctx.stroke();ctx.beginPath();ctx.strokeStyle='#3399FF';ctx.lineWidth=2.5;ctx.shadowColor='#3399FF';ctx.shadowBlur=8;var midY=ch/2,sY=(ch/2-30)/12;for(var x=0;x<cw;x++){var t=(x/cw)*3+wTime,y,ph=2*Math.PI*wFreq*t;if(wType==='sine')y=midY-wAmp*Math.sin(ph)*sY;else if(wType==='square')y=midY-wAmp*Math.sign(Math.sin(ph))*sY;else if(wType==='triangle')y=midY-wAmp*(2/Math.PI)*Math.asin(Math.sin(ph))*sY;else if(wType==='sawtooth'){var p=(wFreq*t)%1;y=midY-wAmp*(2*p-1)*sY;}else y=midY-wAmp*sY;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.shadowBlur=0;wTime+=.015;requestAnimationFrame(draw);}draw();}
 
-// ====== QUIZ ======
+// ====== QUIZ (ORIGINAL) ======
 var QQ=[{cat:'Ohm',q:'R=100\u03A9 I=0.5A \u00bfV=?',o:['25V','50V','100V','200V'],c:1,e:'V=I\u00d7R=50V'},{cat:'Comp.',q:'\u00bf1k\u03A9 \u00b15%?',o:['M-N-R-Oro','M-N-N-Oro','R-N-M-Oro','M-R-N-Oro'],c:0,e:'1-0-\u00d7100=1k\u03A9'},{cat:'Circ.',q:'Serie R\u2081=10 R\u2082=20 \u00bfRT?',o:['6.67','30','200','15'],c:1,e:'RT=30\u03A9'},{cat:'Circ.',q:'Paralelo: \u00bfqu\u00e9 es igual?',o:['Corriente','Resistencia','Voltaje','Potencia'],c:2,e:'Voltaje igual en ramas'},{cat:'Ohm',q:'\u00bfUnidad resistencia?',o:['Voltio','Amperio','Ohmio','Vatio'],c:2,e:'Ohmio'},{cat:'Comp.',q:'\u00bfQu\u00e9 almacena carga?',o:['Resistencia','Inductor','Capacitor','Diodo'],c:2,e:'Capacitor'},{cat:'Se\u00f1al',q:'T=0.02s \u00bff?',o:['20Hz','50Hz','100Hz','0.02Hz'],c:1,e:'f=50Hz'},{cat:'Ohm',q:'V=12 R=4 \u00bfP?',o:['3W','16W','36W','48W'],c:2,e:'P=36W'}];
 var cQ=0,sc=0,qans=false;function initQuiz(){showQ();}
 function showQ(){if(cQ>=QQ.length){document.getElementById('quizCard').style.display='none';document.getElementById('quizComplete').style.display='block';document.getElementById('finalScore').textContent=sc+'/'+QQ.length;var p=sc/QQ.length;document.getElementById('finalMsg').textContent=p>=.8?'\u00a1Excelente!':p>=.5?'Buen trabajo':'Sigue practicando';return;}var q=QQ[cQ];document.getElementById('qNum').textContent=cQ+1;document.getElementById('qTotal').textContent=QQ.length;document.getElementById('qProgress').style.width=((cQ+1)/QQ.length*100)+'%';document.getElementById('quizCategory').textContent=q.cat;document.getElementById('quizQuestion').textContent=q.q;document.getElementById('quizFeedback').style.display='none';document.getElementById('btnNext').style.display='none';document.getElementById('btnSkip').style.display='inline-block';qans=false;document.getElementById('quizOptions').innerHTML=q.o.map(function(o,i){return '<button onclick="ansQ('+i+')" class="quiz-option w-full text-left px-5 py-3.5 rounded-xl border-2 border-slate-200 text-sm font-medium text-slate-700 hover:border-electric-400 hover:bg-electric-50 transition-all flex items-center gap-3"><span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">'+String.fromCharCode(65+i)+'</span>'+o+'</button>';}).join('');}
@@ -539,153 +620,7 @@ function ansQ(i){if(qans)return;qans=true;var q=QQ[cQ];document.querySelectorAll
 function skipQuestion(){cQ++;showQ();}function nextQuestion(){cQ++;showQ();}
 function restartQuiz(){cQ=0;sc=0;qans=false;document.getElementById('qScore').textContent='0';document.getElementById('quizCard').style.display='block';document.getElementById('quizComplete').style.display='none';showQ();}
 
-// ====== FIREBASE PRACTICES - ROBUST VERSION ======
-function loadFirebasePractices(type){
-    var listId=type==='escrita'?'escritasList':'realizarList';
-    // Prevent duplicate listeners
-    if(fbListeners[type]){console.log('[FB] Already listening: '+type);return;}
-    fbListeners[type]=true;
-    console.log('[FB] Setting up listener for: practices/'+type);
-    
-    db.ref('practices/'+type).on('value',function(snapshot){
-        var data=snapshot.val();
-        console.log('[FB] Data received for '+type+':',data?Object.keys(data).length+' items':'null');
-        var arr=[];
-        if(data){Object.keys(data).forEach(function(k){var d=data[k];arr.push({_id:k,title:d.title||'',area:d.area||'Otros',objetivo:d.objetivo||'',materiales:d.materiales||'',pasos:d.pasos||'',notas:d.notas||'',date:d.date||'',imageUrl:d.imageUrl||''});});}
-        arr.reverse();
-        renderPracticeList(listId,type,arr);
-    },function(err){
-        console.error('[FB] Listener error for '+type+':',err.code,err.message);
-        document.getElementById(listId).innerHTML='<div class="text-center py-12 bg-red-50 rounded-2xl border border-red-200"><p class="text-red-600 font-medium">Error Firebase: '+err.message+'</p><p class="text-red-400 text-sm mt-1">Código: '+err.code+'</p></div>';
-    });
-}
-
-function renderPracticeList(containerId,type,practices){
-    var container=document.getElementById(containerId);
-    if(!container){console.error('[Render] Container not found:',containerId);return;}
-    console.log('[Render] Rendering '+practices.length+' practices to '+containerId);
-    
-    if(!practices||practices.length===0){
-        container.innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400 font-medium">No hay prácticas '+(type==='escrita'?'escritas':'a realizar')+'</p><p class="text-slate-300 text-sm mt-1">Usa el botón "Añadir" para agregar</p></div>';
-        return;
-    }
-    var ac={'Ley de Ohm':'bg-red-100 text-red-700','Componentes':'bg-green-100 text-green-700','Circuitos':'bg-amber-100 text-amber-700','Señales':'bg-purple-100 text-purple-700','Otros':'bg-slate-100 text-slate-700'};
-    container.innerHTML=practices.map(function(p){var areaClass=ac[p.area]||ac['Otros'];
-    return '<div class="practice-card"><div class="flex items-start justify-between gap-3 mb-3"><div><span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full '+areaClass+' mb-2">'+p.area+'</span><h4 class="font-bold text-slate-900">'+p.title+'</h4><p class="text-xs text-slate-400">'+p.date+'</p></div><div class="flex gap-1"><button onclick="editPractice(\''+type+'\',\''+p._id+'\')" class="text-slate-300 hover:text-electric-500 p-1" title="Editar">✏️</button><button onclick="deletePractice(\''+type+'\',\''+p._id+'\')" class="text-slate-300 hover:text-red-500 p-1" title="Eliminar">🗑</button></div></div><div class="space-y-3 text-sm">'
-    +(p.objetivo?'<div><p class="font-semibold text-slate-600 mb-1">🎯 Objetivo</p><p class="text-slate-500">'+p.objetivo+'</p></div>':'')
-    +(p.materiales?'<div><p class="font-semibold text-slate-600 mb-1">🔧 Materiales</p><p class="text-slate-500 whitespace-pre-line">'+p.materiales+'</p></div>':'')
-    +(p.pasos?'<div><p class="font-semibold text-slate-600 mb-1">📋 Procedimiento</p><div class="bg-slate-50 rounded-lg p-3 text-slate-600 whitespace-pre-line font-mono text-xs">'+p.pasos+'</div></div>':'')
-    +(p.notas?'<div><p class="font-semibold text-slate-600 mb-1">📝 Observaciones</p><p class="text-slate-500">'+p.notas+'</p></div>':'')
-    +(p.imageUrl?'<div><p class="font-semibold text-slate-600 mb-1">🖼 Imagen</p><img src="'+p.imageUrl+'" class="rounded-lg max-h-64 w-auto border border-slate-200" alt="Imagen" loading="lazy"></div>':'')
-    +'</div></div>';}).join('');
-}
-
-function deletePractice(type,id){
-    if(!confirm('\u00bfEliminar esta práctica?'))return;
-    console.log('[FB] Deleting:',type,id);
-    db.ref('practices/'+type+'/'+id).remove().then(function(){showToast('Eliminada');console.log('[FB] Deleted successfully');}).catch(function(e){console.error('[FB] Delete error:',e);showToast('Error: '+e.message);});
-}
-
-// ====== EDIT ======
-function editPractice(type,id){
-    currentPracticeType=type;editingId=id;
-    console.log('[Edit] Loading practice:',type,id);
-    db.ref('practices/'+type+'/'+id).once('value').then(function(snapshot){
-        var d=snapshot.val();
-        if(!d){showToast('Práctica no encontrada');return;}
-        document.getElementById('practiceFormModal').style.display='flex';
-        document.getElementById('pfModalTitle').textContent='Editar Práctica';
-        document.getElementById('pfSubmitText').textContent='Actualizar';
-        document.getElementById('pfTitle').value=d.title||'';document.getElementById('pfArea').value=d.area||'Otros';
-        document.getElementById('pfObj').value=d.objetivo||'';document.getElementById('pfMat').value=d.materiales||'';document.getElementById('pfPasos').value=d.pasos||'';document.getElementById('pfNotas').value=d.notas||'';
-        document.getElementById('pfImage').value='';document.getElementById('pfUploadProgress').style.display='none';
-        if(d.imageUrl){document.getElementById('pfPreviewImg').src=d.imageUrl;document.getElementById('pfImagePreview').style.display='block';}
-        else{document.getElementById('pfImagePreview').style.display='none';}
-    }).catch(function(e){console.error('[Edit] Error:',e);showToast('Error: '+e.message);});
-}
-
-// ====== PASSWORD ======
-function showPasswordModal(type){
-    currentPracticeType=type;editingId=null;
-    document.getElementById('passwordModal').style.display='flex';document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';
-    setTimeout(function(){document.getElementById('adminPassInput').focus();},100);}
-function closePasswordModal(){document.getElementById('passwordModal').style.display='none';}
-function verifyPassword(){var pass=document.getElementById('adminPassInput').value;if(pass===ADMIN_PASS){closePasswordModal();openPracticeForm();}else{document.getElementById('passError').style.display='block';}}
-
-// ====== PRACTICE FORM ======
-function openPracticeForm(){
-    editingId=null;
-    document.getElementById('practiceFormModal').style.display='flex';
-    document.getElementById('pfModalTitle').textContent='Nueva Práctica ('+(currentPracticeType==='escrita'?'Escrita':'A Realizar')+')';
-    document.getElementById('pfSubmitText').textContent='Guardar';
-    document.getElementById('pfTitle').value='';document.getElementById('pfObj').value='';document.getElementById('pfMat').value='';document.getElementById('pfPasos').value='';document.getElementById('pfNotas').value='';
-    document.getElementById('pfImage').value='';document.getElementById('pfUploadProgress').style.display='none';document.getElementById('pfImagePreview').style.display='none';
-}
-function closePracticeForm(){document.getElementById('practiceFormModal').style.display='none';editingId=null;}
-
-// Image preview
-document.addEventListener('change',function(e){if(e.target&&e.target.id==='pfImage'){var file=e.target.files&&e.target.files[0];if(file){if(file.size>2*1024*1024){showToast('Imagen muy grande (máx 2MB)');e.target.value='';return;}var reader=new FileReader();reader.onload=function(ev){document.getElementById('pfPreviewImg').src=ev.target.result;document.getElementById('pfImagePreview').style.display='block';};reader.readAsDataURL(file);}}});
-
-function submitPractice(){
-    var title=document.getElementById('pfTitle').value.trim();var area=document.getElementById('pfArea').value;var obj=document.getElementById('pfObj').value.trim();var mat=document.getElementById('pfMat').value.trim();var pasos=document.getElementById('pfPasos').value.trim();var notas=document.getElementById('pfNotas').value.trim();
-    var fileInput=document.getElementById('pfImage');var imageFile=fileInput.files&&fileInput.files[0]?fileInput.files[0]:null;
-    if(!title||!obj||!pasos){showToast('Completa los campos obligatorios (*)');return;}
-    var practiceData={title:title,area:area,objetivo:obj,materiales:mat,pasos:pasos,notas:notas,date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})};
-    
-    console.log('[Submit] Type:',currentPracticeType,'Editing:',editingId);
-    
-    if(imageFile){
-        document.getElementById('pfUploadProgress').style.display='block';document.getElementById('pfProgressText').textContent='Procesando imagen...';document.getElementById('pfProgressBar').style.width='30%';
-        var reader=new FileReader();reader.onload=function(e){
-            document.getElementById('pfProgressBar').style.width='60%';
-            var img=new Image();img.onload=function(){
-                var maxW=600,w=img.width,h=img.height;if(w>maxW){h=h*(maxW/w);w=maxW;}
-                var cv=document.createElement('canvas');cv.width=w;cv.height=h;var cx=cv.getContext('2d');cx.drawImage(img,0,0,w,h);
-                var base64=cv.toDataURL('image/jpeg',0.5);
-                document.getElementById('pfProgressBar').style.width='90%';document.getElementById('pfProgressText').textContent='Guardando...';
-                practiceData.imageUrl=base64;doSave(practiceData);
-            };img.onerror=function(){showToast('Error con imagen');doSave(practiceData);};img.src=e.target.result;
-        };reader.onerror=function(){showToast('Error leyendo imagen');doSave(practiceData);};reader.readAsDataURL(imageFile);
-    }else{
-        // If editing, keep existing image
-        if(editingId){
-            db.ref('practices/'+currentPracticeType+'/'+editingId).once('value').then(function(snap){
-                var existing=snap.val();if(existing&&existing.imageUrl)practiceData.imageUrl=existing.imageUrl;
-                doSave(practiceData);
-            }).catch(function(){doSave(practiceData);});
-        }else{doSave(practiceData);}
-    }
-}
-
-function doSave(data){
-    var ref;
-    if(editingId){
-        ref=db.ref('practices/'+currentPracticeType+'/'+editingId);
-        console.log('[Save] Updating:',currentPracticeType,editingId);
-    }else{
-        ref=db.ref('practices/'+currentPracticeType).push();
-        console.log('[Save] Creating new in:',currentPracticeType);
-    }
-    ref.set(data).then(function(){
-        console.log('[Save] Success!');
-        closePracticeForm();
-        showToast(editingId?'Práctica actualizada':'Práctica guardada');
-        editingId=null;
-        // Force immediate refresh with .once()
-        var listId=currentPracticeType==='escrita'?'escritasList':'realizarList';
-        db.ref('practices/'+currentPracticeType).once('value').then(function(snap){
-            var d=snap.val()||{};var arr=[];Object.keys(d).forEach(function(k){var v=d[k];arr.push({_id:k,title:v.title||'',area:v.area||'Otros',objetivo:v.objetivo||'',materiales:v.materiales||'',pasos:v.pasos||'',notas:v.notas||'',date:v.date||'',imageUrl:v.imageUrl||''});});arr.reverse();
-            renderPracticeList(listId,currentPracticeType,arr);
-            console.log('[Refresh] After save, '+arr.length+' items in '+currentPracticeType);
-        });
-    }).catch(function(e){
-        console.error('[Save] Error:',e);
-        showToast('Error al guardar: '+e.message);
-        document.getElementById('pfUploadProgress').style.display='none';
-    });
-}
-
-// ====== KATEX ======
+// ====== KATEX (ORIGINAL) ======
 function renderFormulas(){var tryR=function(){if(typeof katex==='undefined'){setTimeout(tryR,200);return;}var fm={f1:'V = I \\cdot R',f2:'I = \\dfrac{V}{R}',f3:'R = \\dfrac{V}{I}',f4:'P = V \\cdot I',f5:'P = I^2 \\cdot R',f6:'P = \\dfrac{V^2}{R}'};Object.keys(fm).forEach(function(id){var el=document.getElementById(id);if(el)katex.render(fm[id],el,{throwOnError:false});});var cf={fc_r:'R = \\dfrac{V}{I}\\;(\\Omega)',fc_c:'Q = C \\cdot V\\;(F)',fc_led:'V_f \\approx 1.8\\text{-}3.3\\;V',fc_l:'V_L = L \\cdot \\dfrac{di}{dt}\\;(H)',fc_d:'I \\to \\text{Catodo}'};Object.keys(cf).forEach(function(id){var el=document.getElementById(id);if(el)katex.render(cf[id],el,{throwOnError:false});});};tryR();}
 </script>
 </body>
