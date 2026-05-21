@@ -95,10 +95,10 @@
     </section>
 </div>
 
-<!-- APP SHELL (BARRA AZUL ARRIBA) -->
+<!-- APP SHELL -->
 <div id="app-shell" style="display:none">
     <nav class="sticky top-0 z-50">
-        <div class="py-1.5 px-6 bg-gradient-to-r from-electric-700 via-electric-600 to-electric-700 text-white text-center text-xs shadow-sm"><span class="opacity-90 font-medium tracking-wide">IEPC - PEC · U.E. Max Fernandez Rojas · ESFM Mariscal Sucre</span></div>
+        <div class="py-1.5 px-6 bg-gradient-to-r from-electric-700 via-electric-600 to-electric-700 text-white text-center text-xs shadow-sm"><span class="opacity-90 font-medium tracking-wide">IEPC - PEC · ESFM Mariscal Sucre</span></div>
         <div class="bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
             <div class="max-w-7xl mx-auto px-4"><div class="flex items-center gap-1 overflow-x-auto py-0">
                 <div class="flex items-center gap-2 mr-4 flex-shrink-0 py-3"><img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" alt="" class="h-7 w-7 object-contain"><span class="font-bold text-lg text-electric-700">ElectroniLab</span></div>
@@ -223,7 +223,8 @@
             <div class="flex gap-2 mb-8 flex-wrap">
                 <button onclick="switchSubTab('quiz')" id="subQuiz" class="sub-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Cuestionario</button>
                 <button onclick="switchSubTab('escritas')" id="subEscritas" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Prácticas Escritas</button>
-                <button onclick="switchSubTab('realizar')" id="subRealizar" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Prácticas a Realizar</button>
+                <!-- Botón modificado para pedir contraseña primero -->
+                <button onclick="accessRealizar()" id="subRealizar" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Prácticas a Realizar</button>
                 <button onclick="refreshAllPractices()" class="ml-auto px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center gap-1"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refrescar</button>
             </div>
             
@@ -255,7 +256,7 @@
 <div id="passwordModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center">
     <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
         <h3 class="text-lg font-bold text-slate-900 mb-2">🔒 Acceso Admin</h3>
-        <p class="text-sm text-slate-500 mb-4">Contraseña para añadir/editar prácticas</p>
+        <p class="text-sm text-slate-500 mb-4">Contraseña para acceder a las prácticas</p>
         <input type="password" id="adminPassInput" placeholder="Contraseña" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-electric-500 mb-2" onkeydown="if(event.key==='Enter')verifyPassword()">
         <p id="passError" style="display:none" class="text-red-500 text-xs mb-3">Contraseña incorrecta</p>
         <div class="flex gap-3"><button onclick="closePasswordModal()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600">Cancelar</button><button onclick="verifyPassword()" class="flex-1 px-4 py-2.5 bg-electric-600 text-white rounded-xl text-sm font-semibold">Ingresar</button></div>
@@ -300,6 +301,7 @@
 // ====== FIREBASE & GLOBAL ======
 var firebaseConfig={apiKey:"AIzaSyCZbKU27EngACUMP1FNBxA0N3HabxcBPZg",authDomain:"electronilab-aa4da.firebaseapp.com",databaseURL:"https://electronilab-aa4da-default-rtdb.firebaseio.com/",projectId:"electronilab-aa4da",storageBucket:"electronilab-aa4da.firebasestorage.app",messagingSenderId:"1009038542986",appId:"1:1009038542986:web:2ca34ff0ab861637eb0573",measurementId:"G-15Z1B5MMR6"};
 firebase.initializeApp(firebaseConfig); var db=firebase.database(); var ADMIN_PASS="amolacocaconfernet22"; var currentPracticeType="realizar"; var editingId=null; var fbListenerSetup=false;
+var isAdminAuthenticated=false; var pendingAction=null;
 
 function updateClock(){var now = new Date(); var h = now.getHours(), m = now.getMinutes(), s = now.getSeconds(); document.getElementById('liveClock').textContent = (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
 
@@ -315,9 +317,24 @@ function loadFirebasePractices(){if(fbListenerSetup)return;fbListenerSetup=true;
 function renderPracticeList(containerId,type,practices){var container=document.getElementById(containerId);if(!container)return;if(!practices||practices.length===0){container.innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400 font-medium">No hay prácticas '+(type==='admin'?'creadas':'asignadas')+' aún.</p></div>';return;}var ac={'Ley de Ohm':'bg-red-100 text-red-700','Componentes':'bg-green-100 text-green-700','Circuitos':'bg-amber-100 text-amber-700','Señales':'bg-purple-100 text-purple-700','Otros':'bg-slate-100 text-slate-700'};container.innerHTML=practices.map(function(p){var areaClass=ac[p.area]||ac['Otros'];var adminBtns=type==='admin'?'<div class="flex gap-1"><button onclick="editPractice(\'realizar\',\''+p._id+'\')" class="text-slate-300 hover:text-electric-500 p-1" title="Editar">✏️</button><button onclick="deletePractice(\'realizar\',\''+p._id+'\')" class="text-slate-300 hover:text-red-500 p-1" title="Eliminar">🗑</button></div>':'';return '<div class="practice-card"><div class="flex items-start justify-between gap-3 mb-3"><div><span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full '+areaClass+' mb-2">'+p.area+'</span><h4 class="font-bold text-slate-900">'+p.title+'</h4><p class="text-xs text-slate-400">'+p.date+'</p></div>'+adminBtns+'</div><div class="space-y-3 text-sm">'+(p.objetivo?'<div><p class="font-semibold text-slate-600 mb-1">🎯 Objetivo</p><p class="text-slate-500">'+p.objetivo+'</p></div>':'')+(p.materiales?'<div><p class="font-semibold text-slate-600 mb-1">🛠 Materiales</p><p class="text-slate-500 whitespace-pre-line">'+p.materiales+'</p></div>':'')+(p.pasos?'<div><p class="font-semibold text-slate-600 mb-1">📋 Procedimiento</p><div class="bg-slate-50 rounded-lg p-3 text-slate-600 whitespace-pre-line font-mono text-xs">'+p.pasos+'</div></div>':'')+(p.notas?'<div><p class="font-semibold text-slate-600 mb-1">📝 Observaciones</p><p class="text-slate-500">'+p.notas+'</p></div>':'')+'</div></div>';}).join('');}
 function deletePractice(type,id){if(!confirm('¿Eliminar esta práctica?'))return;db.ref('practices/realizar/'+id).remove().then(function(){showToast('Eliminada');});}
 function editPractice(type,id){editingId=id;db.ref('practices/realizar/'+id).once('value').then(function(snapshot){var d=snapshot.val();if(!d){showToast('No encontrada');return;}document.getElementById('practiceFormModal').style.display='flex';document.getElementById('pfModalTitle').textContent='Editar Práctica';document.getElementById('pfSubmitText').textContent='Actualizar';document.getElementById('pfTitle').value=d.title||'';document.getElementById('pfArea').value=d.area||'Otros';document.getElementById('pfObj').value=d.objetivo||'';document.getElementById('pfMat').value=d.materiales||'';document.getElementById('pfPasos').value=d.pasos||'';document.getElementById('pfNotas').value=d.notas||'';});}
-function showPasswordModal(type){editingId=null;document.getElementById('passwordModal').style.display='flex';document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';setTimeout(function(){document.getElementById('adminPassInput').focus();},100);}
-function closePasswordModal(){document.getElementById('passwordModal').style.display='none';}
-function verifyPassword(){var pass=document.getElementById('adminPassInput').value;if(pass===ADMIN_PASS){closePasswordModal();openPracticeForm();}else{document.getElementById('passError').style.display='block';}}
+
+// ====== PASSWORD & ACCESS LOGIC ======
+function accessRealizar(){
+    if(isAdminAuthenticated){switchSubTab('realizar');return;}
+    currentPracticeType='realizar';editingId=null;pendingAction='switchToRealizar';
+    document.getElementById('passwordModal').style.display='flex';document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';
+    setTimeout(function(){document.getElementById('adminPassInput').focus();},100);
+}
+function showPasswordModal(type){
+    if(isAdminAuthenticated){openPracticeForm();return;}
+    currentPracticeType=type;editingId=null;pendingAction='openForm';
+    document.getElementById('passwordModal').style.display='flex';document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';
+    setTimeout(function(){document.getElementById('adminPassInput').focus();},100);
+}
+function closePasswordModal(){document.getElementById('passwordModal').style.display='none';pendingAction=null;}
+function verifyPassword(){var pass=document.getElementById('adminPassInput').value;if(pass===ADMIN_PASS){isAdminAuthenticated=true;closePasswordModal();if(pendingAction==='switchToRealizar'){switchSubTab('realizar');}else{openPracticeForm();}}else{document.getElementById('passError').style.display='block';}}
+
+// ====== FORM LOGIC ======
 function openPracticeForm(){editingId=null;document.getElementById('practiceFormModal').style.display='flex';document.getElementById('pfModalTitle').textContent='Nueva Práctica';document.getElementById('pfSubmitText').textContent='Guardar Práctica';document.getElementById('pfTitle').value='';document.getElementById('pfObj').value='';document.getElementById('pfMat').value='';document.getElementById('pfPasos').value='';document.getElementById('pfNotas').value='';}
 function closePracticeForm(){document.getElementById('practiceFormModal').style.display='none';editingId=null;}
 function submitPractice(){var title=document.getElementById('pfTitle').value.trim();var area=document.getElementById('pfArea').value;var obj=document.getElementById('pfObj').value.trim();var mat=document.getElementById('pfMat').value.trim();var pasos=document.getElementById('pfPasos').value.trim();var notas=document.getElementById('pfNotas').value.trim();if(!title||!obj||!pasos){showToast('Completa los campos obligatorios');return;}var practiceData={title:title,area:area,objetivo:obj,materiales:mat,pasos:pasos,notas:notas,date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})};var ref=editingId?db.ref('practices/realizar/'+editingId):db.ref('practices/realizar').push();ref.set(practiceData).then(function(){closePracticeForm();showToast(editingId?'Práctica actualizada':'Práctica guardada');editingId=null;});}
@@ -341,7 +358,7 @@ function initResistorDecoder(){var b1C=document.getElementById('band1Colors');RC
 function uSA(c,i){c.querySelectorAll('.color-swatch').forEach(function(s,j){s.classList.toggle('active',j===i);});}
 function uR(){var d1=sB.b1,d2=sB.b2,mult=RC.band3[sB.b3].m,tol=RC.band4[sB.b4].t,val=(d1*10+d2)*mult;document.getElementById('rband1').style.background=RC.band1.find(function(c){return c.v===d1;}).c;document.getElementById('rband2').style.background=RC.band1[d2].c;document.getElementById('rband3').style.background=RC.band3[sB.b3].c;document.getElementById('rband4').style.background=RC.band4[sB.b4].c;var d=val>=1e6?(val/1e6).toFixed(val%1e6?1:0)+' MΩ':val>=1e3?(val/1e3).toFixed(val%1e3?1:0)+' kΩ':val+' Ω';document.getElementById('resistorResult').innerHTML='<div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold text-slate-900">'+d+' ± '+tol+'%</div>';}
 
-// ====== CIRCUITOS 3D REALISTA MEJORADO ======
+// ====== CIRCUITOS ======
 var cType='serie'; var flowType='convencional'; var circAnimFrame; var electronPos=0;
 function toggleFlowType(){flowType=flowType==='convencional'?'electrones':'convencional';document.getElementById('flowLabel').textContent=flowType==='convencional'?'Sentido Convencional':'Sentido Real (e⁻)';lucide.createIcons();}
 function setCircuitType(t){cType=t;document.getElementById('btnSerie').className=t==='serie'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';document.getElementById('btnParalelo').className=t==='paralelo'?'px-6 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500';drawCircuit();}
@@ -358,103 +375,16 @@ function drawCircuit(){
 
     electronPos+=0.004;if(electronPos>1)electronPos=0;
     ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#F8FAFC';ctx.fillRect(0,0,cw,ch);
-    
-    // Breadboard Base 3D
-    ctx.fillStyle='#E2E8F0';ctx.fillRect(40,40,cw-80,ch-80);ctx.fillStyle='#F1F5F9';ctx.fillRect(40,40,cw-80,ch-80);
-    ctx.strokeStyle='#CBD5E1';ctx.lineWidth=2;ctx.strokeRect(40,40,cw-80,ch-80);
+    ctx.fillStyle='#E2E8F0';ctx.fillRect(40,40,cw-80,ch-80);ctx.fillStyle='#F1F5F9';ctx.fillRect(40,40,cw-80,ch-80);ctx.strokeStyle='#CBD5E1';ctx.lineWidth=2;ctx.strokeRect(40,40,cw-80,ch-80);
     for(let i=60;i<cw-40;i+=20){for(let j=60;j<ch-40;j+=20){ctx.beginPath();ctx.arc(i,j,2,0,Math.PI*2);ctx.fillStyle='#E2E8F0';ctx.fill();}}
-
     var isConv=flowType==='convencional';
-
-    function drawCable(pts,color){
-        ctx.lineWidth=6;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle=color;
-        ctx.shadowColor='rgba(0,0,0,0.15)';ctx.shadowBlur=4;ctx.shadowOffsetY=2;
-        ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);ctx.stroke();
-        ctx.shadowColor='transparent';ctx.lineWidth=2;ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y-1);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y-1);ctx.stroke();
-    }
-
-    function drawBattery(cx,cy){
-        ctx.shadowColor='rgba(0,0,0,0.2)';ctx.shadowBlur=8;ctx.shadowOffsetY=4;
-        let grad=ctx.createLinearGradient(cx-15,cy,cx+15,cy);grad.addColorStop(0,'#334155');grad.addColorStop(0.5,'#64748B');grad.addColorStop(1,'#334155');
-        ctx.fillStyle=grad;ctx.beginPath();ctx.roundRect(cx-15,cy-40,30,80,8);ctx.fill();
-        ctx.shadowColor='transparent';
-        ctx.fillStyle='#EF4444';ctx.fillRect(cx-8,cy-42,16,6);ctx.fillStyle='#1E293B';ctx.fillRect(cx-6,cy+36,12,4);
-        ctx.fillStyle='#fff';ctx.font='bold 11px Space Grotesk';ctx.textAlign='center';ctx.fillText('+',cx,cy-28);ctx.fillText('−',cx,cy+28);
-        ctx.fillStyle='#EF4444';ctx.font='bold 14px Space Grotesk';ctx.textAlign='left';ctx.fillText(V+'V',cx+25,cy+5);
-    }
-
-    function draw3DResistor(cx,cy,label,val){
-        ctx.shadowColor='rgba(0,0,0,0.15)';ctx.shadowBlur=6;ctx.shadowOffsetY=3;
-        let grad=ctx.createLinearGradient(cx,cy-10,cx,cy+10);grad.addColorStop(0,'#D4A76A');grad.addColorStop(0.5,'#C49555');grad.addColorStop(1,'#B8894A');
-        ctx.fillStyle=grad;ctx.beginPath();ctx.roundRect(cx-40,cy-10,80,20,4);ctx.fill();
-        ctx.shadowColor='transparent';
-        let bandColors=['#8B4513','#000000','#FF0000','#FFD700'];let bX=cx-30;
-        for(let i=0;i<4;i++){ctx.fillStyle=bandColors[i];ctx.fillRect(bX,cy-10,6,20);bX+=16;}
-        ctx.fillStyle='#334155';ctx.font='bold 12px JetBrains Mono';ctx.textAlign='center';ctx.fillText(label+'='+val+'Ω',cx,cy-18);
-    }
-
-    function drawElectrons(path,speed){
-        let numE=6;let pColor=isConv?'#F59E0B':'#3B82F6';let gColor=isConv?'rgba(245,158,11,0.3)':'rgba(59,130,246,0.3)';
-        for(let i=0;i<numE;i++){
-            let t=(electronPos*speed+i/numE)%1;if(!isConv)t=1-t;
-            let pos=t*(path.length-1);let idx=Math.floor(pos);let frac=pos-idx;if(idx>=path.length-1){idx=path.length-2;frac=1;}
-            let ax=path[idx].x,ay=path[idx].y,bx=path[idx+1].x,by=path[idx+1].y;
-            let ex=ax+(bx-ax)*frac,ey=ay+(by-ay)*frac;
-            ctx.beginPath();ctx.arc(ex,ey,7,0,Math.PI*2);ctx.fillStyle=gColor;ctx.fill();
-            ctx.beginPath();ctx.arc(ex,ey,4,0,Math.PI*2);ctx.fillStyle=pColor;ctx.fill();
-        }
-    }
-
-    // Coordenadas Estructura Cuadrada
+    function drawCable(pts,color){ctx.lineWidth=6;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle=color;ctx.shadowColor='rgba(0,0,0,0.15)';ctx.shadowBlur=4;ctx.shadowOffsetY=2;ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);ctx.stroke();ctx.shadowColor='transparent';ctx.lineWidth=2;ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y-1);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y-1);ctx.stroke();}
+    function drawBattery(cx,cy){ctx.shadowColor='rgba(0,0,0,0.2)';ctx.shadowBlur=8;ctx.shadowOffsetY=4;let grad=ctx.createLinearGradient(cx-15,cy,cx+15,cy);grad.addColorStop(0,'#334155');grad.addColorStop(0.5,'#64748B');grad.addColorStop(1,'#334155');ctx.fillStyle=grad;ctx.beginPath();ctx.roundRect(cx-15,cy-40,30,80,8);ctx.fill();ctx.shadowColor='transparent';ctx.fillStyle='#EF4444';ctx.fillRect(cx-8,cy-42,16,6);ctx.fillStyle='#1E293B';ctx.fillRect(cx-6,cy+36,12,4);ctx.fillStyle='#fff';ctx.font='bold 11px Space Grotesk';ctx.textAlign='center';ctx.fillText('+',cx,cy-28);ctx.fillText('−',cx,cy+28);ctx.fillStyle='#EF4444';ctx.font='bold 14px Space Grotesk';ctx.textAlign='left';ctx.fillText(V+'V',cx+25,cy+5);}
+    function draw3DResistor(cx,cy,label,val){ctx.shadowColor='rgba(0,0,0,0.15)';ctx.shadowBlur=6;ctx.shadowOffsetY=3;let grad=ctx.createLinearGradient(cx,cy-10,cx,cy+10);grad.addColorStop(0,'#D4A76A');grad.addColorStop(0.5,'#C49555');grad.addColorStop(1,'#B8894A');ctx.fillStyle=grad;ctx.beginPath();ctx.roundRect(cx-40,cy-10,80,20,4);ctx.fill();ctx.shadowColor='transparent';let bandColors=['#8B4513','#000000','#FF0000','#FFD700'];let bX=cx-30;for(let i=0;i<4;i++){ctx.fillStyle=bandColors[i];ctx.fillRect(bX,cy-10,6,20);bX+=16;}ctx.fillStyle='#334155';ctx.font='bold 12px JetBrains Mono';ctx.textAlign='center';ctx.fillText(label+'='+val+'Ω',cx,cy-18);}
+    function drawElectrons(path,speed){let numE=6;let pColor=isConv?'#F59E0B':'#3B82F6';let gColor=isConv?'rgba(245,158,11,0.3)':'rgba(59,130,246,0.3)';for(let i=0;i<numE;i++){let t=(electronPos*speed+i/numE)%1;if(!isConv)t=1-t;let pos=t*(path.length-1);let idx=Math.floor(pos);let frac=pos-idx;if(idx>=path.length-1){idx=path.length-2;frac=1;}let ax=path[idx].x,ay=path[idx].y,bx=path[idx+1].x,by=path[idx+1].y;let ex=ax+(bx-ax)*frac,ey=ay+(by-ay)*frac;ctx.beginPath();ctx.arc(ex,ey,7,0,Math.PI*2);ctx.fillStyle=gColor;ctx.fill();ctx.beginPath();ctx.arc(ex,ey,4,0,Math.PI*2);ctx.fillStyle=pColor;ctx.fill();}}
     let TL={x:80,y:80}, TR={x:420,y:80}, BR={x:420,y:300}, BL={x:80,y:300};
-
-    if(cType==='serie'){
-        // Rutas Cerradas Perfectas
-        drawCable([{x:80,y:150},{x:80,y:80}],'#EF4444'); // Bat+ a TopLeft
-        drawCable([{x:80,y:80},{x:150,y:80}],'#EF4444'); // TopLeft a R1
-        drawCable([{x:230,y:80},{x:280,y:80}],'#EF4444'); // R1 a R2
-        drawCable([{x:360,y:80},{x:420,y:80}],'#EF4444'); // R2 a TopRight
-        drawCable([{x:420,y:80},{x:420,y:300}],'#0F172A'); // TopRight a BotRight
-        drawCable([{x:420,y:300},{x:80,y:300}],'#0F172A'); // BotRight a BotLeft
-        drawCable([{x:80,y:300},{x:80,y:230}],'#0F172A'); // BotLeft a Bat-
-        
-        drawBattery(80, 190);
-        draw3DResistor(190,80,'R\u2081',R1);
-        draw3DResistor(320,80,'R\u2082',R2);
-        
-        drawElectrons([TL,TR,BR,BL,TL],1);
-    } else {
-        // Rutas Paralelas
-        let N1T={x:220,y:80}, N1B={x:220,y:300};
-        let N2T={x:360,y:80}, N2B={x:360,y:300};
-        
-        drawCable([{x:80,y:150},{x:80,y:80}],'#EF4444');
-        drawCable([{x:80,y:80},{x:220,y:80}],'#EF4444'); // Top rail L to N1
-        drawCable([{x:220,y:80},{x:360,y:80}],'#EF4444'); // Top rail N1 to N2
-        
-        drawCable([{x:220,y:80},{x:220,y:150}],'#EF4444'); // N1 down R1
-        drawCable([{x:220,y:230},{x:220,y:300}],'#0F172A'); // R1 down N1
-        
-        drawCable([{x:360,y:80},{x:360,y:150}],'#EF4444'); // N2 down R2
-        drawCable([{x:360,y:230},{x:360,y:300}],'#0F172A'); // R2 down N2
-        
-        drawCable([{x:360,y:300},{x:220,y:300}],'#0F172A'); // Bot rail N2 to N1
-        drawCable([{x:220,y:300},{x:80,y:300}],'#0F172A'); // Bot rail N1 to L
-        drawCable([{x:80,y:300},{x:80,y:230}],'#0F172A'); // L down Bat-
-        
-        drawBattery(80, 190);
-        draw3DResistor(220,190,'R\u2081',R1);
-        draw3DResistor(360,190,'R\u2082',R2);
-        
-        // Loop 1
-        drawElectrons([TL,N1T,N1B,BL,TL],1);
-        // Loop 2
-        drawElectrons([N1T,N2T,N2B,N1B],0.6);
-    }
-
-    ctx.fillStyle=isConv?'#F59E0B':'#3B82F6';ctx.font='bold 12px Space Grotesk';ctx.textAlign='center';
-    ctx.fillText(isConv?'I Convencional (+ → −)':'I Real Electrones (− → +)',cw/2,ch-15);
-    circAnimFrame=requestAnimationFrame(drawCircuit);
+    if(cType==='serie'){drawCable([{x:80,y:150},{x:80,y:80}],'#EF4444');drawCable([{x:80,y:80},{x:150,y:80}],'#EF4444');drawCable([{x:230,y:80},{x:280,y:80}],'#EF4444');drawCable([{x:360,y:80},{x:420,y:80}],'#EF4444');drawCable([{x:420,y:80},{x:420,y:300}],'#0F172A');drawCable([{x:420,y:300},{x:80,y:300}],'#0F172A');drawCable([{x:80,y:300},{x:80,y:230}],'#0F172A');drawBattery(80,190);draw3DResistor(190,80,'R\u2081',R1);draw3DResistor(320,80,'R\u2082',R2);drawElectrons([TL,TR,BR,BL,TL],1);}else{let N1T={x:220,y:80},N1B={x:220,y:300};let N2T={x:360,y:80},N2B={x:360,y:300};drawCable([{x:80,y:150},{x:80,y:80}],'#EF4444');drawCable([{x:80,y:80},{x:220,y:80}],'#EF4444');drawCable([{x:220,y:80},{x:360,y:80}],'#EF4444');drawCable([{x:220,y:80},{x:220,y:150}],'#EF4444');drawCable([{x:220,y:230},{x:220,y:300}],'#0F172A');drawCable([{x:360,y:80},{x:360,y:150}],'#EF4444');drawCable([{x:360,y:230},{x:360,y:300}],'#0F172A');drawCable([{x:360,y:300},{x:220,y:300}],'#0F172A');drawCable([{x:220,y:300},{x:80,y:300}],'#0F172A');drawCable([{x:80,y:300},{x:80,y:230}],'#0F172A');drawBattery(80,190);draw3DResistor(220,190,'R\u2081',R1);draw3DResistor(360,190,'R\u2082',R2);drawElectrons([TL,N1T,N1B,BL,TL],1);drawElectrons([N1T,N2T,N2B,N1B],0.6);}
+    ctx.fillStyle=isConv?'#F59E0B':'#3B82F6';ctx.font='bold 12px Space Grotesk';ctx.textAlign='center';ctx.fillText(isConv?'I Convencional (+ → −)':'I Real Electrones (− → +)',cw/2,ch-15);circAnimFrame=requestAnimationFrame(drawCircuit);
 }
 
 // ====== WAVEFORM ======
