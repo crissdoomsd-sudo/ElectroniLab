@@ -12,6 +12,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script>
         tailwind.config={theme:{extend:{colors:{electric:{50:'#EBF5FF',100:'#D6EBFF',200:'#ADD6FF',300:'#85C2FF',400:'#5CADFF',500:'#3399FF',600:'#0A84FF',700:'#0066CC',800:'#004D99',900:'#003366'},volt:'#EF4444',amps:'#F59E0B',ohms:'#22C55E',watts:'#8B5CF6'},fontFamily:{heading:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
     </script>
@@ -133,7 +134,7 @@
         </div>
     </div>
 
-    <!-- PAGE: OHM (MODIFICADO) -->
+    <!-- PAGE: OHM -->
     <div id="page-ohm" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Ley de Ohm</h2></div>
@@ -167,8 +168,6 @@
                 <button onclick="switchCompTab('transistores')" id="compTabTrans" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Transistores</button>
                 <button onclick="switchCompTab('diodos')" id="compTabDiod" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Diodos</button>
             </div>
-
-            <!-- Panel: Resistencias -->
             <div id="comp-resistencias" class="comp-panel">
                 <div class="grid lg:grid-cols-2 gap-10">
                     <div class="bg-white rounded-2xl border border-slate-200 p-8">
@@ -180,8 +179,6 @@
                     <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><div id="fc_r" class="text-sm"></div><p class="mt-4 text-sm text-slate-600">Las resistencias limitan el flujo de corriente. Se usan en divisores de voltaje, limitación de corriente para LEDs, y polarización de transistores.</p></div>
                 </div>
             </div>
-
-            <!-- Panel: Capacitores -->
             <div id="comp-capacitores" class="comp-panel" style="display:none">
                 <div class="grid lg:grid-cols-2 gap-10">
                     <div class="bg-white rounded-2xl border border-slate-200 p-8">
@@ -193,8 +190,6 @@
                     <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><div id="fc_c" class="text-sm"></div><p class="mt-4 text-sm text-slate-600">Almacenan energía en un campo eléctrico. Usados en filtrado de fuentes de poder, acoplamiento AC y temporizadores.</p></div>
                 </div>
             </div>
-
-            <!-- Panel: Transistores -->
             <div id="comp-transistores" class="comp-panel" style="display:none">
                 <div class="grid lg:grid-cols-2 gap-10">
                     <div class="bg-white rounded-2xl border border-slate-200 p-8">
@@ -205,8 +200,6 @@
                     <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><p class="text-sm text-slate-600">Amplifican señales o actúan como interruptores. NPN y PNP. Usados en lógica digital, audio y control de potencia.</p></div>
                 </div>
             </div>
-
-            <!-- Panel: Diodos -->
             <div id="comp-diodos" class="comp-panel" style="display:none">
                 <div class="grid lg:grid-cols-2 gap-10">
                     <div class="bg-white rounded-2xl border border-slate-200 p-8">
@@ -273,13 +266,38 @@
 
             <div id="panel-tarea" class="sub-panel" style="display:none"><div class="max-w-5xl mx-auto"><div id="tareaList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div></div></div>
 
-            <div id="panel-editor" class="sub-panel" style="display:none"><div class="max-w-5xl mx-auto"><div class="flex justify-between items-center mb-6"><h3 class="text-lg font-semibold">Editor de Prácticas</h3><button onclick="showPasswordModal('editor')" class="bg-electric-600 hover:bg-electric-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i> Añadir</button></div><div id="editorList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div></div></div>
+            <div id="panel-editor" class="sub-panel" style="display:none">
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold">Editor de Prácticas</h3>
+                        <div class="flex gap-2">
+                            <button onclick="showPasswordModal('editor')" id="btnAddPractice" class="bg-electric-600 hover:bg-electric-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i> Añadir</button>
+                            <button onclick="logoutEditor()" id="btnLogout" style="display:none" class="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1"><i data-lucide="log-out" class="w-4 h-4"></i> Salir</button>
+                        </div>
+                    </div>
+                    <div id="editorList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Inicia sesión para ver y editar prácticas</p></div></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- PASSWORD MODAL -->
-<div id="passwordModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center"><div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl"><h3 class="text-lg font-bold text-slate-900 mb-2">🔒 Acceso Editor</h3><p class="text-sm text-slate-500 mb-4">Contraseña requerida</p><input type="password" id="adminPassInput" placeholder="Contraseña" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-electric-500 mb-2" onkeydown="if(event.key==='Enter')verifyPassword()"><p id="passError" style="display:none" class="text-red-500 text-xs mb-3">Contraseña incorrecta</p><div class="flex gap-3"><button onclick="closePasswordModal()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600">Cancelar</button><button onclick="verifyPassword()" class="flex-1 px-4 py-2.5 bg-electric-600 text-white rounded-xl text-sm font-semibold">Ingresar</button></div></div></div>
+<!-- AUTH MODAL (MODIFICADO A GOOGLE) -->
+<div id="passwordModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl text-center">
+        <div class="w-16 h-16 bg-electric-50 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="lock" class="w-8 h-8 text-electric-600"></i></div>
+        <h3 class="text-xl font-bold text-slate-900 mb-2">Acceso Requerido</h3>
+        <p class="text-sm text-slate-500 mb-6">Inicia sesión con tu cuenta de Google para gestionar las prácticas.</p>
+        <p id="passError" style="display:none" class="text-red-500 text-xs mb-3 font-medium"></p>
+        <div class="flex flex-col gap-3">
+            <button onclick="loginWithGoogle()" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center justify-center gap-3 transition-colors">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                Iniciar sesión con Google
+            </button>
+            <button onclick="closePasswordModal()" class="w-full px-4 py-2.5 text-sm font-semibold text-slate-500 hover:text-slate-700">Cancelar</button>
+        </div>
+    </div>
+</div>
 
 <!-- PRACTICE FORM MODAL -->
 <div id="practiceFormModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:210;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 0"><div class="bg-white rounded-2xl p-8 max-w-xl w-full mx-4 shadow-2xl"><h3 class="text-xl font-bold text-slate-900 mb-2" id="pfModalTitle">Nueva Práctica</h3><div class="space-y-5"><div><label class="text-sm font-bold text-slate-700 mb-2 block">📌 Título *</label><input type="text" id="pfTitle" class="form-input-easy w-full"></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">📚 Área</label><select id="pfArea" class="form-input-easy w-full"><option>Ley de Ohm</option><option>Componentes</option><option>Circuitos</option><option>Señales</option><option>Otros</option></select></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">🎯 Objetivo *</label><textarea id="pfObj" rows="2" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">🛠 Materiales</label><textarea id="pfMat" rows="2" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">📋 Procedimiento *</label><textarea id="pfPasos" rows="4" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">📝 Observaciones</label><textarea id="pfNotas" rows="2" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">🖼 Imagen (Opcional)</label><input type="file" id="pfImage" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-electric-50 file:text-electric-700"></div><div class="flex gap-3 pt-2"><button onclick="closePracticeForm()" class="flex-1 px-4 py-3 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button><button onclick="submitPractice()" class="flex-1 px-4 py-3 bg-electric-600 text-white rounded-xl text-sm font-semibold hover:bg-electric-700 flex items-center justify-center gap-2 shadow-md"><i data-lucide="save" class="w-4 h-4"></i> <span id="pfSubmitText">Guardar</span></button></div></div></div></div>
@@ -293,8 +311,24 @@
 <script>
 // ====== FIREBASE & GLOBAL ======
 var firebaseConfig={apiKey:"AIzaSyCZbKU27EngACUMP1FNBxA0N3HabxcBPZg",authDomain:"electronilab-aa4da.firebaseapp.com",databaseURL:"https://electronilab-aa4da-default-rtdb.firebaseio.com/",projectId:"electronilab-aa4da",storageBucket:"electronilab-aa4da.firebasestorage.app",messagingSenderId:"1009038542986",appId:"1:1009038542986:web:2ca34ff0ab861637eb0573"};
-firebase.initializeApp(firebaseConfig); var db=firebase.database(); var ADMIN_PASS="amolacocaconfernet22"; var editingId=null; var fbListenerSetup=false;
+firebase.initializeApp(firebaseConfig); var db=firebase.database(); var editingId=null; var fbListenerSetup=false;
 var isAdminAuthenticated=false; var pendingAction=null;
+var provider = new firebase.auth.GoogleAuthProvider();
+
+// Auth State Listener
+firebase.auth().onAuthStateChanged(function(user) {
+    var btnLogout = document.getElementById('btnLogout');
+    var btnAdd = document.getElementById('btnAddPractice');
+    if (user) {
+        isAdminAuthenticated = true;
+        if(btnLogout) btnLogout.style.display = 'flex';
+        if(btnAdd) btnAdd.style.display = 'flex';
+    } else {
+        isAdminAuthenticated = false;
+        if(btnLogout) btnLogout.style.display = 'none';
+    }
+});
+
 function updateClock(){var now=new Date();var h=now.getHours(),m=now.getMinutes(),s=now.getSeconds();document.getElementById('liveClock').textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
 document.addEventListener('DOMContentLoaded',function(){setInterval(updateClock,1000);updateClock();lucide.createIcons();initHeroCanvas();initOhm();initResistor();initWaveform();initQuiz();renderFormulas();testFirebaseConnection();});
 
@@ -303,17 +337,18 @@ function testFirebaseConnection(){db.ref('.info/connected').on('value',function(
 function refreshAllPractices(){loadFirebasePractices();showToast('Listas actualizadas');}
 function loadFirebasePractices(){if(fbListenerSetup)return;fbListenerSetup=true;db.ref('practices/editor').on('value',function(snapshot){var data=snapshot.val()||{};var arr=[];Object.keys(data).forEach(function(k){var d=data[k];arr.push({_id:k,title:d.title||'',area:d.area||'Otros',objetivo:d.objetivo||'',materiales:d.materiales||'',pasos:d.pasos||'',notas:d.notas||'',date:d.date||'',imageUrl:d.imageUrl||''});});arr.reverse();renderPracticeList('tareaList','tarea',arr);renderPracticeList('editorList','editor',arr);});}
 function renderPracticeList(id,type,practices){var c=document.getElementById(id);if(!practices||practices.length===0){c.innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">No hay prácticas</p></div>';return;}var ac={'Ley de Ohm':'bg-red-100 text-red-700','Componentes':'bg-green-100 text-green-700','Circuitos':'bg-amber-100 text-amber-700','Señales':'bg-purple-100 text-purple-700','Otros':'bg-slate-100 text-slate-700'};c.innerHTML=practices.map(function(p){var acC=ac[p.area]||ac['Otros'];var btns=type==='editor'?'<div class="flex gap-1"><button onclick="editPractice(\''+p._id+'\')" class="text-slate-300 hover:text-electric-500 p-1">✏️</button><button onclick="deletePractice(\''+p._id+'\')" class="text-slate-300 hover:text-red-500 p-1">🗑</button></div>':'';return '<div class="practice-card"><div class="flex items-start justify-between gap-3 mb-3"><div><span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full '+acC+' mb-2">'+p.area+'</span><h4 class="font-bold text-slate-900">'+p.title+'</h4><p class="text-xs text-slate-400">'+p.date+'</p></div>'+btns+'</div><div class="space-y-3 text-sm">'+(p.objetivo?'<p class="text-slate-500">🎯 '+p.objetivo+'</p>':'')+(p.materiales?'<p class="text-slate-500 whitespace-pre-line">🛠 '+p.materiales+'</p>':'')+(p.pasos?'<div class="bg-slate-50 rounded-lg p-3 text-slate-600 whitespace-pre-line font-mono text-xs">'+p.pasos+'</div>':'')+(p.notas?'<p class="text-slate-500">📝 '+p.notas+'</p>':'')+(p.imageUrl?'<img src="'+p.imageUrl+'" class="rounded-lg max-h-48 border" loading="lazy">':'')+'</div></div>';}).join('');}
-function deletePractice(id){if(!confirm('¿Eliminar?'))return;db.ref('practices/editor/'+id).remove().then(function(){showToast('Eliminada');});}
-function editPractice(id){editingId=id;db.ref('practices/editor/'+id).once('value').then(function(snap){var d=snap.val();if(!d)return;document.getElementById('practiceFormModal').style.display='flex';document.getElementById('pfModalTitle').textContent='Editar Práctica';document.getElementById('pfSubmitText').textContent='Actualizar';document.getElementById('pfTitle').value=d.title||'';document.getElementById('pfArea').value=d.area||'Otros';document.getElementById('pfObj').value=d.objetivo||'';document.getElementById('pfMat').value=d.materiales||'';document.getElementById('pfPasos').value=d.pasos||'';document.getElementById('pfNotas').value=d.notas||'';});}
+function deletePractice(id){if(!isAdminAuthenticated){showToast('Inicia sesión primero');return;}if(!confirm('¿Eliminar?'))return;db.ref('practices/editor/'+id).remove().then(function(){showToast('Eliminada');});}
+function editPractice(id){if(!isAdminAuthenticated){showToast('Inicia sesión primero');return;}editingId=id;db.ref('practices/editor/'+id).once('value').then(function(snap){var d=snap.val();if(!d)return;document.getElementById('practiceFormModal').style.display='flex';document.getElementById('pfModalTitle').textContent='Editar Práctica';document.getElementById('pfSubmitText').textContent='Actualizar';document.getElementById('pfTitle').value=d.title||'';document.getElementById('pfArea').value=d.area||'Otros';document.getElementById('pfObj').value=d.objetivo||'';document.getElementById('pfMat').value=d.materiales||'';document.getElementById('pfPasos').value=d.pasos||'';document.getElementById('pfNotas').value=d.notas||'';});}
 
 // ====== AUTH & FORMS ======
-function accessEditor(){if(isAdminAuthenticated){switchSubTab('editor');return;}pendingAction='switchEditor';document.getElementById('passwordModal').style.display='flex';document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';setTimeout(function(){document.getElementById('adminPassInput').focus();},100);}
-function showPasswordModal(type){if(isAdminAuthenticated){openPracticeForm();return;}pendingAction='openForm';document.getElementById('passwordModal').style.display='flex';document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';setTimeout(function(){document.getElementById('adminPassInput').focus();},100);}
+function accessEditor(){if(isAdminAuthenticated){switchSubTab('editor');return;}pendingAction='switchEditor';document.getElementById('passwordModal').style.display='flex';document.getElementById('passError').style.display='none';}
+function showPasswordModal(type){if(isAdminAuthenticated){openPracticeForm();return;}pendingAction='openForm';document.getElementById('passwordModal').style.display='flex';document.getElementById('passError').style.display='none';}
 function closePasswordModal(){document.getElementById('passwordModal').style.display='none';}
-function verifyPassword(){if(document.getElementById('adminPassInput').value===ADMIN_PASS){isAdminAuthenticated=true;closePasswordModal();if(pendingAction==='switchEditor')switchSubTab('editor');else openPracticeForm();}else{document.getElementById('passError').style.display='block';}}
+function loginWithGoogle(){firebase.auth().signInWithPopup(provider).then(function(result){closePasswordModal();if(pendingAction==='switchEditor')switchSubTab('editor');else openPracticeForm();showToast('Bienvenido, '+result.user.displayName);}).catch(function(error){console.error(error);document.getElementById('passError').style.display='block';document.getElementById('passError').textContent='Error al iniciar sesión: '+error.message;});}
+function logoutEditor(){firebase.auth().signOut().then(function(){showToast('Sesión cerrada');switchSubTab('quiz');});}
 function openPracticeForm(){editingId=null;document.getElementById('practiceFormModal').style.display='flex';document.getElementById('pfModalTitle').textContent='Nueva Práctica';document.getElementById('pfSubmitText').textContent='Guardar';document.getElementById('pfTitle').value='';document.getElementById('pfObj').value='';document.getElementById('pfMat').value='';document.getElementById('pfPasos').value='';document.getElementById('pfNotas').value='';document.getElementById('pfImage').value='';}
 function closePracticeForm(){document.getElementById('practiceFormModal').style.display='none';editingId=null;}
-function submitPractice(){var title=document.getElementById('pfTitle').value.trim();var area=document.getElementById('pfArea').value;var obj=document.getElementById('pfObj').value.trim();var mat=document.getElementById('pfMat').value.trim();var pasos=document.getElementById('pfPasos').value.trim();var notas=document.getElementById('pfNotas').value.trim();var fileInput=document.getElementById('pfImage');if(!title||!obj||!pasos){showToast('Completa los campos obligatorios');return;}var practiceData={title:title,area:area,objetivo:obj,materiales:mat,pasos:pasos,notas:notas,date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})};var finishSave=function(data){var ref=editingId?db.ref('practices/editor/'+editingId):db.ref('practices/editor').push();ref.set(data).then(function(){closePracticeForm();showToast(editingId?'Actualizada':'Guardada');editingId=null;});};if(fileInput.files&&fileInput.files[0]){var reader=new FileReader();reader.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas');var maxW=600;var w=img.width;var h=img.height;if(w>maxW){h=h*(maxW/w);w=maxW;}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);data.imageUrl=c.toDataURL('image/jpeg',0.5);finishSave(data);};img.src=e.target.result;};reader.readAsDataURL(fileInput.files[0]);}else{if(editingId){db.ref('practices/editor/'+editingId).once('value').then(function(snap){if(snap.val()&&snap.val().imageUrl)practiceData.imageUrl=snap.val().imageUrl;finishSave(practiceData);});}else{finishSave(practiceData);}}}
+function submitPractice(){if(!isAdminAuthenticated){showToast('Debes iniciar sesión');return;}var title=document.getElementById('pfTitle').value.trim();var area=document.getElementById('pfArea').value;var obj=document.getElementById('pfObj').value.trim();var mat=document.getElementById('pfMat').value.trim();var pasos=document.getElementById('pfPasos').value.trim();var notas=document.getElementById('pfNotas').value.trim();var fileInput=document.getElementById('pfImage');if(!title||!obj||!pasos){showToast('Completa los campos obligatorios');return;}var practiceData={title:title,area:area,objetivo:obj,materiales:mat,pasos:pasos,notas:notas,date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})};var finishSave=function(data){var ref=editingId?db.ref('practices/editor/'+editingId):db.ref('practices/editor').push();ref.set(data).then(function(){closePracticeForm();showToast(editingId?'Actualizada':'Guardada');editingId=null;});};if(fileInput.files&&fileInput.files[0]){var reader=new FileReader();reader.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas');var maxW=600;var w=img.width;var h=img.height;if(w>maxW){h=h*(maxW/w);w=maxW;}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);data.imageUrl=c.toDataURL('image/jpeg',0.5);finishSave(data);};img.src=e.target.result;};reader.readAsDataURL(fileInput.files[0]);}else{if(editingId){db.ref('practices/editor/'+editingId).once('value').then(function(snap){if(snap.val()&&snap.val().imageUrl)practiceData.imageUrl=snap.val().imageUrl;finishSave(practiceData);});}else{finishSave(practiceData);}}}
 
 // ====== NAVIGATION ======
 function navigateTo(page){if(page==='inicio'){document.getElementById('view-inicio').style.display='block';document.getElementById('app-shell').style.display='none';document.getElementById('appFooter').style.display='none';}else{document.getElementById('view-inicio').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('appFooter').style.display='block';document.querySelectorAll('.content-page').forEach(function(p){p.classList.remove('active');});var t=document.getElementById('page-'+page);if(t)t.classList.add('active');document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});var n=document.querySelector('.nav-tab[data-nav="'+page+'"]');if(n)n.classList.add('active');if(page==='circuitos')setTimeout(drawCircuit,50);if(page==='senales')setTimeout(updateWaveParams,50);}window.scrollTo({top:0,behavior:'smooth'});}
