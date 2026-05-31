@@ -1,314 +1,398 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ByteLog — Tech Blog</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            dark: { 900: '#0a0a0a', 800: '#111111', 700: '#1a1a1a', 600: '#1e1e1e', 500: '#2a2a2a', 400: '#333333', 300: '#444444' },
-            neon: '#00ff00',
-            cyan: '#00d7ff',
-            txt: '#e6e6e6',
-            txtmuted: '#999999',
-          },
-          fontFamily: {
-            sans: ['Manrope', 'sans-serif'],
-            mono: ['Space Mono', 'monospace'],
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    ::selection { background: #00ff00; color: #0a0a0a; }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0a0a0a; }
-    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #00ff00; }
-    html { scroll-behavior: smooth; }
-
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-    .cursor-blink { animation: blink 1s step-end infinite; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .fade-up { animation: fadeUp 0.6s ease-out forwards; }
-    .fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; }
-    .fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; }
-    .fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; }
-    .fade-up-delay-4 { animation-delay: 0.4s; opacity: 0; }
-
-    @keyframes scanline {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(100vh); }
-    }
-    .scanline {
-      background: linear-gradient(transparent, rgba(0,255,0,0.03), transparent);
-      height: 100px;
-      animation: scanline 8s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 5px rgba(0,255,0,0.3), 0 0 10px rgba(0,255,0,0.1); }
-      50% { box-shadow: 0 0 15px rgba(0,255,0,0.5), 0 0 30px rgba(0,255,0,0.2); }
-    }
-    .glow-pulse { animation: glowPulse 3s ease-in-out infinite; }
-
-    .code-block {
-      background: #111;
-      border-left: 3px solid #00ff00;
-      border-radius: 0 0.5rem 0.5rem 0;
-      padding: 1rem 1.25rem;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.8rem;
-      color: #00ff00;
-      overflow-x: auto;
-    }
-
-    .article-body h2 { font-size: 1.5rem; font-weight: 700; color: #e6e6e6; margin: 1.5rem 0 0.75rem; }
-    .article-body h3 { font-size: 1.2rem; font-weight: 600; color: #e6e6e6; margin: 1.25rem 0 0.5rem; }
-    .article-body p { color: #ccc; line-height: 1.8; margin-bottom: 1rem; }
-    .article-body ul { list-style: none; padding-left: 1.25rem; margin-bottom: 1rem; }
-    .article-body ul li { position: relative; color: #ccc; line-height: 1.8; }
-    .article-body ul li::before { content: '▸'; position: absolute; left: -1.25rem; color: #00ff00; }
-    .article-body code { background: #1a1a1a; color: #00ff00; padding: 0.15rem 0.4rem; border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 0.85em; }
-    .article-body blockquote { border-left: 3px solid #00d7ff; padding-left: 1rem; margin: 1rem 0; color: #999; font-style: italic; }
-    .article-body a { color: #00d7ff; text-decoration: underline; text-underline-offset: 3px; }
-    .article-body a:hover { color: #00ff00; }
-
-    .tag-btn.active { background: #00ff00; color: #0a0a0a; }
-
-    .grid-overlay {
-      background-image:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
-
-    .toast {
-      position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
-      background: #1e1e1e; border: 1px solid #00ff00; border-radius: 0.75rem;
-      padding: 1rem 1.5rem; color: #e6e6e6;
-      transform: translateY(150%); transition: transform 0.4s ease;
-    }
-    .toast.show { transform: translateY(0); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroniLab — Electrónica Básica Interactiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script>
+        tailwind.config={theme:{extend:{colors:{electric:{50:'#EBF5FF',100:'#D6EBFF',200:'#ADD6FF',300:'#85C2FF',400:'#5CADFF',500:'#3399FF',600:'#0A84FF',700:'#0066CC',800:'#004D99',900:'#003366'},volt:'#EF4444',amps:'#F59E0B',ohms:'#22C55E',watts:'#8B5CF6'},fontFamily:{heading:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+    </script>
+    <style>
+        body{font-family:'Space Grotesk',sans-serif;margin:0;overflow-x:hidden}
+        .font-mono{font-family:'JetBrains Mono',monospace}
+        #heroCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}
+        .resistor-body{display:flex;align-items:center;gap:3px;padding:12px 24px;background:linear-gradient(180deg,#D4A76A,#C49555,#B8894A);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+        .resistor-band{width:10px;height:52px;border-radius:2px;box-shadow:inset 0 0 3px rgba(0,0,0,.3);transition:background .3s}
+        .resistor-lead{width:40px;height:4px;background:linear-gradient(180deg,#ccc,#999);border-radius:2px}
+        .quiz-option.correct{background:#DCFCE7!important;border-color:#22C55E!important;color:#166534!important}
+        .quiz-option.incorrect{background:#FEE2E2!important;border-color:#EF4444!important;color:#991B1B!important}
+        input[type=range]{-webkit-appearance:none;appearance:none;height:8px;border-radius:4px;background:#E2E8F0;outline:none}
+        input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#0A84FF;cursor:pointer;box-shadow:0 2px 6px rgba(10,132,255,.4)}
+        .color-swatch{width:36px;height:36px;border-radius:8px;cursor:pointer;border:3px solid transparent;transition:all .2s}
+        .color-swatch:hover,.color-swatch.active{border-color:#0A84FF;transform:scale(1.15);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+        .formula-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:20px;text-align:center;transition:all .3s}
+        .formula-card:hover{border-color:#0A84FF;box-shadow:0 4px 20px rgba(10,132,255,.12);transform:translateY(-2px)}
+        .shield-img{filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))}
+        .view{display:none;min-height:100vh}.view.active{display:block}
+        .nav-tab{transition:all .2s;cursor:pointer;position:relative}
+        .nav-tab.active{color:#0A84FF;background:rgba(10,132,255,.08)}
+        .nav-tab.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:#0A84FF;border-radius:3px 3px 0 0}
+        .nav-tab:hover:not(.active){background:rgba(10,132,255,.04)}
+        .content-page{display:none;animation:fadeIn .3s ease}.content-page.active{display:block}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+        .section-title::before{content:'';display:block;width:40px;height:4px;background:#0A84FF;border-radius:2px;margin-bottom:12px}
+        .area-card{transition:all .3s;cursor:pointer}
+        .area-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(10,132,255,.15)}
+        .sub-tab{transition:all .2s;cursor:pointer}
+        .sub-tab.active{background:#0A84FF!important;color:#fff!important;box-shadow:0 2px 8px rgba(10,132,255,.3)}
+        .comp-tab{transition:all .2s;cursor:pointer}
+        .comp-tab.active{background:#0A84FF!important;color:#fff!important}
+        .practice-card{border:1px solid #E2E8F0;border-radius:12px;padding:16px;background:#fff;transition:all .3s}
+        .practice-card:hover{border-color:#0A84FF;box-shadow:0 2px 12px rgba(10,132,255,.1)}
+        .graph-paper{background-color:#F8FAFC;background-image:linear-gradient(rgba(10,132,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(10,132,255,.04) 1px,transparent 1px);background-size:24px 24px}
+        ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#F1F5F9}::-webkit-scrollbar-thumb{background:#94A3B8;border-radius:4px}
+        @keyframes pulse-ring{0%{transform:scale(.8);opacity:.6}50%{transform:scale(1.2);opacity:.2}100%{transform:scale(.8);opacity:.6}}
+        @keyframes float-shape{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(5deg)}}
+        .hero-shape{position:absolute;border:1px solid rgba(51,153,255,.15);border-radius:50%;animation:pulse-ring 4s ease-in-out infinite}
+        .float-geo{position:absolute;opacity:.06;animation:float-shape 6s ease-in-out infinite}
+        .form-input-easy{background:#f8fafc; border:2px solid #e2e8f0; border-radius:12px; padding:12px 16px; font-size:15px; transition: all 0.2s;}
+        .form-input-easy:focus{border-color:#0A84FF; background:#fff; box-shadow:0 0 0 4px rgba(10,132,255,0.1); outline:none;}
+    </style>
 </head>
-<body class="bg-dark-900 text-txt font-sans">
+<body class="graph-paper text-slate-800">
 
-  <!-- Noise Texture Overlay -->
-  <div class="fixed inset-0 pointer-events-none z-[100] opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E');"></div>
-
-  <!-- Scanline Effect -->
-  <div class="fixed inset-0 pointer-events-none z-[99] overflow-hidden">
-    <div class="scanline absolute inset-x-0"></div>
-  </div>
-
-  <!-- Grid Overlay -->
-  <div class="fixed inset-0 pointer-events-none z-0 grid-overlay opacity-50"></div>
-
-  <!-- ===== NAVIGATION ===== -->
-  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background: rgba(10,10,10,0.85); backdrop-filter: blur(12px);">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="#hero" class="flex items-center gap-2 group">
-        <div class="w-8 h-8 rounded-lg bg-neon flex items-center justify-center glow-pulse">
-          <i data-lucide="terminal" class="w-4 h-4 text-dark-900" style="stroke-width:2.5"></i>
+<!-- VIEW: INICIO -->
+<div id="view-inicio" class="view active">
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <canvas id="heroCanvas"></canvas>
+        <div class="absolute inset-0 bg-gradient-to-b from-electric-900/80 via-electric-900/60 to-electric-900/90 z-[1]"></div>
+        <div class="hero-shape w-40 h-40 top-[10%] left-[5%] z-[2]" style="animation-delay:0s"></div>
+        <div class="hero-shape w-24 h-24 top-[60%] right-[8%] z-[2]" style="animation-delay:1.5s"></div>
+        <div class="hero-shape w-56 h-56 bottom-[15%] left-[15%] z-[2]" style="animation-delay:3s"></div>
+        <div class="hero-shape w-16 h-16 top-[25%] right-[25%] z-[2]" style="animation-delay:2s"></div>
+        <div class="hero-shape w-32 h-32 bottom-[30%] right-[20%] z-[2]" style="animation-delay:.5s"></div>
+        <svg class="float-geo w-48 h-48 top-[8%] right-[12%] z-[2]" style="animation-delay:1s" viewBox="0 0 100 100"><polygon points="50,5 95,75 5,75" fill="none" stroke="#3399FF" stroke-width="1"/></svg>
+        <svg class="float-geo w-36 h-36 bottom-[12%] left-[8%] z-[2]" style="animation-delay:2s" viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" fill="none" stroke="#3399FF" stroke-width="1" rx="5"/></svg>
+        <svg class="float-geo w-28 h-28 top-[45%] left-[3%] z-[2]" style="animation-delay:3s" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#3399FF" stroke-width="1"/></svg>
+        <div class="relative z-10 text-center px-6 max-w-4xl">
+            <p class="text-sm text-slate-300/80 tracking-widest uppercase mb-6 font-semibold">ESCUELA SUPERIOR DE FORMACIÓN DE MAESTROS MARISCAL SUCRE - ELECTRICIDAD Y ELECTRÓNICA</p>
+            <div class="flex items-center justify-center gap-6 mb-8">
+                <img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" alt="ESFM" class="shield-img h-24 md:h-28 object-contain">
+                <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" alt="Especialidad" class="shield-img h-24 md:h-28 object-contain">
+            </div>
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-5 py-2 mb-6">
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="text-white/80 text-sm font-medium">IEPC - PEC · Unidad Educativa Max Fernandez Rojas</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight">Electroni<span class="text-electric-400">Lab</span></h1>
+            <p class="text-xl md:text-2xl text-electric-200 font-light mb-2">Electrónica Básica Interactiva</p>
+            <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">Adéntrate en el fascinante mundo de la electrónica. Comprende cómo fluye la corriente a través de los circuitos, descubre la función de cada componente y domina las leyes fundamentales que impulsan la tecnología moderna. Una experiencia diseñada para aprender haciendo.</p>
+            <button onclick="navigateTo('areas')" class="inline-flex items-center justify-center gap-2 bg-electric-600 hover:bg-electric-700 text-white font-semibold py-4 px-10 rounded-xl transition-all duration-300 shadow-lg shadow-electric-600/30 text-lg hover:scale-105">
+                <i data-lucide="layout-grid" class="w-5 h-5"></i> ÁREAS DE APRENDIZAJE
+            </button>
+            <div class="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center"><p class="text-white font-semibold text-sm">Cristian Medina Torres</p><p class="text-electric-300 text-xs">Maestro en Formación</p></div>
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center"><p class="text-white font-semibold text-sm">Wilder R. Panique Chama</p><p class="text-electric-300 text-xs">Maestro en Formación</p></div>
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center"><p class="text-white font-semibold text-sm">Jhonny S. Taboada Padilla</p><p class="text-electric-300 text-xs">Maestro en Formación</p></div>
+            </div>
         </div>
-        <span class="text-xl font-bold tracking-tight text-txt">Byte<span class="text-neon">Log</span></span>
-      </a>
-      <div class="hidden md:flex items-center gap-8">
-        <a href="#articles" class="text-sm font-medium text-txtmuted hover:text-neon transition-colors duration-300">Articles</a>
-        <a href="#projects" class="text-sm font-medium text-txtmuted hover:text-neon transition-colors duration-300">Projects</a>
-        <a href="#about" class="text-sm font-medium text-txtmuted hover:text-neon transition-colors duration-300">About</a>
-        <a href="#contact" class="text-sm font-medium text-txtmuted hover:text-neon transition-colors duration-300">Contact</a>
-      </div>
-      <div class="flex items-center gap-3">
-        <a href="#" class="p-2 rounded-lg hover:bg-dark-500 transition-colors duration-300" title="GitHub">
-          <i data-lucide="github" class="w-5 h-5 text-txtmuted hover:text-neon transition-colors"></i>
-        </a>
-        <a href="#" class="p-2 rounded-lg hover:bg-dark-500 transition-colors duration-300" title="RSS">
-          <i data-lucide="rss" class="w-5 h-5 text-txtmuted hover:text-neon transition-colors"></i>
-        </a>
-        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-dark-500 transition-colors">
-          <i data-lucide="menu" class="w-5 h-5 text-txtmuted"></i>
-        </button>
-      </div>
+    </section>
+</div>
+
+<!-- APP SHELL -->
+<div id="app-shell" style="display:none">
+    <nav class="sticky top-0 z-50">
+        <div class="py-1.5 px-6 bg-gradient-to-r from-electric-700 via-electric-600 to-electric-700 text-white text-center text-xs shadow-sm"><span class="opacity-90 font-medium tracking-wide">IEPC - PEC · ESFM Mariscal Sucre</span></div>
+        <div class="bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4"><div class="flex items-center gap-1 overflow-x-auto py-0">
+                <div class="flex items-center gap-2 mr-4 flex-shrink-0 py-3"><img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" alt="" class="h-7 w-7 object-contain"><span class="font-bold text-lg text-electric-700">ElectroniLab</span></div>
+                <button onclick="navigateTo('inicio')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="inicio"><i data-lucide="home" class="w-4 h-4"></i> Inicio</button>
+                <button onclick="navigateTo('areas')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="areas"><i data-lucide="layout-grid" class="w-4 h-4"></i> Áreas</button>
+                <button onclick="navigateTo('ohm')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="ohm"><i data-lucide="zap" class="w-4 h-4"></i> Ley de Ohm</button>
+                <button onclick="navigateTo('componentes')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="componentes"><i data-lucide="cpu" class="w-4 h-4"></i> Componentes</button>
+                <button onclick="navigateTo('circuitos')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="circuitos"><i data-lucide="git-branch" class="w-4 h-4"></i> Circuitos</button>
+                <button onclick="navigateTo('senales')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="senales"><i data-lucide="activity" class="w-4 h-4"></i> Señales</button>
+                <button onclick="navigateTo('practica')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="practica"><i data-lucide="brain" class="w-4 h-4"></i> Práctica</button>
+                <div class="ml-auto flex items-center gap-3 flex-shrink-0 pl-4 border-l border-slate-200 py-3">
+                    <span id="liveClock" class="font-mono text-xs text-slate-500 font-semibold"></span>
+                </div>
+            </div></div>
+        </div>
+    </nav>
+
+    <!-- PAGE: ÁREAS -->
+    <div id="page-areas" class="content-page active">
+        <div class="max-w-7xl mx-auto px-6 py-16">
+            <div class="text-center mb-14"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-4 justify-items-center">Áreas de Aprendizaje</h2></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div onclick="navigateTo('ohm')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-volt"><div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-red-100 transition-colors"><i data-lucide="zap" class="w-7 h-7 text-volt"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Ley de Ohm</h3><p class="text-sm text-slate-500 mb-4">Relación entre voltaje, corriente y resistencia.</p></div>
+                <div onclick="navigateTo('componentes')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-ohms"><div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-100 transition-colors"><i data-lucide="cpu" class="w-7 h-7 text-ohms"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Componentes</h3><p class="text-sm text-slate-500 mb-4">Resistencias, capacitores, LEDs.</p></div>
+                <div onclick="navigateTo('circuitos')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-amps"><div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-amber-100 transition-colors"><i data-lucide="git-branch" class="w-7 h-7 text-amps"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Circuitos</h3><p class="text-sm text-slate-500 mb-4">Serie, paralelo y mixto.</p></div>
+                <div onclick="navigateTo('senales')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-watts"><div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-100 transition-colors"><i data-lucide="activity" class="w-7 h-7 text-watts"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Señales</h3><p class="text-sm text-slate-500 mb-4">Ondas senoidales, cuadradas, osciloscopio.</p></div>
+                <div onclick="navigateTo('practica')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-electric-400"><div class="w-14 h-14 bg-electric-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-electric-100 transition-colors"><i data-lucide="brain" class="w-7 h-7 text-electric-600"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Práctica</h3><p class="text-sm text-slate-500 mb-4">Cuestionarios y laboratorio.</p></div>
+                <div onclick="navigateTo('inicio')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-slate-400"><div class="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center mb-5"><i data-lucide="home" class="w-7 h-7 text-slate-500"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Inicio</h3><p class="text-sm text-slate-500 mb-4">Volver al inicio.</p></div>
+            </div>
+        </div>
     </div>
-    <!-- Mobile Menu -->
-    <div id="mobileMenu" class="md:hidden hidden border-t border-dark-400">
-      <div class="px-6 py-4 flex flex-col gap-3">
-        <a href="#articles" class="text-sm font-medium text-txtmuted hover:text-neon py-2 mobile-link">Articles</a>
-        <a href="#projects" class="text-sm font-medium text-txtmuted hover:text-neon py-2 mobile-link">Projects</a>
-        <a href="#about" class="text-sm font-medium text-txtmuted hover:text-neon py-2 mobile-link">About</a>
-        <a href="#contact" class="text-sm font-medium text-txtmuted hover:text-neon py-2 mobile-link">Contact</a>
-      </div>
+
+    <!-- PAGE: OHM (MODIFICADO) -->
+    <div id="page-ohm" class="content-page">
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Ley de Ohm</h2></div>
+            <div class="grid lg:grid-cols-2 gap-10">
+                <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8">
+                    <h3 class="text-lg font-semibold mb-6">Calculadora Interactiva</h3>
+                    <div class="flex justify-center mb-8"><svg width="220" height="180" viewBox="0 0 220 180"><polygon points="110,10 10,170 210,170" fill="none" stroke="#0A84FF" stroke-width="2.5"/><line x1="10" y1="170" x2="210" y2="170" stroke="#0A84FF" stroke-width="2.5" stroke-dasharray="5,5"/><line x1="60" y1="90" x2="160" y2="90" stroke="#0A84FF" stroke-width="2.5" stroke-dasharray="5,5"/><line x1="110" y1="90" x2="110" y2="170" stroke="#0A84FF" stroke-width="2.5" stroke-dasharray="5,5"/><text x="110" y="70" text-anchor="middle" fill="#EF4444" font-size="32" font-weight="bold" font-family="Space Grotesk">V</text><text x="60" y="145" text-anchor="middle" fill="#F59E0B" font-size="28" font-weight="bold" font-family="Space Grotesk">I</text><text x="160" y="145" text-anchor="middle" fill="#22C55E" font-size="28" font-weight="bold" font-family="Space Grotesk">R</text></svg></div>
+                    <div class="flex justify-center gap-2 mb-6"><button onclick="setSolveFor('V')" id="solveV" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-volt text-volt bg-red-50">V</button><button onclick="setSolveFor('I')" id="solveI" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white">I</button><button onclick="setSolveFor('R')" id="solveR" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white">R</button></div>
+                    <div class="space-y-5">
+                        <div><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-volt">⚡ Voltaje (Tensión)</label><span id="valV" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">12.0 V</span></div><input type="range" id="rangeV" min="0" max="50" step="0.1" value="12" class="w-full" oninput="updateOhm()"></div>
+                        <div><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-amps">💡 Corriente</label><span id="valI" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">2.0 A</span></div><input type="range" id="rangeI" min="0.01" max="10" step="0.01" value="2" class="w-full" oninput="updateOhm()"></div>
+                        <div><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-ohms">🔧 Resistencia</label><span id="valR" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">6.0 Ω</span></div><input type="range" id="rangeR" min="0.1" max="100" step="0.1" value="6" class="w-full" oninput="updateOhm()"></div>
+                    </div>
+                    <div id="ohmResult" class="mt-6 bg-electric-600 text-white rounded-xl p-5 text-center"><div class="text-sm opacity-80 mb-1">Resultado</div><div class="font-mono text-2xl font-bold">V = I × R = 12.0 V</div><div class="text-sm mt-2 opacity-80">P = 24.0 W</div></div>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Fórmulas</h3><div class="grid grid-cols-2 gap-4"><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Ohm</div><div id="f1"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Corriente</div><div id="f2"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Resistencia</div><div id="f3"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Potencia</div><div id="f4"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f5"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f6"></div></div></div></div>
+                    <div class="bg-gradient-to-br from-electric-50 to-blue-50 rounded-2xl border border-electric-200 p-8"><h3 class="text-lg font-semibold mb-4">Concepto Clave</h3><div class="space-y-3 text-sm text-slate-600"><p><strong class="text-volt">Voltaje (Tensión)</strong> — Diferencia de potencial eléctrico entre dos puntos (V).</p><p><strong class="text-amps">Corriente</strong> — Flujo de electrones a través de un conductor (A).</p><p><strong class="text-ohms">Resistencia</strong> — Oposición al flujo de la corriente eléctrica (Ω).</p><div class="bg-white/60 rounded-lg p-4 border border-electric-200 mt-3"><p class="font-medium text-electric-800">📌 Ley de Ohm: La corriente es directamente proporcional al voltaje e inversamente proporcional a la resistencia.</p></div></div></div>
+                </div>
+            </div>
+        </div>
     </div>
-  </nav>
 
-  <!-- ===== HERO SECTION ===== -->
-  <section id="hero" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
-    <!-- Decorative Elements -->
-    <div class="absolute top-1/4 -right-20 w-64 h-64 bg-neon/5 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-1/4 -left-20 w-48 h-48 bg-cyan/5 rounded-full blur-3xl"></div>
-
-    <div class="max-w-6xl mx-auto px-6 w-full relative z-10">
-      <div class="grid lg:grid-cols-12 gap-12 items-center">
-        <!-- Left Content -->
-        <div class="lg:col-span-7 space-y-8">
-          <div class="fade-up">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-dark-400 bg-dark-700/50 mb-6">
-              <span class="w-2 h-2 rounded-full bg-neon animate-pulse"></span>
-              <span class="text-xs font-mono text-neon">Available for hire</span>
+    <!-- PAGE: COMPONENTES -->
+    <div id="page-componentes" class="content-page">
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Componentes Electrónicos</h2></div>
+            <div class="flex gap-2 mb-8 flex-wrap">
+                <button onclick="switchCompTab('resistencias')" id="compTabRes" class="comp-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Resistencias</button>
+                <button onclick="switchCompTab('capacitores')" id="compTabCap" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Capacitores</button>
+                <button onclick="switchCompTab('transistores')" id="compTabTrans" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Transistores</button>
+                <button onclick="switchCompTab('diodos')" id="compTabDiod" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Diodos</button>
             </div>
-          </div>
 
-          <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tighter fade-up fade-up-delay-1">
-            <span class="text-txt">Hi, I'm </span>
-            <span class="bg-gradient-to-r from-neon to-cyan bg-clip-text text-transparent">Alex Chen</span>
-            <br>
-            <span class="text-txt">I write about</span>
-            <br>
-            <span id="typed-text" class="text-neon font-mono"></span>
-            <span class="cursor-blink text-neon font-mono">|</span>
-          </h1>
+            <!-- Panel: Resistencias -->
+            <div id="comp-resistencias" class="comp-panel">
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-8">
+                        <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-semibold">Decodificador de Resistencias</h3><select id="resType" onchange="updateResistorUI()" class="text-sm border rounded-lg p-1"><option value="4">4 Bandas</option><option value="5">5 Bandas</option><option value="smd">SMD</option></select></div>
+                        <div id="resVisual" class="flex justify-center mb-6"><div class="flex items-center"><div class="resistor-lead"></div><div class="resistor-body" id="resBody"></div><div class="resistor-lead"></div></div></div>
+                        <div id="resInputs" class="space-y-3"></div>
+                        <div id="resistorResult" class="mt-6 bg-ohms/10 border border-ohms/30 rounded-xl p-5 text-center"><div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold text-slate-900">1.0 kΩ ± 5%</div></div>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><div id="fc_r" class="text-sm"></div><p class="mt-4 text-sm text-slate-600">Las resistencias limitan el flujo de corriente. Se usan en divisores de voltaje, limitación de corriente para LEDs, y polarización de transistores.</p></div>
+                </div>
+            </div>
 
-          <p class="text-lg text-txtmuted leading-relaxed max-w-xl fade-up fade-up-delay-2">
-            Full-stack developer & systems architect. I explore the intersections of AI, distributed systems, and developer tooling. Writing to think, sharing to learn.
-          </p>
+            <!-- Panel: Capacitores -->
+            <div id="comp-capacitores" class="comp-panel" style="display:none">
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-8">
+                        <h3 class="text-lg font-semibold mb-4">Decodificador de Capacitores (Código 3 Dígitos)</h3>
+                        <input type="text" id="capCode" placeholder="Ej: 104" maxlength="3" class="form-input-easy w-full mb-4" oninput="updateCap()">
+                        <div id="capResult" class="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-5 text-center"><div class="text-sm text-blue-600 font-medium mb-1">Capacitancia</div><div class="font-mono text-2xl font-bold text-slate-900">100 nF</div></div>
+                        <div class="mt-6"><h4 class="font-semibold text-sm mb-2">Calculadora Q=CV</h4><input type="number" id="capV" placeholder="Voltaje (V)" class="form-input-easy w-full mb-2" oninput="updateCapQ()"><input type="number" id="capF" placeholder="Capacitancia (F)" class="form-input-easy w-full mb-2" oninput="updateCapQ()"><div id="capQResult" class="text-sm font-mono mt-2 text-slate-600">Q = 0 C</div></div>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><div id="fc_c" class="text-sm"></div><p class="mt-4 text-sm text-slate-600">Almacenan energía en un campo eléctrico. Usados en filtrado de fuentes de poder, acoplamiento AC y temporizadores.</p></div>
+                </div>
+            </div>
 
-          <div class="flex flex-wrap items-center gap-4 fade-up fade-up-delay-3">
-            <a href="#articles" class="inline-flex items-center gap-2 px-6 py-3.5 bg-neon text-dark-900 font-semibold rounded-xl hover:shadow-[0_0_25px_rgba(0,255,0,0.3)] transition-all duration-300">
-              <i data-lucide="book-open" class="w-4 h-4"></i>
-              Read Articles
-            </a>
-            <a href="#projects" class="inline-flex items-center gap-2 px-6 py-3.5 border border-dark-400 text-txt rounded-xl hover:border-neon hover:text-neon transition-all duration-300">
-              <i data-lucide="folder-git-2" class="w-4 h-4"></i>
-              View Projects
-            </a>
-          </div>
+            <!-- Panel: Transistores -->
+            <div id="comp-transistores" class="comp-panel" style="display:none">
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-8">
+                        <h3 class="text-lg font-semibold mb-4">Calculadora de Transistor NPN (Región Activa)</h3>
+                        <input type="number" id="transIb" placeholder="Corriente Base Ib (mA)" class="form-input-easy w-full mb-2" oninput="updateTrans()"><input type="number" id="transHfe" placeholder="Ganancia hFE (Beta)" class="form-input-easy w-full mb-2" oninput="updateTrans()"><input type="number" id="transVcc" placeholder="Vcc (V)" class="form-input-easy w-full mb-2" oninput="updateTrans()"><input type="number" id="transRc" placeholder="Resistencia Colector (Ω)" class="form-input-easy w-full mb-2" oninput="updateTrans()">
+                        <div id="transResult" class="mt-4 bg-purple-50 border border-purple-200 rounded-xl p-5 text-center text-sm font-mono text-slate-700"></div>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><p class="text-sm text-slate-600">Amplifican señales o actúan como interruptores. NPN y PNP. Usados en lógica digital, audio y control de potencia.</p></div>
+                </div>
+            </div>
 
-          <div class="flex items-center gap-6 pt-2 fade-up fade-up-delay-4">
-            <a href="#" class="text-txtmuted hover:text-neon transition-colors" title="GitHub">
-              <i data-lucide="github" class="w-5 h-5"></i>
-            </a>
-            <a href="#" class="text-txtmuted hover:text-cyan transition-colors" title="Twitter">
-              <i data-lucide="twitter" class="w-5 h-5"></i>
-            </a>
-            <a href="#" class="text-txtmuted hover:text-neon transition-colors" title="LinkedIn">
-              <i data-lucide="linkedin" class="w-5 h-5"></i>
-            </a>
-            <a href="#" class="text-txtmuted hover:text-cyan transition-colors" title="Email">
-              <i data-lucide="mail" class="w-5 h-5"></i>
-            </a>
-            <div class="h-5 w-px bg-dark-400"></div>
-            <span class="text-xs font-mono text-txtmuted">v2.4.1 — <span id="currentYear"></span></span>
-          </div>
+            <!-- Panel: Diodos -->
+            <div id="comp-diodos" class="comp-panel" style="display:none">
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-8">
+                        <h3 class="text-lg font-semibold mb-4">Calculadora de Diodo (Polarización Directa)</h3>
+                        <input type="number" id="diodVi" placeholder="Voltaje Fuente (V)" class="form-input-easy w-full mb-2" oninput="updateDiod()"><input type="number" id="diodVd" value="0.7" placeholder="Caída Diodo (V) - Ej: 0.7" class="form-input-easy w-full mb-2" oninput="updateDiod()"><input type="number" id="diodR" placeholder="Resistencia en serie (Ω)" class="form-input-easy w-full mb-2" oninput="updateDiod()">
+                        <div id="diodResult" class="mt-4 bg-amber-50 border border-amber-200 rounded-xl p-5 text-center text-sm font-mono text-slate-700"></div>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><div id="fc_d" class="text-sm"></div><p class="mt-4 text-sm text-slate-600">Permiten flujo en una sola dirección. Usados en rectificación, protección contra polaridad invertida y LEDs.</p></div>
+                </div>
+            </div>
         </div>
-
-        <!-- Right - Terminal Card -->
-        <div class="lg:col-span-5">
-          <div class="bg-dark-800 border border-dark-400 rounded-2xl overflow-hidden shadow-2xl">
-            <!-- Terminal Header -->
-            <div class="flex items-center gap-2 px-4 py-3 bg-dark-700 border-b border-dark-400">
-              <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-              <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-              <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
-              <span class="ml-2 text-xs font-mono text-txtmuted">~/alex-chen</span>
-            </div>
-            <!-- Terminal Content -->
-            <div class="p-5 font-mono text-sm leading-7 space-y-1">
-              <p><span class="text-neon">$</span> <span class="text-txt">cat profile.json</span></p>
-              <p class="text-txtmuted">{</p>
-              <p class="pl-4"><span class="text-cyan">"name"</span>: <span class="text-neon">"Alex Chen"</span>,</p>
-              <p class="pl-4"><span class="text-cyan">"role"</span>: <span class="text-neon">"Full-Stack Developer"</span>,</p>
-              <p class="pl-4"><span class="text-cyan">"location"</span>: <span class="text-neon">"San Francisco, CA"</span>,</p>
-              <p class="pl-4"><span class="text-cyan">"languages"</span>: [<span class="text-neon">"Go"</span>, <span class="text-neon">"Rust"</span>, <span class="text-neon">"TS"</span>],</p>
-              <p class="pl-4"><span class="text-cyan">"interests"</span>: [<span class="text-neon">"AI"</span>, <span class="text-neon">"DevTools"</span>, <span class="text-neon">"Systems"</span>],</p>
-              <p class="pl-4"><span class="text-cyan">"coffee_per_day"</span>: <span class="text-yellow-400">4</span></p>
-              <p class="text-txtmuted">}</p>
-              <p class="mt-2"><span class="text-neon">$</span> <span class="cursor-blink">▊</span></p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </section>
 
-  <!-- ===== ARTICLE LIST ===== -->
-  <section id="articles" class="relative py-24">
-    <div class="max-w-6xl mx-auto px-6">
-      <!-- Section Header -->
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-        <div>
-          <span class="text-xs font-mono text-neon uppercase tracking-widest">// Latest Posts</span>
-          <h2 class="text-3xl md:text-4xl font-bold tracking-tight mt-3">Articles & <span class="text-cyan">Tutorials</span></h2>
-          <p class="text-txtmuted mt-2">Deep dives into technology, code, and the tools shaping the future.</p>
-        </div>
-        <!-- Tag Filters -->
-        <div class="flex flex-wrap gap-2">
-          <button class="tag-btn active px-4 py-1.5 rounded-full text-xs font-semibold border border-dark-400 transition-all duration-300" data-tag="all">All</button>
-          <button class="tag-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-dark-400 text-txtmuted hover:text-neon hover:border-neon transition-all duration-300" data-tag="ai">AI</button>
-          <button class="tag-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-dark-400 text-txtmuted hover:text-neon hover:border-neon transition-all duration-300" data-tag="code">Code</button>
-          <button class="tag-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-dark-400 text-txtmuted hover:text-neon hover:border-neon transition-all duration-300" data-tag="tool">Tool</button>
-          <button class="tag-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-dark-400 text-txtmuted hover:text-neon hover:border-neon transition-all duration-300" data-tag="system">System</button>
-        </div>
-      </div>
-
-      <!-- Articles Grid -->
-      <div id="articlesGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <!-- Article Card 1 -->
-        <article class="article-card group relative bg-dark-700 border border-dark-400 rounded-2xl overflow-hidden hover:border-neon/40 transition-all duration-500 cursor-pointer" data-tags="ai" onclick="openArticle(this)">
-          <div class="relative overflow-hidden">
-            <img src="https://picsum.photos/seed/neural-net/600/340.jpg" alt="Neural Networks" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-700">
-            <div class="absolute inset-0 bg-gradient-to-t from-dark-700 via-transparent to-transparent"></div>
-            <span class="absolute top-4 left-4 px-2.5 py-1 bg-neon/20 text-neon text-[10px] font-mono font-bold uppercase rounded-md backdrop-blur-sm border border-neon/30">AI</span>
-          </div>
-          <div class="p-6 space-y-3">
-            <div class="flex items-center gap-3 text-xs text-txtmuted font-mono">
-              <span>2025-01-15</span>
-              <span>·</span>
-              <span>8 min read</span>
+    <!-- PAGE: CIRCUITOS -->
+    <div id="page-circuitos" class="content-page">
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Circuitos Eléctricos</h2></div>
+            <div class="flex justify-center mb-10 gap-3 flex-wrap">
+                <div class="bg-slate-100 rounded-xl p-1 flex gap-1">
+                    <button onclick="setCircuitType('serie')" id="btnSerie" class="px-4 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md">Serie</button>
+                    <button onclick="setCircuitType('paralelo')" id="btnParalelo" class="px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500">Paralelo</button>
+                    <button onclick="setCircuitType('mixto')" id="btnMixto" class="px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500">Mixto</button>
+                </div>
+                <button onclick="toggleFlowType()" id="btnFlowType" class="px-5 py-2.5 rounded-lg text-sm font-semibold border-2 border-electric-600 text-electric-600 bg-white hover:bg-electric-50 flex items-center gap-2"><i data-lucide="shuffle" class="w-4 h-4"></i> <span id="flowLabel">Convencional</span></button>
             </div>
-            <h3 class="text-lg font-bold text-txt group-hover:text-neon transition-colors duration-300 leading-snug">Building RAG Systems That Actually Work in Production</h3>
-            <p class="text-sm text-txtmuted leading-relaxed line-clamp-2">Lessons from deploying retrieval-augmented generation at scale — chunking strategies, embedding optimization, and evaluation frameworks.</p>
-            <div class="flex items-center gap-2 pt-2">
-              <span class="px-2 py-0.5 rounded bg-dark-500 text-[10px] font-mono text-txtmuted">Python</span>
-              <span class="px-2 py-0.5 rounded bg-dark-500 text-[10px] font-mono text-txtmuted">LangChain</span>
-              <span class="px-2 py-0.5 rounded bg-dark-500 text-[10px] font-mono text-txtmuted">Vector DB</span>
+            <div class="grid lg:grid-cols-2 gap-10">
+                <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+                    <canvas id="circuitCanvas" width="500" height="380" class="w-full rounded-xl bg-white border border-slate-100"></canvas>
+                    <div id="circInputs" class="mt-4 grid grid-cols-3 gap-3">
+                        <div><label class="text-xs font-semibold text-volt block mb-1">V</label><input type="number" id="circV" value="12" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="drawCircuit()"></div>
+                        <div><label class="text-xs font-semibold text-ohms block mb-1">R₁</label><input type="number" id="circR1" value="100" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="drawCircuit()"></div>
+                        <div><label class="text-xs font-semibold text-ohms block mb-1">R₂</label><input type="number" id="circR2" value="200" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="drawCircuit()"></div>
+                    </div>
+                </div>
+                <div class="space-y-4"><div class="bg-gradient-to-br from-electric-50 to-blue-50 rounded-2xl border border-electric-200 p-8"><h3 class="text-lg font-semibold mb-4">Resultados</h3><div id="circuitResults"></div></div><div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Reglas</h3><div id="circuitRules" class="space-y-2 text-sm text-slate-600"></div></div></div>
             </div>
-          </div>
-          <!-- Hidden article content -->
-          <div class="hidden article-source">
-## The Challenge with RAG in Production
+        </div>
+    </div>
 
-Most RAG tutorials stop at a simple `retriever.invoke()` call. In production, things get messy fast. After deploying RAG systems for three different enterprise clients, here's what I've learned.
+    <!-- PAGE: SEÑALES -->
+    <div id="page-senales" class="content-page">
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Señales Eléctricas</h2></div>
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6"><canvas id="waveCanvas" width="700" height="350" class="w-full rounded-xl bg-[#0C1A2E]"></canvas><div class="flex flex-wrap gap-2 mt-4"><button onclick="setWaveType('sine')" id="btnSine" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-electric-600 text-white">Senoidal</button><button onclick="setWaveType('square')" id="btnSquare" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600">Cuadrada</button><button onclick="setWaveType('triangle')" id="btnTriangle" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600">Triangular</button><button onclick="setWaveType('sawtooth')" id="btnSawtooth" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600">Sierra</button><button onclick="setWaveType('half')" id="btnHalf" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600">Media Onda</button><button onclick="setWaveType('dc')" id="btnDC" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600">DC</button></div></div>
+                <div class="space-y-4"><div class="bg-white rounded-2xl border border-slate-200 p-6"><h3 class="text-sm font-semibold text-slate-500 mb-4">Parámetros</h3><div class="space-y-4"><div><div class="flex justify-between mb-1"><label class="text-xs font-semibold text-volt">Amplitud</label><span id="ampVal" class="font-mono text-xs">5.0 V</span></div><input type="range" id="ampSlider" min="0.5" max="10" step="0.1" value="5" class="w-full" oninput="updateWaveParams()"></div><div><div class="flex justify-between mb-1"><label class="text-xs font-semibold text-amps">Frecuencia</label><span id="freqVal" class="font-mono text-xs">2.0 Hz</span></div><input type="range" id="freqSlider" min="0.5" max="60" step="0.1" value="2" class="w-full" oninput="updateWaveParams()"></div></div></div><div class="bg-white rounded-2xl border border-slate-200 p-6"><h3 class="text-sm font-semibold text-slate-500 mb-3">Propiedades</h3><div id="waveProps" class="space-y-2 text-sm"></div></div><div class="bg-gradient-to-br from-electric-50 to-blue-50 rounded-2xl border border-electric-200 p-6"><h3 class="text-sm font-semibold text-electric-700 mb-3">💡 Dato</h3><p id="waveFact" class="text-sm text-slate-600">La señal de media onda es el resultado de rectificar una señal senoidal, bloqueando el semiciclo negativo.</p></div></div>
+            </div>
+        </div>
+    </div>
 
-### Chunking Strategy Matters More Than You Think
+    <!-- PAGE: PRÁCTICA -->
+    <div id="page-practica" class="content-page">
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Módulo de Práctica</h2></div>
+            <div id="fbStatus" class="mb-4 px-4 py-2 rounded-lg text-xs font-mono flex items-center gap-2 bg-slate-100 text-slate-500"><span class="w-2 h-2 rounded-full bg-yellow-400" id="fbDot"></span><span id="fbText">Conectando...</span></div>
+            <div class="flex gap-2 mb-8 flex-wrap">
+                <button onclick="switchSubTab('quiz')" id="subQuiz" class="sub-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Cuestionario</button>
+                <button onclick="switchSubTab('tarea')" id="subTarea" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Prácticas de Tarea</button>
+                <button onclick="accessEditor()" id="subEditor" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Editor de Prácticas</button>
+                <button onclick="refreshAllPractices()" class="ml-auto px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center gap-1"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refrescar</button>
+            </div>
+            
+            <div id="panel-quiz" class="sub-panel" style="display:block"><div class="max-w-4xl mx-auto"><div class="mb-8"><div class="flex justify-between text-sm text-slate-500 mb-2"><span>Pregunta <span id="qNum">1</span> de <span id="qTotal">8</span></span><span>Puntuación: <span id="qScore" class="font-bold text-electric-600">0</span></span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div id="qProgress" class="h-full bg-electric-600 rounded-full transition-all duration-500" style="width:12.5%"></div></div></div><div id="quizCard" class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><div id="quizCategory" class="inline-block bg-electric-100 text-electric-700 text-xs font-semibold px-3 py-1 rounded-full mb-4"></div><h3 id="quizQuestion" class="text-xl font-semibold text-slate-900 mb-6"></h3><div id="quizOptions" class="space-y-3"></div><div id="quizFeedback" style="display:none" class="mt-6 rounded-xl p-4 text-sm"></div><div class="flex justify-between mt-6"><button id="btnSkip" onclick="skipQuestion()" class="px-5 py-2.5 text-sm font-semibold text-slate-500">Saltar →</button><button id="btnNext" onclick="nextQuestion()" style="display:none" class="px-6 py-2.5 text-sm font-semibold bg-electric-600 text-white rounded-xl shadow-md">Siguiente →</button></div></div><div id="quizComplete" style="display:none" class="text-center py-12"><div class="text-5xl font-bold text-electric-600 mb-2" id="finalScore">0/8</div><p id="finalMsg" class="text-slate-500 mb-8"></p><button onclick="restartQuiz()" class="px-8 py-3 bg-electric-600 text-white font-semibold rounded-xl shadow-md">Reintentar</button></div></div></div>
 
-The default recursive character text splitter is fine for demos. For production, you need:
+            <div id="panel-tarea" class="sub-panel" style="display:none"><div class="max-w-5xl mx-auto"><div id="tareaList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div></div></div>
 
-- **Semantic chunking** — split on meaning boundaries, not character count
-- **Overlap tuning** — 10-20% overlap prevents context loss
-- **Metadata enrichment** — tag every chunk with source, section, and hierarchy
+            <div id="panel-editor" class="sub-panel" style="display:none"><div class="max-w-5xl mx-auto"><div class="flex justify-between items-center mb-6"><h3 class="text-lg font-semibold">Editor de Prácticas</h3><button onclick="showPasswordModal('editor')" class="bg-electric-600 hover:bg-electric-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i> Añadir</button></div><div id="editorList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div></div></div>
+        </div>
+    </div>
+</div>
 
-```python
-from langchain.text_splitter import SemanticChunker
-from langchain.embeddings import OpenAIEmbeddings
+<!-- PASSWORD MODAL -->
+<div id="passwordModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center"><div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl"><h3 class="text-lg font-bold text-slate-900 mb-2">🔒 Acceso Editor</h3><p class="text-sm text-slate-500 mb-4">Contraseña requerida</p><input type="password" id="adminPassInput" placeholder="Contraseña" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-electric-500 mb-2" onkeydown="if(event.key==='Enter')verifyPassword()"><p id="passError" style="display:none" class="text-red-500 text-xs mb-3">Contraseña incorrecta</p><div class="flex gap-3"><button onclick="closePasswordModal()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600">Cancelar</button><button onclick="verifyPassword()" class="flex-1 px-4 py-2.5 bg-electric-600 text-white rounded-xl text-sm font-semibold">Ingresar</button></div></div></div>
 
-splitter = SemanticChunker(
-    OpenAIEmbeddings(),
-    breakpoint_threshold_type="percentile"
-)
-chunks = splitter.split_text(document)
+<!-- PRACTICE FORM MODAL -->
+<div id="practiceFormModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:210;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 0"><div class="bg-white rounded-2xl p-8 max-w-xl w-full mx-4 shadow-2xl"><h3 class="text-xl font-bold text-slate-900 mb-2" id="pfModalTitle">Nueva Práctica</h3><div class="space-y-5"><div><label class="text-sm font-bold text-slate-700 mb-2 block">📌 Título *</label><input type="text" id="pfTitle" class="form-input-easy w-full"></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">📚 Área</label><select id="pfArea" class="form-input-easy w-full"><option>Ley de Ohm</option><option>Componentes</option><option>Circuitos</option><option>Señales</option><option>Otros</option></select></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">🎯 Objetivo *</label><textarea id="pfObj" rows="2" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">🛠 Materiales</label><textarea id="pfMat" rows="2" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">📋 Procedimiento *</label><textarea id="pfPasos" rows="4" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">📝 Observaciones</label><textarea id="pfNotas" rows="2" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">🖼 Imagen (Opcional)</label><input type="file" id="pfImage" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-electric-50 file:text-electric-700"></div><div class="flex gap-3 pt-2"><button onclick="closePracticeForm()" class="flex-1 px-4 py-3 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button><button onclick="submitPractice()" class="flex-1 px-4 py-3 bg-electric-600 text-white rounded-xl text-sm font-semibold hover:bg-electric-700 flex items-center justify-center gap-2 shadow-md"><i data-lucide="save" class="w-4 h-4"></i> <span id="pfSubmitText">Guardar</span></button></div></div></div></div>
+
+<!-- TOAST -->
+<div id="toast" style="display:none;position:fixed;bottom:24px;right:24px;z-index:300"><div class="bg-electric-600 text-white px-6 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i><span id="toastMsg"></span></div></div>
+
+<!-- FOOTER -->
+<footer id="appFooter" style="display:none" class="bg-electric-900 text-white py-10 px-6"><div class="max-w-7xl mx-auto text-center"><div class="flex items-center justify-center gap-4 mb-4"><img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" alt="ESFM" class="h-10 object-contain shield-img"><img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" alt="Especialidad" class="h-10 object-contain shield-img"></div><p class="text-sm text-electric-300">© 2026 ElectroniLab — IEPC - PEC · U.E. Max Fernandez Rojas · ESFM Mariscal Sucre</p></div></footer>
+
+<script>
+// ====== FIREBASE & GLOBAL ======
+var firebaseConfig={apiKey:"AIzaSyCZbKU27EngACUMP1FNBxA0N3HabxcBPZg",authDomain:"electronilab-aa4da.firebaseapp.com",databaseURL:"https://electronilab-aa4da-default-rtdb.firebaseio.com/",projectId:"electronilab-aa4da",storageBucket:"electronilab-aa4da.firebasestorage.app",messagingSenderId:"1009038542986",appId:"1:1009038542986:web:2ca34ff0ab861637eb0573"};
+firebase.initializeApp(firebaseConfig); var db=firebase.database(); var ADMIN_PASS="amolacocaconfernet22"; var editingId=null; var fbListenerSetup=false;
+var isAdminAuthenticated=false; var pendingAction=null;
+function updateClock(){var now=new Date();var h=now.getHours(),m=now.getMinutes(),s=now.getSeconds();document.getElementById('liveClock').textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
+document.addEventListener('DOMContentLoaded',function(){setInterval(updateClock,1000);updateClock();lucide.createIcons();initHeroCanvas();initOhm();initResistor();initWaveform();initQuiz();renderFormulas();testFirebaseConnection();});
+
+// ====== FIREBASE LOGIC ======
+function testFirebaseConnection(){db.ref('.info/connected').on('value',function(snap){if(snap.val()===true){document.getElementById('fbDot').className='w-2 h-2 rounded-full bg-green-400';document.getElementById('fbText').textContent='Conectado a Firebase ✓';loadFirebasePractices();}else{document.getElementById('fbDot').className='w-2 h-2 rounded-full bg-red-400';document.getElementById('fbText').textContent='Sin conexión';}});}
+function refreshAllPractices(){loadFirebasePractices();showToast('Listas actualizadas');}
+function loadFirebasePractices(){if(fbListenerSetup)return;fbListenerSetup=true;db.ref('practices/editor').on('value',function(snapshot){var data=snapshot.val()||{};var arr=[];Object.keys(data).forEach(function(k){var d=data[k];arr.push({_id:k,title:d.title||'',area:d.area||'Otros',objetivo:d.objetivo||'',materiales:d.materiales||'',pasos:d.pasos||'',notas:d.notas||'',date:d.date||'',imageUrl:d.imageUrl||''});});arr.reverse();renderPracticeList('tareaList','tarea',arr);renderPracticeList('editorList','editor',arr);});}
+function renderPracticeList(id,type,practices){var c=document.getElementById(id);if(!practices||practices.length===0){c.innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">No hay prácticas</p></div>';return;}var ac={'Ley de Ohm':'bg-red-100 text-red-700','Componentes':'bg-green-100 text-green-700','Circuitos':'bg-amber-100 text-amber-700','Señales':'bg-purple-100 text-purple-700','Otros':'bg-slate-100 text-slate-700'};c.innerHTML=practices.map(function(p){var acC=ac[p.area]||ac['Otros'];var btns=type==='editor'?'<div class="flex gap-1"><button onclick="editPractice(\''+p._id+'\')" class="text-slate-300 hover:text-electric-500 p-1">✏️</button><button onclick="deletePractice(\''+p._id+'\')" class="text-slate-300 hover:text-red-500 p-1">🗑</button></div>':'';return '<div class="practice-card"><div class="flex items-start justify-between gap-3 mb-3"><div><span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full '+acC+' mb-2">'+p.area+'</span><h4 class="font-bold text-slate-900">'+p.title+'</h4><p class="text-xs text-slate-400">'+p.date+'</p></div>'+btns+'</div><div class="space-y-3 text-sm">'+(p.objetivo?'<p class="text-slate-500">🎯 '+p.objetivo+'</p>':'')+(p.materiales?'<p class="text-slate-500 whitespace-pre-line">🛠 '+p.materiales+'</p>':'')+(p.pasos?'<div class="bg-slate-50 rounded-lg p-3 text-slate-600 whitespace-pre-line font-mono text-xs">'+p.pasos+'</div>':'')+(p.notas?'<p class="text-slate-500">📝 '+p.notas+'</p>':'')+(p.imageUrl?'<img src="'+p.imageUrl+'" class="rounded-lg max-h-48 border" loading="lazy">':'')+'</div></div>';}).join('');}
+function deletePractice(id){if(!confirm('¿Eliminar?'))return;db.ref('practices/editor/'+id).remove().then(function(){showToast('Eliminada');});}
+function editPractice(id){editingId=id;db.ref('practices/editor/'+id).once('value').then(function(snap){var d=snap.val();if(!d)return;document.getElementById('practiceFormModal').style.display='flex';document.getElementById('pfModalTitle').textContent='Editar Práctica';document.getElementById('pfSubmitText').textContent='Actualizar';document.getElementById('pfTitle').value=d.title||'';document.getElementById('pfArea').value=d.area||'Otros';document.getElementById('pfObj').value=d.objetivo||'';document.getElementById('pfMat').value=d.materiales||'';document.getElementById('pfPasos').value=d.pasos||'';document.getElementById('pfNotas').value=d.notas||'';});}
+
+// ====== AUTH & FORMS ======
+function accessEditor(){if(isAdminAuthenticated){switchSubTab('editor');return;}pendingAction='switchEditor';document.getElementById('passwordModal').style.display='flex';document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';setTimeout(function(){document.getElementById('adminPassInput').focus();},100);}
+function showPasswordModal(type){if(isAdminAuthenticated){openPracticeForm();return;}pendingAction='openForm';document.getElementById('passwordModal').style.display='flex';document.getElementById('adminPassInput').value='';document.getElementById('passError').style.display='none';setTimeout(function(){document.getElementById('adminPassInput').focus();},100);}
+function closePasswordModal(){document.getElementById('passwordModal').style.display='none';}
+function verifyPassword(){if(document.getElementById('adminPassInput').value===ADMIN_PASS){isAdminAuthenticated=true;closePasswordModal();if(pendingAction==='switchEditor')switchSubTab('editor');else openPracticeForm();}else{document.getElementById('passError').style.display='block';}}
+function openPracticeForm(){editingId=null;document.getElementById('practiceFormModal').style.display='flex';document.getElementById('pfModalTitle').textContent='Nueva Práctica';document.getElementById('pfSubmitText').textContent='Guardar';document.getElementById('pfTitle').value='';document.getElementById('pfObj').value='';document.getElementById('pfMat').value='';document.getElementById('pfPasos').value='';document.getElementById('pfNotas').value='';document.getElementById('pfImage').value='';}
+function closePracticeForm(){document.getElementById('practiceFormModal').style.display='none';editingId=null;}
+function submitPractice(){var title=document.getElementById('pfTitle').value.trim();var area=document.getElementById('pfArea').value;var obj=document.getElementById('pfObj').value.trim();var mat=document.getElementById('pfMat').value.trim();var pasos=document.getElementById('pfPasos').value.trim();var notas=document.getElementById('pfNotas').value.trim();var fileInput=document.getElementById('pfImage');if(!title||!obj||!pasos){showToast('Completa los campos obligatorios');return;}var practiceData={title:title,area:area,objetivo:obj,materiales:mat,pasos:pasos,notas:notas,date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})};var finishSave=function(data){var ref=editingId?db.ref('practices/editor/'+editingId):db.ref('practices/editor').push();ref.set(data).then(function(){closePracticeForm();showToast(editingId?'Actualizada':'Guardada');editingId=null;});};if(fileInput.files&&fileInput.files[0]){var reader=new FileReader();reader.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas');var maxW=600;var w=img.width;var h=img.height;if(w>maxW){h=h*(maxW/w);w=maxW;}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);data.imageUrl=c.toDataURL('image/jpeg',0.5);finishSave(data);};img.src=e.target.result;};reader.readAsDataURL(fileInput.files[0]);}else{if(editingId){db.ref('practices/editor/'+editingId).once('value').then(function(snap){if(snap.val()&&snap.val().imageUrl)practiceData.imageUrl=snap.val().imageUrl;finishSave(practiceData);});}else{finishSave(practiceData);}}}
+
+// ====== NAVIGATION ======
+function navigateTo(page){if(page==='inicio'){document.getElementById('view-inicio').style.display='block';document.getElementById('app-shell').style.display='none';document.getElementById('appFooter').style.display='none';}else{document.getElementById('view-inicio').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('appFooter').style.display='block';document.querySelectorAll('.content-page').forEach(function(p){p.classList.remove('active');});var t=document.getElementById('page-'+page);if(t)t.classList.add('active');document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});var n=document.querySelector('.nav-tab[data-nav="'+page+'"]');if(n)n.classList.add('active');if(page==='circuitos')setTimeout(drawCircuit,50);if(page==='senales')setTimeout(updateWaveParams,50);}window.scrollTo({top:0,behavior:'smooth'});}
+function switchSubTab(sub){['quiz','tarea','editor'].forEach(function(s){document.getElementById('panel-'+s).style.display='none';});document.getElementById('panel-'+sub).style.display='block';document.querySelectorAll('.sub-tab').forEach(function(b){b.classList.remove('active');b.style.background='#F1F5F9';b.style.color='#475569';});var btn=document.getElementById('sub'+sub.charAt(0).toUpperCase()+sub.slice(1));btn.classList.add('active');btn.style.background='#0A84FF';btn.style.color='#fff';}
+function switchCompTab(tab){['resistencias','capacitores','transistores','diodos'].forEach(function(t){document.getElementById('comp-'+t).style.display='none';});document.getElementById('comp-'+tab).style.display='block';document.querySelectorAll('.comp-tab').forEach(function(b){b.classList.remove('active');b.style.background='#F1F5F9';b.style.color='#475569';});document.querySelectorAll('.comp-tab').forEach(function(b){if(b.textContent.toLowerCase().includes(tab.substring(0,4))){b.classList.add('active');b.style.background='#0A84FF';b.style.color='#fff';}});}
+function showToast(msg){var t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},3000);}
+
+// ====== HERO CANVAS ======
+function initHeroCanvas(){var canvas=document.getElementById('heroCanvas'),ctx=canvas.getContext('2d');var w,h,nodes=[],traces=[],electrons=[];function resize(){w=canvas.width=canvas.parentElement.offsetWidth;h=canvas.height=canvas.parentElement.offsetHeight;gen();}function gen(){nodes=[];traces=[];electrons=[];var cols=Math.floor(w/70),rows=Math.floor(h/70);for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)if(Math.random()>.3)nodes.push({x:50+c*70,y:50+r*70});for(var i=0;i<nodes.length;i++)for(var j=i+1;j<nodes.length;j++){var dx=Math.abs(nodes[i].x-nodes[j].x),dy=Math.abs(nodes[i].y-nodes[j].y);if((dx===70&&dy===0)||(dx===0&&dy===70))if(Math.random()>.35){traces.push({from:i,to:j});electrons.push({trace:traces.length-1,t:Math.random(),speed:.003+Math.random()*.004});}}}function draw(){ctx.clearRect(0,0,w,h);traces.forEach(function(tr){var a=nodes[tr.from],b=nodes[tr.to];ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle='rgba(10,132,255,.12)';ctx.lineWidth=2;ctx.stroke();});nodes.forEach(function(n){ctx.beginPath();ctx.arc(n.x,n.y,3,0,Math.PI*2);ctx.fillStyle='rgba(10,132,255,.3)';ctx.fill();});electrons.forEach(function(e){e.t+=e.speed;if(e.t>1)e.t=0;var tr=traces[e.trace],a=nodes[tr.from],b=nodes[tr.to],x=a.x+(b.x-a.x)*e.t,y=a.y+(b.y-a.y)*e.t;ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);ctx.fillStyle='rgba(100,180,255,.9)';ctx.fill();});requestAnimationFrame(draw);}window.addEventListener('resize',resize);resize();draw();}
+
+// ====== OHM ======
+var solveFor='V';function setSolveFor(val){solveFor=val;document.querySelectorAll('.solve-btn').forEach(function(b){b.className='solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white';});var a=document.getElementById('solve'+val);var cls={V:'border-volt text-volt bg-red-50',I:'border-amps text-amps bg-amber-50',R:'border-ohms text-ohms bg-green-50'};a.className='solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 '+cls[val];var s={V:'rangeV',I:'rangeI',R:'rangeR'};Object.keys(s).forEach(function(k){var el=document.getElementById(s[k]);el.disabled=k===val;el.style.opacity=k===val?'0.4':'1';});updateOhm();}
+function initOhm(){setSolveFor('V');}
+function updateOhm(){var V=parseFloat(document.getElementById('rangeV').value),I=parseFloat(document.getElementById('rangeI').value),R=parseFloat(document.getElementById('rangeR').value),P;if(solveFor==='V'){V=I*R;P=V*I;}else if(solveFor==='I'){I=V/R;P=V*I;}else{R=V/I;P=V*I;}document.getElementById('valV').textContent=V.toFixed(1)+' V';document.getElementById('valI').textContent=I.toFixed(2)+' A';document.getElementById('valR').textContent=R.toFixed(1)+' Ω';var r=document.getElementById('ohmResult');r.innerHTML='<div class="text-sm opacity-80 mb-1">Resultado</div><div class="font-mono text-2xl font-bold">'+(solveFor==='V'?'V = I×R = '+V.toFixed(1)+' V':solveFor==='I'?'I = V/R = '+I.toFixed(3)+' A':'R = V/I = '+R.toFixed(1)+' Ω')+'</div><div class="text-sm mt-2 opacity-80">P = '+P.toFixed(2)+' W</div>';}
+
+// ====== COMPONENTS ======
+var rBands={1:1,2:0,3:2,4:0,5:0};var rMult=2;
+var rCols=[{n:'Negro',c:'#1a1a1a',v:0},{n:'Marrón',c:'#8B4513',v:1},{n:'Rojo',c:'#FF0000',v:2},{n:'Naranja',c:'#FF8C00',v:3},{n:'Amarillo',c:'#FFD700',v:4},{n:'Verde',c:'#228B22',v:5},{n:'Azul',c:'#0000FF',v:6},{n:'Violeta',c:'#8B008B',v:7},{n:'Gris',c:'#808080',v:8},{n:'Blanco',c:'#F0F0F0',v:9}];
+var rTols=[{n:'Oro',c:'#FFD700',t:5},{n:'Plata',c:'#C0C0C0',t:10},{n:'Ninguno',c:'#D4A76A',t:20},{n:'1%',c:'#8B4513',t:1},{n:'2%',c:'#FF0000',t:2}];
+function initResistor(){updateResistorUI();}
+function updateResistorUI(){var type=document.getElementById('resType').value;var inputs=document.getElementById('resInputs');var body=document.getElementById('resBody');inputs.innerHTML='';body.innerHTML='';
+if(type==='smd'){inputs.innerHTML='<input type="text" id="smdIn" placeholder="Ej: 103 o 4R7" class="form-input-easy w-full" oninput="calcResistor()">';body.style.padding='12px 16px';body.innerHTML='<span class="font-mono font-bold text-xs" id="smdBody">SMD</span>';}else{var count=parseInt(type);var bandIds=[];for(var i=1;i<=count;i++){var isTol=(i===count);var isMult=(i===count-1);var label=isTol?'Tolerancia':(isMult?'Multiplicador':'Banda '+i);inputs.innerHTML+='<div><label class="text-xs font-semibold text-slate-500 mb-1 block">'+label+'</label><div class="flex flex-wrap gap-1" id="rBand'+i+'"></div></div>';bandIds.push(i);}
+body.style.padding='12px 24px';body.style.gap='3px';bandIds.forEach(function(idx){var el=document.createElement('div');el.className='resistor-band';el.id='rBandVisual'+idx;body.appendChild(el);});
+bandIds.forEach(function(idx){var isTol=(idx===count);var isMult=(idx===count-1);var container=document.getElementById('rBand'+idx);var arr=isTol?rTols:rCols;arr.forEach(function(col,i){var sw=document.createElement('div');sw.className='color-swatch';sw.style.background=col.c;sw.style.width='28px';sw.style.height='28px';sw.title=col.n;sw.onclick=function(){if(isTol)rBands['t']=i;else if(isMult)rBands['m']=i;else rBands[idx]=i;calcResistor();};container.appendChild(sw);});});}calcResistor();}
+function calcResistor(){var type=document.getElementById('resType').value;var resEl=document.getElementById('resistorResult');if(type==='smd'){var code=document.getElementById('smdIn').value.trim();var val='—';if(code.length>=3){if(code.includes('R')){val=code.replace('R','.');}else{var d=code.substring(0,code.length-1);var m=code.charAt(code.length-1);val=parseFloat(d)*Math.pow(10,parseInt(m));}}document.getElementById('smdBody').textContent=code;resEl.innerHTML='<div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold">'+formatR(val)+'</div>';return;}
+var count=parseInt(type);var d1=rBands[1]||0;var d2=rBands[2]||0;var multIdx=rBands['m']||0;var tolIdx=rBands['t']||0;var multVal=rCols[multIdx]?Math.pow(10,multIdx):1;var baseVal=d1*10+d2;if(count===5){var d3=rBands[3]||0;baseVal=d1*100+d2*10+d3;multVal=rCols[multIdx]?Math.pow(10,multIdx):1;}
+var finalVal=baseVal*multVal;var tolVal=rTols[tolIdx]?rTols[tolIdx].t:20;
+for(var i=1;i<=count;i++){var vis=document.getElementById('rBandVisual'+i);if(vis){var isTol=(i===count);var isMult=(i===count-1);var arr=isTol?rTols:rCols;var idx=isTol?tolIdx:(isMult?multIdx:rBands[i]);vis.style.background=arr[idx]?arr[idx].c:'#ccc';}}
+resEl.innerHTML='<div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold">'+formatR(finalVal)+' ± '+tolVal+'%</div>';}
+function formatR(v){if(isNaN(v))return '—';if(v>=1e6)return (v/1e6).toFixed(v%1e6?1:0)+' MΩ';if(v>=1e3)return (v/1e3).toFixed(v%1e3?1:0)+' kΩ';return v+' Ω';}
+function updateCap(){var c=document.getElementById('capCode').value.trim();var val='—';if(c.length===3){var num=parseInt(c.substring(0,2));var mult=parseInt(c.charAt(2));val=num*Math.pow(10,mult);}document.getElementById('capResult').innerHTML='<div class="text-sm text-blue-600 font-medium mb-1">Capacitancia</div><div class="font-mono text-2xl font-bold">'+formatC(val)+'</div>';}
+function formatC(v){if(isNaN(v))return '—';if(v>=1e6)return (v/1e6).toFixed(1)+' µF';if(v>=1e3)return (v/1e3).toFixed(1)+' nF';return v+' pF';}
+function updateCapQ(){var v=parseFloat(document.getElementById('capV').value)||0;var c=parseFloat(document.getElementById('capF').value)||0;document.getElementById('capQResult').textContent='Q = '+(v*c).toFixed(4)+' C';}
+function updateTrans(){var ib=parseFloat(document.getElementById('transIb').value)||0;var hfe=parseFloat(document.getElementById('transHfe').value)||100;var vcc=parseFloat(document.getElementById('transVcc').value)||0;var rc=parseFloat(document.getElementById('transRc').value)||1000;var ic=ib*hfe;var vce=vcc-(ic/1000)*rc;var vce_sat=0.2;var sat=vce<vce_sat;document.getElementById('transResult').innerHTML='<p>Ic = '+(ic).toFixed(2)+' mA</p><p>Vce = '+(sat?vce_sat:vce).toFixed(2)+' V</p><p>Estado: <b>'+(sat?'Saturado (Switch ON)':'Activo (Amplificador)')+'</b></p>';}
+function updateDiod(){var vi=parseFloat(document.getElementById('diodVi').value)||0;var vd=parseFloat(document.getElementById('diodVd').value)||0.7;var r=parseFloat(document.getElementById('diodR').value)||1000;var i=(vi>vd)?((vi-vd)/r):0;document.getElementById('diodResult').innerHTML='<p>Corriente (I) = '+(i*1000).toFixed(2)+' mA</p><p>Potencia Diodo = '+(i*vd).toFixed(4)+' W</p><p>Estado: '+(vi>vd?'Conducción (ON)':'Corte (OFF)')+'</p>';}
+
+// ====== CIRCUITOS ======
+var cType='serie'; var flowType='convencional'; var circAnimFrame; var electronPos=0;
+function toggleFlowType(){flowType=flowType==='convencional'?'electrones':'convencional';document.getElementById('flowLabel').textContent=flowType==='convencional'?'Convencional':'Electrones';}
+function setCircuitType(t){cType=t;document.getElementById('btnSerie').className=t==='serie'?'px-4 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500';document.getElementById('btnParalelo').className=t==='paralelo'?'px-4 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500';document.getElementById('btnMixto').className=t==='mixto'?'px-4 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500';var inp=document.getElementById('circInputs');if(t==='mixto'){inp.classList.remove('grid-cols-3');inp.classList.add('grid-cols-4');if(!document.getElementById('circR3')){var d=document.createElement('div');d.innerHTML='<label class="text-xs font-semibold text-ohms block mb-1">R₃</label><input type="number" id="circR3" value="300" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="drawCircuit()">';inp.appendChild(d.firstChild);inp.appendChild(d.lastChild);}}else{inp.classList.add('grid-cols-3');inp.classList.remove('grid-cols-4');var r3=document.getElementById('circR3');if(r3)r3.parentElement.remove();}drawCircuit();}
+function initCircuit(){drawCircuit();}
+function drawCircuit(){if(circAnimFrame)cancelAnimationFrame(circAnimFrame);var V=parseFloat(document.getElementById('circV').value)||12,R1=parseFloat(document.getElementById('circR1').value)||100,R2=parseFloat(document.getElementById('circR2').value)||200,R3=cType==='mixto'?(parseFloat(document.getElementById('circR3').value)||300):0;var canvas=document.getElementById('circuitCanvas'),ctx=canvas.getContext('2d'),cw=canvas.width,ch=canvas.height;ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#F8FAFC';ctx.fillRect(0,0,cw,ch);ctx.fillStyle='#E2E8F0';ctx.fillRect(40,40,cw-80,ch-80);ctx.fillStyle='#F1F5F9';ctx.fillRect(41,41,cw-82,ch-82);ctx.strokeStyle='#CBD5E1';ctx.lineWidth=2;ctx.strokeRect(40,40,cw-80,ch-80);
+var isConv=flowType==='convencional';var pColor=isConv?'#F59E0B':'#3B82F6';var gColor=isConv?'rgba(245,158,11,0.3)':'rgba(59,130,246,0.3)';var Rt,It,V1,V2,V3,I1,I2,I3;
+if(cType==='serie'){Rt=R1+R2;It=V/Rt;V1=It*R1;V2=It*R2;I1=I2=It;}else if(cType==='paralelo'){Rt=(R1*R2)/(R1+R2);It=V/Rt;V1=V2=V;I1=V/R1;I2=V/R2;}else{var Rp=(R2*R3)/(R2+R3);Rt=R1+Rp;It=V/Rt;V1=It*R1;V2=V-V1;I1=It;I2=V2/R2;I3=V2/R3;}var P=V*It;
+document.getElementById('circuitResults').innerHTML='<div class="grid grid-cols-2 gap-3"><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">R total</div><div class="font-mono font-bold text-ohms">'+Rt.toFixed(1)+'Ω</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I total</div><div class="font-mono font-bold text-amps">'+It.toFixed(4)+'A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2081</div><div class="font-mono font-bold text-volt">'+V1.toFixed(2)+'V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R\u2082</div><div class="font-mono font-bold text-volt">'+V2.toFixed(2)+'V</div></div></div>';
+var rules=cType==='serie'?['R<sub>T</sub>=R\u2081+R\u2082','Corriente igual','Voltaje se divide']:cType==='paralelo'?['1/R<sub>T</sub>=1/R\u2081+1/R\u2082','Voltaje igual','Corriente se divide']:['R\u2081 en serie con (R\u2082||R\u2083)','Mixto combina serie y paralelo','La corriente principal pasa por R\u2081'];
+document.getElementById('circuitRules').innerHTML=rules.map(function(r){return '<p class="text-sm text-slate-600">\u2022 '+r+'</p>';}).join('');
+
+electronPos+=0.004;if(electronPos>1)electronPos=0;
+function drawCable(pts,color){ctx.lineWidth=6;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle=color;ctx.shadowColor='rgba(0,0,0,0.15)';ctx.shadowBlur=4;ctx.shadowOffsetY=2;ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(var i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);ctx.stroke();ctx.shadowColor='transparent';ctx.lineWidth=2;ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y-1);for(var i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y-1);ctx.stroke();}
+function drawBattery(cx,cy){ctx.shadowColor='rgba(0,0,0,0.2)';ctx.shadowBlur=8;ctx.shadowOffsetY=4;let grad=ctx.createLinearGradient(cx-15,cy,cx+15,cy);grad.addColorStop(0,'#334155');grad.addColorStop(0.5,'#64748B');grad.addColorStop(1,'#334155');ctx.fillStyle=grad;ctx.beginPath();ctx.roundRect(cx-15,cy-40,30,80,8);ctx.fill();ctx.shadowColor='transparent';ctx.fillStyle='#EF4444';ctx.fillRect(cx-8,cy-42,16,6);ctx.fillStyle='#1E293B';ctx.fillRect(cx-6,cy+36,12,4);ctx.fillStyle='#fff';ctx.font='bold 11px Space Grotesk';ctx.textAlign='center';ctx.fillText('+',cx,cy-28);ctx.fillText('−',cx,cy+28);ctx.fillStyle='#EF4444';ctx.font='bold 14px Space Grotesk';ctx.textAlign='left';ctx.fillText(V+'V',cx+25,cy+5);}
+function drawHRes(cx,cy,label){ctx.shadowColor='rgba(0,0,0,0.15)';ctx.shadowBlur=6;ctx.shadowOffsetY=3;let grad=ctx.createLinearGradient(cx,cy-10,cx,cy+10);grad.addColorStop(0,'#D4A76A');grad.addColorStop(0.5,'#C49555');grad.addColorStop(1,'#B8894A');ctx.fillStyle=grad;ctx.beginPath();ctx.roundRect(cx-40,cy-10,80,20,4);ctx.fill();ctx.shadowColor='transparent';ctx.fillStyle='#334155';ctx.font='bold 12px JetBrains Mono';ctx.textAlign='center';ctx.fillText(label,cx,cy+5);}
+function drawVRes(cx,cy,label){ctx.save();ctx.translate(cx,cy);ctx.rotate(-Math.PI/2);drawHRes(0,0,label);ctx.restore();}
+function drawElectrons(path,speed){let numE=6;for(let i=0;i<numE;i++){let t=(electronPos*speed+i/numE)%1;if(!isConv)t=1-t;let pos=t*(path.length-1);let idx=Math.floor(pos);let frac=pos-idx;if(idx>=path.length-1){idx=path.length-2;frac=1;}let ax=path[idx].x,ay=path[idx].y,bx=path[idx+1].x,by=path[idx+1].y;let ex=ax+(bx-ax)*frac,ey=ay+(by-ay)*frac;ctx.beginPath();ctx.arc(ex,ey,7,0,Math.PI*2);ctx.fillStyle=gColor;ctx.fill();ctx.beginPath();ctx.arc(ex,ey,4,0,Math.PI*2);ctx.fillStyle=pColor;ctx.fill();}}
+
+if(cType==='serie'){let TL={x:80,y:80},TR={x:420,y:80},BR={x:420,y:300},BL={x:80,y:300};drawCable([TL,TR],'#EF4444');drawCable([TR,BR],'#0F172A');drawCable([BR,BL],'#0F172A');drawCable([BL,{x:80,y:230}],'#0F172A');drawCable([{x:80,y:150},TL],'#EF4444');drawBattery(80,190);drawHRes(190,80,'R\u2081');drawHRes(320,80,'R\u2082');drawElectrons([TL,TR,BR,BL,TL],1);}
+else if(cType==='paralelo'){let TL={x:80,y:80},TR={x:420,y:80},BR={x:420,y:300},BL={x:80,y:300};let N1T={x:220,y:80},N1B={x:220,y:300};let N2T={x:360,y:80},N2B={x:360,y:300};drawCable([TL,N1T],'#EF4444');drawCable([N1T,N2T],'#EF4444');drawCable([N2T,TR],'#EF4444');drawCable([TR,BR],'#0F172A');drawCable([BR,N2B],'#0F172A');drawCable([N2B,N1B],'#0F172A');drawCable([N1B,BL],'#0F172A');drawCable([BL,{x:80,y:230}],'#0F172A');drawCable([{x:80,y:150},TL],'#EF4444');drawCable([N1T,{x:N1T.x,y:100}],'#0F172A');drawCable([{x:N1B.x,y:120},N1B],'#0F172A');drawCable([N2T,{x:N2T.x,y:100}],'#0F172A');drawCable([{x:N2B.x,y:120},N2B],'#0F172A');drawVRes(N1T.x,N1T.y+110,'R\u2081');drawVRes(N2T.x,N2T.y+110,'R\u2082');drawBattery(80,190);drawElectrons([{x:80,y:150},TL,N1T,{x:N1T.x,y:100},{x:N1B.x,y:120},N1B,BL,{x:80,y:230}],1);drawElectrons([N1T,N2T,{x:N2T.x,y:100},{x:N2B.x,y:120},N2B,N1B],0.6);}
+else{let TL={x:80,y:80},TR={x:420,y:80},BR={x:420,y:300},BL={x:80,y:300};let J1T={x:180,y:80},J1B={x:180,y:300};let J2T={x:300,y:80},J2B={x:300,y:300};drawCable([TL,J1T],'#EF4444');drawCable([J1T,TR],'#EF4444');drawCable([J1T,J2T],'#EF4444');drawCable([J2T,TR],'#EF4444');drawCable([TR,BR],'#0F172A');drawCable([BR,J2B],'#0F172A');drawCable([J2B,J1B],'#0F172A');drawCable([J1B,BL],'#0F172A');drawCable([BL,{x:80,y:230}],'#0F172A');drawCable([{x:80,y:150},TL],'#EF4444');drawCable([J1T,{x:J1T.x,y:100}],'#0F172A');drawCable([{x:J1B.x,y:120},J1B],'#0F172A');drawCable([J2T,{x:J2T.x,y:100}],'#0F172A');drawCable([{x:J2B.x,y:120},J2B],'#0F172A');drawHRes(130,80,'R\u2081');drawVRes(J1T.x,J1T.y+110,'R\u2082');drawVRes(J2T.x,J2T.y+110,'R\u2083');drawBattery(80,190);drawElectrons([{x:80,y:150},TL,J1T,{x:J1T.x,y:100},{x:J1B.x,y:120},J1B,BL,{x:80,y:230}],1);drawElectrons([J1T,J2T,{x:J2T.x,y:100},{x:J2B.x,y:120},J2B,J1B],0.6);}
+
+ctx.fillStyle=isConv?'#F59E0B':'#3B82F6';ctx.font='bold 12px Space Grotesk';ctx.textAlign='center';ctx.fillText(isConv?'I Convencional (+ → −)':'I Real (− → +)',cw/2,ch-15);circAnimFrame=requestAnimationFrame(drawCircuit);}
+
+// ====== WAVEFORM ======
+var wType='sine',wAmp=5,wFreq=2,wTime=0;function setWaveType(t){wType=t;document.querySelectorAll('.wave-btn').forEach(function(b){b.className='wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600';});var btn=document.getElementById('btn'+t.charAt(0).toUpperCase()+t.slice(1));if(btn)btn.className='wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-electric-600 text-white';updateWaveParams();}
+function updateWaveParams(){wAmp=parseFloat(document.getElementById('ampSlider').value);wFreq=parseFloat(document.getElementById('freqSlider').value);document.getElementById('ampVal').textContent=wAmp.toFixed(1)+' V';document.getElementById('freqVal').textContent=wFreq.toFixed(1)+' Hz';var T=1/wFreq,Vrms=wType==='sine'?(wAmp/Math.sqrt(2)).toFixed(2):wType==='square'?wAmp.toFixed(2):(wAmp/Math.sqrt(3)).toFixed(2);document.getElementById('waveProps').innerHTML='<div class="flex justify-between"><span class="text-slate-500">Vp</span><span class="font-mono font-semibold">'+wAmp.toFixed(1)+'V</span></div><div class="flex justify-between"><span class="text-slate-500">f</span><span class="font-mono font-semibold">'+wFreq.toFixed(1)+'Hz</span></div><div class="flex justify-between"><span class="text-slate-500">T</span><span class="font-mono font-semibold">'+T.toFixed(3)+'s</span></div><div class="flex justify-between"><span class="text-slate-500">Vrms</span><span class="font-mono font-semibold">'+Vrms+'V</span></div>';}
+function initWaveform(){var canvas=document.getElementById('waveCanvas'),ctx=canvas.getContext('2d');updateWaveParams();function draw(){var cw=canvas.width,ch=canvas.height;ctx.fillStyle='#0C1A2E';ctx.fillRect(0,0,cw,ch);ctx.strokeStyle='rgba(10,132,255,.1)';ctx.lineWidth=1;for(var x=0;x<cw;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}for(var y=0;y<ch;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}
+ctx.strokeStyle='rgba(10,132,255,.25)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,ch/4);ctx.lineTo(cw,ch/4);ctx.stroke();ctx.beginPath();ctx.moveTo(0,3*ch/4);ctx.lineTo(cw,3*ch/4);ctx.stroke();ctx.strokeStyle='rgba(255,165,0,0.9)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,ch/2);ctx.lineTo(cw,ch/2);ctx.stroke();
+ctx.fillStyle='#3399FF';ctx.font='10px JetBrains Mono';ctx.textAlign='left';ctx.fillText('0V',5,ch/2-4);ctx.fillText(wAmp.toFixed(1)+'V',5,ch/4-4);ctx.fillText('-'+wAmp.toFixed(1)+'V',5,3*ch/4-4);ctx.textAlign='right';ctx.fillText('t',cw-5,ch/2-4);
+ctx.beginPath();ctx.strokeStyle='#3399FF';ctx.lineWidth=2.5;ctx.shadowColor='#3399FF';ctx.shadowBlur=8;var midY=ch/2,sY=(ch/2-30)/12;for(var x=0;x<cw;x++){var t=(x/cw)*3+wTime,y,ph=2*Math.PI*wFreq*t;if(wType==='sine')y=midY-wAmp*Math.sin(ph)*sY;else if(wType==='square')y=midY-wAmp*Math.sign(Math.sin(ph))*sY;else if(wType==='triangle')y=midY-wAmp*(2/Math.PI)*Math.asin(Math.sin(ph))*sY;else if(wType==='sawtooth'){var p=(wFreq*t)%1;y=midY-wAmp*(2*p-1)*sY;}else if(wType==='half'){y=midY-Math.max(0,wAmp*Math.sin(ph))*sY;}else y=midY-wAmp*sY;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.shadowBlur=0;wTime+=.015;requestAnimationFrame(draw);}draw();}
+
+// ====== QUIZ ======
+var QQ=[{cat:'Ohm',q:'R=100\u03A9 I=0.5A \u00bfV=?',o:['25V','50V','100V','200V'],c:1,e:'V=I\u00d7R=50V'},{cat:'Comp.',q:'\u00bf1k\u03A9 \u00b15%?',o:['M-N-R-Oro','M-N-N-Oro','R-N-M-Oro','M-R-N-Oro'],c:0,e:'1-0-\u00d7100=1k\u03A9'},{cat:'Circ.',q:'Serie R\u2081=10 R\u2082=20 \u00bfRT?',o:['6.67','30','200','15'],c:1,e:'RT=30\u03A9'},{cat:'Circ.',q:'Paralelo: \u00bfqu\u00e9 es igual?',o:['Corriente','Resistencia','Voltaje','Potencia'],c:2,e:'Voltaje igual en ramas'},{cat:'Ohm',q:'\u00bfUnidad resistencia?',o:['Voltio','Amperio','Ohmio','Vatio'],c:2,e:'Ohmio'},{cat:'Comp.',q:'\u00bfQu\u00e9 almacena carga?',o:['Resistencia','Inductor','Capacitor','Diodo'],c:2,e:'Capacitor'},{cat:'Se\u00f1al',q:'T=0.02s \u00bff?',o:['20Hz','50Hz','100Hz','0.02Hz'],c:1,e:'f=50Hz'},{cat:'Ohm',q:'V=12 R=4 \u00bfP?',o:['3W','16W','36W','48W'],c:2,e:'P=36W'}];
+var cQ=0,sc=0,qans=false;function initQuiz(){showQ();}
+function showQ(){if(cQ>=QQ.length){document.getElementById('quizCard').style.display='none';document.getElementById('quizComplete').style.display='block';document.getElementById('finalScore').textContent=sc+'/'+QQ.length;var p=sc/QQ.length;document.getElementById('finalMsg').textContent=p>=.8?'\u00a1Excelente!':p>=.5?'Buen trabajo':'Sigue practicando';return;}var q=QQ[cQ];document.getElementById('qNum').textContent=cQ+1;document.getElementById('qTotal').textContent=QQ.length;document.getElementById('qProgress').style.width=((cQ+1)/QQ.length*100)+'%';document.getElementById('quizCategory').textContent=q.cat;document.getElementById('quizQuestion').textContent=q.q;document.getElementById('quizFeedback').style.display='none';document.getElementById('btnNext').style.display='none';document.getElementById('btnSkip').style.display='inline-block';qans=false;document.getElementById('quizOptions').innerHTML=q.o.map(function(o,i){return '<button onclick="ansQ('+i+')" class="quiz-option w-full text-left px-5 py-3.5 rounded-xl border-2 border-slate-200 text-sm font-medium text-slate-700 hover:border-electric-400 hover:bg-electric-50 transition-all flex items-center gap-3"><span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">'+String.fromCharCode(65+i)+'</span>'+o+'</button>';}).join('');}
+function ansQ(i){if(qans)return;qans=true;var q=QQ[cQ];document.querySelectorAll('.quiz-option').forEach(function(o,j){o.style.pointerEvents='none';if(j===q.c)o.classList.add('correct');if(i===j&&j!==q.c)o.classList.add('incorrect');});var fb=document.getElementById('quizFeedback');fb.style.display='block';if(i===q.c){sc++;document.getElementById('qScore').textContent=sc;fb.className='mt-6 rounded-xl p-4 text-sm bg-green-50 border border-green-200 text-green-800';fb.innerHTML='\u2705 '+q.e;}else{fb.className='mt-6 rounded-xl p-4 text-sm bg-red-50 border border-red-200 text-red-800';fb.innerHTML='\u274c '+q.e;}document.getElementById('btnNext').style.display='inline-block';document.getElementById('btnSkip').style.display='none';}
+function skipQuestion(){cQ++;showQ();}function nextQuestion(){cQ++;showQ();}
+function restartQuiz(){cQ=0;sc=0;qans=false;document.getElementById('qScore').textContent='0';document.getElementById('quizCard').style.display='block';document.getElementById('quizComplete').style.display='none';showQ();}
+
+// ====== KATEX ======
+function renderFormulas(){var tryR=function(){if(typeof katex==='undefined'){setTimeout(tryR,200);return;}var fm={f1:'V = I \\cdot R',f2:'I = \\dfrac{V}{R}',f3:'R = \\dfrac{V}{I}',f4:'P = V \\cdot I',f5:'P = I^2 \\cdot R',f6:'P = \\dfrac{V^2}{R}'};Object.keys(fm).forEach(function(id){var el=document.getElementById(id);if(el)katex.render(fm[id],el,{throwOnError:false});});var cf={fc_r:'R = \\dfrac{V}{I}\\;(\\Omega)',fc_c:'Q = C \\cdot V\\;(F)',fc_d:'V_d \\approx 0.7\\;V'};Object.keys(cf).forEach(function(id){var el=document.getElementById(id);if(el)katex.render(cf[id],el,{throwOnError:false});});};tryR();}
+</script>
+</body>
+</html>
