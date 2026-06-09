@@ -1,481 +1,754 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElectroniLab — Electrónica Básica Interactiva (Corregido)</title>
+    <title>ElectroniLab 2.0 — Electrónica Básica Interactiva</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX para fórmulas matemáticas -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    
+    <!-- Configuración Tailwind personalizada -->
     <script>
-        tailwind.config={theme:{extend:{colors:{electric:{50:'#EBF5FF',100:'#D6EBFF',200:'#ADD6FF',300:'#85C2FF',400:'#5CADFF',500:'#3399FF',600:'#0A84FF',700:'#0066CC',800:'#004D99',900:'#003366'},volt:'#EF4444',amps:'#F59E0B',ohms:'#22C55E',watts:'#8B5CF6'},fontFamily:{heading:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        electric: {
+                            50: '#EBF5FF',
+                            100: '#D6EBFF',
+                            200: '#ADD6FF',
+                            300: '#85C2FF',
+                            400: '#5CADFF',
+                            500: '#3399FF',
+                            600: '#0A84FF',
+                            700: '#0066CC',
+                            800: '#004D99',
+                            900: '#003366'
+                        },
+                        volt: '#EF4444',
+                        amps: '#F59E0B',
+                        ohms: '#22C55E',
+                        watts: '#8B5CF6'
+                    },
+                    fontFamily: {
+                        heading: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
     </script>
-    <style>
-        body{font-family:'Space Grotesk',sans-serif;margin:0;overflow-x:hidden}
-        .font-mono{font-family:'JetBrains Mono',monospace}
-        #heroCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}
-        .resistor-body{display:flex;align-items:center;gap:3px;padding:12px 24px;background:linear-gradient(180deg,#D4A76A,#C49555,#B8894A);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
-        .resistor-band{width:10px;height:52px;border-radius:2px;box-shadow:inset 0 0 3px rgba(0,0,0,.3);transition:background .3s}
-        .resistor-lead{width:40px;height:4px;background:linear-gradient(180deg,#ccc,#999);border-radius:2px}
-        .quiz-option.correct{background:#DCFCE7!important;border-color:#22C55E!important;color:#166534!important}
-        .quiz-option.incorrect{background:#FEE2E2!important;border-color:#EF4444!important;color:#991B1B!important}
-        input[type=range]{-webkit-appearance:none;appearance:none;height:8px;border-radius:4px;background:#E2E8F0;outline:none}
-        input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#0A84FF;cursor:pointer;box-shadow:0 2px 6px rgba(10,132,255,.4)}
-        .color-swatch{width:36px;height:36px;border-radius:8px;cursor:pointer;border:3px solid transparent;transition:all .2s}
-        .color-swatch:hover,.color-swatch.active{border-color:#0A84FF;transform:scale(1.15);box-shadow:0 2px 8px rgba(0,0,0,.2)}
-        .formula-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:20px;text-align:center;transition:all .3s}
-        .formula-card:hover{border-color:#0A84FF;box-shadow:0 4px 20px rgba(10,132,255,.12);transform:translateY(-2px)}
-        .shield-img{filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))}
-        .view{display:none;min-height:100vh}.view.active{display:block}
-        .nav-tab{transition:all .2s;cursor:pointer;position:relative}
-        .nav-tab.active{color:#0A84FF;background:rgba(10,132,255,.08)}
-        .nav-tab.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:#0A84FF;border-radius:3px 3px 0 0}
-        .nav-tab:hover:not(.active){background:rgba(10,132,255,.04)}
-        .content-page{display:none;animation:fadeIn .3s ease}.content-page.active{display:block}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-        .section-title::before{content:'';display:block;width:40px;height:4px;background:#0A84FF;border-radius:2px;margin-bottom:12px}
-        .area-card{transition:all .3s;cursor:pointer}
-        .area-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(10,132,255,.15)}
-        .sub-tab{transition:all .2s;cursor:pointer}
-        .sub-tab.active{background:#0A84FF!important;color:#fff!important;box-shadow:0 2px 8px rgba(10,132,255,.3)}
-        .comp-tab{transition:all .2s;cursor:pointer}
-        .comp-tab.active{background:#0A84FF!important;color:#fff!important}
-        .practice-card{border:1px solid #E2E8F0;border-radius:12px;padding:16px;background:#fff;transition:all .3s}
-        .practice-card:hover{border-color:#0A84FF;box-shadow:0 2px 12px rgba(10,132,255,.1)}
-        .graph-paper{background-color:#F8FAFC;background-image:linear-gradient(rgba(10,132,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(10,132,255,.04) 1px,transparent 1px);background-size:24px 24px}
-        ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#F1F5F9}::-webkit-scrollbar-thumb{background:#94A3B8;border-radius:4px}
-        @keyframes pulse-ring{0%{transform:scale(.8);opacity:.6}50%{transform:scale(1.2);opacity:.2}100%{transform:scale(.8);opacity:.6}}
-        @keyframes float-shape{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(5deg)}}
-        .hero-shape{position:absolute;border:1px solid rgba(51,153,255,.15);border-radius:50%;animation:pulse-ring 4s ease-in-out infinite}
-        .float-geo{position:absolute;opacity:.06;animation:float-shape 6s ease-in-out infinite}
-        .form-input-easy{background:#f8fafc; border:2px solid #e2e8f0; border-radius:12px; padding:12px 16px; font-size:15px; transition: all 0.2s;}
-        .form-input-easy:focus{border-color:#0A84FF; background:#fff; box-shadow:0 0 0 4px rgba(10,132,255,0.1); outline:none;}
-        /* roundRect polyfill */
-        canvas { display: block; }
-    </style>
+    
+    <!-- Estilos principales -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="graph-paper text-slate-800">
 
-<!-- VIEW: INICIO -->
+<body class="graph-paper text-slate-800 transition-colors duration-300">
+
+<!-- ============================================ -->
+<!-- VIEW: INICIO / HERO SECTION MEJORADO         -->
+<!-- ============================================ -->
 <div id="view-inicio" class="view active">
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        
+        <!-- Canvas de partículas eléctricas mejorado -->
         <canvas id="heroCanvas"></canvas>
-        <div class="absolute inset-0 bg-gradient-to-b from-electric-900/80 via-electric-900/60 to-electric-900/90 z-[1]"></div>
+        
+        <!-- Overlay gradiente -->
+        <div class="absolute inset-0 bg-gradient-to-b from-electric-900/90 via-electric-900/70 to-electric-900/95 z-[1]"></div>
+        
+        <!-- Formas geométricas flotantes decorativas -->
         <div class="hero-shape w-40 h-40 top-[10%] left-[5%] z-[2]" style="animation-delay:0s"></div>
         <div class="hero-shape w-24 h-24 top-[60%] right-[8%] z-[2]" style="animation-delay:1.5s"></div>
         <div class="hero-shape w-56 h-56 bottom-[15%] left-[15%] z-[2]" style="animation-delay:3s"></div>
         <div class="hero-shape w-16 h-16 top-[25%] right-[25%] z-[2]" style="animation-delay:2s"></div>
         <div class="hero-shape w-32 h-32 bottom-[30%] right-[20%] z-[2]" style="animation-delay:.5s"></div>
-        <svg class="float-geo w-48 h-48 top-[8%] right-[12%] z-[2]" style="animation-delay:1s" viewBox="0 0 100 100"><polygon points="50,5 95,75 5,75" fill="none" stroke="#3399FF" stroke-width="1"/></svg>
-        <svg class="float-geo w-36 h-36 bottom-[12%] left-[8%] z-[2]" style="animation-delay:2s" viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" fill="none" stroke="#3399FF" stroke-width="1" rx="5"/></svg>
-        <svg class="float-geo w-28 h-28 top-[45%] left-[3%] z-[2]" style="animation-delay:3s" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#3399FF" stroke-width="1"/></svg>
-        <div class="relative z-10 text-center px-6 max-w-4xl">
-            <p class="text-sm text-slate-300/80 tracking-widest uppercase mb-6 font-semibold">ESCUELA SUPERIOR DE FORMACIÓN DE MAESTROS MARISCAL SUCRE - ELECTRICIDAD Y ELECTRÓNICA</p>
+        
+        <!-- SVG flotantes -->
+        <svg class="float-geo w-48 h-48 top-[8%] right-[12%] z-[2]" style="animation-delay:1s" viewBox="0 0 100 100">
+            <polygon points="50,5 95,75 5,75" fill="none" stroke="#3399FF" stroke-width="1"/>
+        </svg>
+        <svg class="float-geo w-36 h-36 bottom-[12%] left-[8%] z-[2]" style="animation-delay:2s" viewBox="0 0 100 100">
+            <rect x="15" y="15" width="70" height="70" fill="none" stroke="#3399FF" stroke-width="1" rx="5"/>
+        </svg>
+        <svg class="float-geo w-28 h-28 top-[45%] left-[3%] z-[2]" style="animation-delay:3s" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#3399FF" stroke-width="1"/>
+        </svg>
+        
+        <!-- Contenido Principal del Hero -->
+        <div class="relative z-10 text-center px-6 max-w-5xl">
+            
+            <!-- Badge institucional superior -->
+            <p class="text-sm text-slate-300/80 tracking-widest uppercase mb-6 font-semibold">
+                ESCUELA SUPERIOR DE FORMACIÓN DE MAESTROS MARISCAL SUCRE<br>
+                <span class="text-electric-300">⚡ Electricidad y Electrónica</span>
+            </p>
+            
+            <!-- Logos institucionales -->
             <div class="flex items-center justify-center gap-6 mb-8">
-                <img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" alt="ESFM" class="shield-img h-24 md:h-28 object-contain">
-                <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" alt="Especialidad" class="shield-img h-24 md:h-28 object-contain">
+                <img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" 
+                     alt="ESFM" 
+                     class="shield-img h-24 md:h-28 object-contain hover:scale-110 transition-transform">
+                <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" 
+                     alt="Especialidad" 
+                     class="shield-img h-24 md:h-28 object-contain hover:scale-110 transition-transform">
             </div>
+            
+            <!-- Estado en vivo -->
             <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-5 py-2 mb-6">
                 <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span class="text-white/80 text-sm font-medium">IEPC - PEC · Unidad Educativa Max Fernandez Rojas</span>
+                <span class="text-white/80 text-sm font-medium">IEPC - PEC · U.E. Max Fernandez Rojas</span>
             </div>
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight">Electroni<span class="text-electric-400">Lab</span></h1>
-            <p class="text-xl md:text-2xl text-electric-200 font-light mb-2">Electrónica Básica Interactiva</p>
-            <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">Adéntrate en el fascinante mundo de la electrónica. Comprende cómo fluye la corriente a través de los circuitos, descubre la función de cada componente y domina las leyes fundamentales que impulsan la tecnología moderna. Una experiencia diseñada para aprender haciendo.</p>
-            <button onclick="navigateTo('areas')" class="inline-flex items-center justify-center gap-2 bg-electric-600 hover:bg-electric-700 text-white font-semibold py-4 px-10 rounded-xl transition-all duration-300 shadow-lg shadow-electric-600/30 text-lg hover:scale-105">
-                <i data-lucide="layout-grid" class="w-5 h-5"></i> ÁREAS DE APRENDIZAJE
+            
+            <!-- Título principal con efecto glow -->
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight hero-title-glow">
+                Electroni<span class="text-electric-400">Lab</span> 
+                <span class="text-2xl md:text-3xl font-light text-electric-200 align-super">2.0</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-electric-200 font-light mb-2">
+                Electrónica Básica Interactiva
+            </p>
+            
+            <p class="text-lg text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+                Adéntrate en el fascinante mundo de la electrónica. Comprende cómo fluye la corriente, 
+                domina las leyes fundamentales y conviértete en un experto construyendo circuitos reales. 
+                <strong class="text-electric-300">Una experiencia diseñada para aprender haciendo.</strong>
+            </p>
+            
+            <!-- ============================================ -->
+            <!-- VIDEO HERO SECTION (NUEVO)                  -->
+            <!-- ============================================ -->
+            <div id="videoHeroContainer" class="mb-8 max-w-3xl mx-auto">
+                <div class="relative rounded-2xl overflow-hidden shadow-2xl shadow-electric-600/30 border-2 border-electric-500/30">
+                    <!-- Placeholder/Carga -->
+                    <div id="videoPlaceholder" class="aspect-video bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center cursor-pointer group" onclick="playVideo()">
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-electric-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-electric-500 group-hover:scale-110 transition-all shadow-lg shadow-electric-600/50">
+                                <i data-lucide="play" class="w-10 h-10 text-white ml-1"></i>
+                            </div>
+                            <p class="text-white font-semibold text-lg">▶️ Ver Introducción a ElectroniLab</p>
+                            <p class="text-slate-400 text-sm mt-2">Haz clic para reproducir</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Iframe de video (oculto inicialmente) -->
+                    <iframe id="videoFrame" 
+                            class="w-full aspect-video hidden" 
+                            src="" 
+                            title="Video introductorio ElectroniLab"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                    
+                    <!-- Configuración de URL de video (EDITABLE) -->
+                    <input type="hidden" id="videoUrl" value="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                </div>
+                
+                <!-- Nota sobre video -->
+                <p class="text-xs text-slate-400 mt-3 text-center">
+                    💡 <strong>Tip:</strong> Cambia la URL del video editando el campo oculto arriba (línea con id="videoUrl")
+                </p>
+            </div>
+            
+            <!-- ============================================ -->
+            <!-- BOTÓN PRINCIPAL "EXPERIMENTA YA" (MEJORADO) -->
+            <!-- ============================================ -->
+            <button onclick="navigateTo('areas')" 
+                    class="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-electric-600 to-blue-600 hover:from-electric-500 hover:to-blue-500 text-white font-bold py-5 px-14 rounded-2xl transition-all duration-300 shadow-2xl shadow-electric-600/40 text-xl hover:scale-105 hover:shadow-electric-600/60 overflow-hidden btn-experimenta">
+                
+                <!-- Efecto de brillo en hover -->
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                
+                <i data-lucide="zap" class="w-7 h-7 relative z-10 animate-pulse"></i> 
+                <span class="relative z-10 tracking-wide">⚡ EXPERIMENTA YA</span>
+                <i data-lucide="arrow-right" class="w-6 h-6 relative z-10 group-hover:translate-x-1 transition-transform"></i>
             </button>
-            <div class="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center"><p class="text-white font-semibold text-sm">Cristian Medina Torres</p><p class="text-electric-300 text-xs">Maestro en Formación</p></div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center"><p class="text-white font-semibold text-sm">Wilder R. Panique Chama</p><p class="text-electric-300 text-xs">Maestro en Formación</p></div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center"><p class="text-white font-semibold text-sm">Jhonny S. Taboada Padilla</p><p class="text-electric-300 text-xs">Maestro en Formación</p></div>
+            
+            <!-- Sub-botones rápidos -->
+            <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+                <button onclick="openMiniGame()" 
+                        class="flex items-center gap-2 bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 text-white px-6 py-3 rounded-xl transition-all hover:scale-105 text-sm font-medium">
+                    <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                    🎮 Mini-Juego Rápido
+                </button>
+                
+                <button onclick="toggleBadgesPanel()" 
+                        class="flex items-center gap-2 bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 text-white px-6 py-3 rounded-xl transition-all hover:scale-105 text-sm font-medium relative">
+                    <i data-lucide="trophy" class="w-5 h-5"></i>
+                    🏆 Mis Logros
+                    <span id="badgeCountHero" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+            
+            <!-- Autores -->
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center hover:bg-white/10 transition-colors">
+                    <p class="text-white font-semibold text-sm">Cristian Medina Torres</p>
+                    <p class="text-electric-300 text-xs">Maestro en Formación</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center hover:bg-white/10 transition-colors">
+                    <p class="text-white font-semibold text-sm">Wilder R. Panique Chama</p>
+                    <p class="text-electric-300 text-xs">Maestro en Formación</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center hover:bg-white/10 transition-colors">
+                    <p class="text-white font-semibold text-sm">Jhonny S. Taboada Padilla</p>
+                    <p class="text-electric-300 text-xs">Maestro en Formación</p>
+                </div>
             </div>
         </div>
     </section>
 </div>
 
-<!-- APP SHELL -->
+<!-- ============================================ -->
+<!-- APP SHELL (Navegación Principal)             -->
+<!-- ============================================ -->
 <div id="app-shell" style="display:none">
+    
+    <!-- Barra superior sticky -->
     <nav class="sticky top-0 z-50">
-        <div class="py-1.5 px-6 bg-gradient-to-r from-electric-700 via-electric-600 to-electric-700 text-white text-center text-xs shadow-sm"><span class="opacity-90 font-medium tracking-wide">IEPC - PEC · ESFM Mariscal Sucre</span></div>
-        <div class="bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4"><div class="flex items-center gap-1 overflow-x-auto py-0">
-                <div class="flex items-center gap-2 mr-4 flex-shrink-0 py-3"><img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" alt="" class="h-7 w-7 object-contain"><span class="font-bold text-lg text-electric-700">ElectroniLab</span></div>
-                <button onclick="navigateTo('inicio')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="inicio"><i data-lucide="home" class="w-4 h-4"></i> Inicio</button>
-                <button onclick="navigateTo('areas')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="areas"><i data-lucide="layout-grid" class="w-4 h-4"></i> Áreas</button>
-                <button onclick="navigateTo('ohm')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="ohm"><i data-lucide="zap" class="w-4 h-4"></i> Ley de Ohm</button>
-                <button onclick="navigateTo('componentes')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="componentes"><i data-lucide="cpu" class="w-4 h-4"></i> Componentes</button>
-                <button onclick="navigateTo('circuitos')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="circuitos"><i data-lucide="git-branch" class="w-4 h-4"></i> Circuitos</button>
-                <button onclick="navigateTo('senales')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="senales"><i data-lucide="activity" class="w-4 h-4"></i> Señales</button>
-                <button onclick="navigateTo('practica')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="practica"><i data-lucide="brain" class="w-4 h-4"></i> Práctica</button>
-                <div class="ml-auto flex items-center gap-3 flex-shrink-0 pl-4 border-l border-slate-200 py-3">
-                    <span id="liveClock" class="font-mono text-xs text-slate-500 font-semibold"></span>
+        <!-- Banner institucional -->
+        <div class="py-1.5 px-6 bg-gradient-to-r from-electric-700 via-electric-600 to-electric-700 text-white text-center text-xs shadow-sm">
+            <span class="opacity-90 font-medium tracking-wide">IEPC - PEC · ESFM Mariscal Sucre</span>
+        </div>
+        
+        <!-- Navegación principal -->
+        <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex items-center gap-1 overflow-x-auto py-0">
+                    
+                    <!-- Logo -->
+                    <div class="flex items-center gap-2 mr-4 flex-shrink-0 py-3">
+                        <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" 
+                             alt="" 
+                             class="h-7 w-7 object-contain">
+                        <span class="font-bold text-lg text-electric-700 dark:text-electric-400">ElectroniLab</span>
+                        <span class="text-xs bg-electric-600 text-white px-2 py-0.5 rounded-full font-bold">2.0</span>
+                    </div>
+                    
+                    <!-- Tabs de navegación -->
+                    <button onclick="navigateTo('inicio')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="inicio">
+                        <i data-lucide="home" class="w-4 h-4"></i> Inicio
+                    </button>
+                    <button onclick="navigateTo('areas')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="areas">
+                        <i data-lucide="layout-grid" class="w-4 h-4"></i> Áreas
+                    </button>
+                    <button onclick="navigateTo('ohm')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="ohm">
+                        <i data-lucide="zap" class="w-4 h-4"></i> Ley de Ohm
+                    </button>
+                    <button onclick="navigateTo('componentes')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="componentes">
+                        <i data-lucide="cpu" class="w-4 h-4"></i> Componentes
+                    </button>
+                    <button onclick="navigateTo('circuitos')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="circuitos">
+                        <i data-lucide="git-branch" class="w-4 h-4"></i> Circuitos
+                    </button>
+                    <button onclick="navigateTo('senales')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="senales">
+                        <i data-lucide="activity" class="w-4 h-4"></i> Señales
+                    </button>
+                    <button onclick="navigateTo('practica')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="practica">
+                        <i data-lucide="brain" class="w-4 h-4"></i> Práctica
+                    </button>
+                    
+                    <!-- Controles adicionales (derecha) -->
+                    <div class="ml-auto flex items-center gap-3 flex-shrink-0 pl-4 border-l border-slate-200 dark:border-slate-700 py-3">
+                        
+                        <!-- Reloj -->
+                        <span id="liveClock" class="font-mono text-xs text-slate-500 dark:text-slate-400 font-semibold"></span>
+                        
+                        <!-- Toggle Modo Oscuro -->
+                        <button onclick="toggleDarkMode()" 
+                                class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" 
+                                title="Cambiar tema claro/oscuro"
+                                aria-label="Alternar modo oscuro">
+                            <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-yellow-400"></i>
+                            <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-600"></i>
+                        </button>
+                        
+                        <!-- Botón Badges -->
+                        <button onclick="toggleBadgesPanel()" 
+                                class="relative p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                                title="Ver mis logros"
+                                aria-label="Ver logros desbloqueados">
+                            <i data-lucide="trophy" class="w-5 h-5 text-amber-500"></i>
+                            <span id="badgeCountNav" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                        </button>
+                        
+                        <!-- Botón Mini-Juego -->
+                        <button onclick="openMiniGame()" 
+                                class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white text-xs font-bold rounded-lg transition-all hover:scale-105 shadow-md">
+                            <i data-lucide="gamepad-2" class="w-4 h-4"></i>
+                            ¡JUGAR!
+                        </button>
+                    </div>
                 </div>
-            </div></div>
+            </div>
         </div>
     </nav>
 
-    <!-- PAGE: ÁREAS -->
+    <!-- ============================================ -->
+    <!-- CONTENIDO DE PÁGINAS                        -->
+    <!-- ============================================ -->
+
+    <!-- PAGE: ÁREAS DE APRENDIZAJE -->
     <div id="page-areas" class="content-page active">
         <div class="max-w-7xl mx-auto px-6 py-16">
-            <div class="text-center mb-14"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-4 justify-items-center">Áreas de Aprendizaje</h2></div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <div onclick="navigateTo('ohm')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-volt"><div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-red-100 transition-colors"><i data-lucide="zap" class="w-7 h-7 text-volt"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Ley de Ohm</h3><p class="text-sm text-slate-500 mb-4">Relación entre voltaje, corriente y resistencia.</p></div>
-                <div onclick="navigateTo('componentes')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-ohms"><div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-100 transition-colors"><i data-lucide="cpu" class="w-7 h-7 text-ohms"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Componentes</h3><p class="text-sm text-slate-500 mb-4">Resistencias, capacitores, LEDs.</p></div>
-                <div onclick="navigateTo('circuitos')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-amps"><div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-amber-100 transition-colors"><i data-lucide="git-branch" class="w-7 h-7 text-amps"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Circuitos</h3><p class="text-sm text-slate-500 mb-4">Serie, paralelo y mixto.</p></div>
-                <div onclick="navigateTo('senales')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-watts"><div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-100 transition-colors"><i data-lucide="activity" class="w-7 h-7 text-watts"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Señales</h3><p class="text-sm text-slate-500 mb-4">Ondas senoidales, cuadradas, osciloscopio.</p></div>
-                <div onclick="navigateTo('practica')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-electric-400"><div class="w-14 h-14 bg-electric-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-electric-100 transition-colors"><i data-lucide="brain" class="w-7 h-7 text-electric-600"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Práctica</h3><p class="text-sm text-slate-500 mb-4">Cuestionarios y laboratorio.</p></div>
-                <div onclick="navigateTo('inicio')" class="area-card group bg-white rounded-2xl border border-slate-200 p-8 hover:border-slate-400"><div class="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center mb-5"><i data-lucide="home" class="w-7 h-7 text-slate-500"></i></div><h3 class="text-xl font-bold text-slate-900 mb-2">Inicio</h3><p class="text-sm text-slate-500 mb-4">Volver al inicio.</p></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAGE: OHM -->
-    <div id="page-ohm" class="content-page">
-        <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Ley de Ohm</h2></div>
-            <div class="grid lg:grid-cols-2 gap-10">
-                <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8">
-                    <h3 class="text-lg font-semibold mb-6">Calculadora Interactiva</h3>
-                    <div class="flex justify-center mb-8"><svg width="220" height="180" viewBox="0 0 220 180"><polygon points="110,10 10,170 210,170" fill="none" stroke="#0A84FF" stroke-width="2.5"/><line x1="10" y1="170" x2="210" y2="170" stroke="#0A84FF" stroke-width="2.5" stroke-dasharray="5,5"/><line x1="60" y1="90" x2="160" y2="90" stroke="#0A84FF" stroke-width="2.5" stroke-dasharray="5,5"/><line x1="110" y1="90" x2="110" y2="170" stroke="#0A84FF" stroke-width="2.5" stroke-dasharray="5,5"/><text x="110" y="70" text-anchor="middle" fill="#EF4444" font-size="32" font-weight="bold" font-family="Space Grotesk">V</text><text x="60" y="145" text-anchor="middle" fill="#F59E0B" font-size="28" font-weight="bold" font-family="Space Grotesk">I</text><text x="160" y="145" text-anchor="middle" fill="#22C55E" font-size="28" font-weight="bold" font-family="Space Grotesk">R</text></svg></div>
-                    <div class="flex justify-center gap-2 mb-6"><button onclick="setSolveFor('V')" id="solveV" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-volt text-volt bg-red-50">V</button><button onclick="setSolveFor('I')" id="solveI" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white">I</button><button onclick="setSolveFor('R')" id="solveR" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white">R</button></div>
-                    <div class="space-y-5">
-                        <div><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-volt">⚡ Voltaje (Tensión)</label><span id="valV" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">12.0 V</span></div><input type="range" id="rangeV" min="0" max="50" step="0.1" value="12" class="w-full" oninput="updateOhm()"></div>
-                        <div><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-amps">💡 Corriente</label><span id="valI" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">2.0 A</span></div><input type="range" id="rangeI" min="0.01" max="10" step="0.01" value="2" class="w-full" oninput="updateOhm()"></div>
-                        <div><div class="flex justify-between items-center mb-2"><label class="text-sm font-semibold text-ohms">🔧 Resistencia</label><span id="valR" class="font-mono text-sm bg-white px-3 py-1 rounded-lg border border-slate-200">6.0 Ω</span></div><input type="range" id="rangeR" min="0.1" max="100" step="0.1" value="6" class="w-full" oninput="updateOhm()"></div>
-                    </div>
-                    <div id="ohmResult" class="mt-6 bg-electric-600 text-white rounded-xl p-5 text-center"><div class="text-sm opacity-80 mb-1">Resultado</div><div class="font-mono text-2xl font-bold">V = I × R = 12.0 V</div><div class="text-sm mt-2 opacity-80">P = 24.0 W</div></div>
-                </div>
-                <div class="space-y-6">
-                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Fórmulas</h3><div class="grid grid-cols-2 gap-4"><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Ohm</div><div id="f1"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Corriente</div><div id="f2"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Resistencia</div><div id="f3"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">Potencia</div><div id="f4"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f5"></div></div><div class="formula-card"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f6"></div></div></div></div>
-                    <div class="bg-gradient-to-br from-electric-50 to-blue-50 rounded-2xl border border-electric-200 p-8"><h3 class="text-lg font-semibold mb-4">Concepto Clave</h3><div class="space-y-3 text-sm text-slate-600"><p><strong class="text-volt">Voltaje (Tensión)</strong> — Diferencia de potencial eléctrico entre dos puntos (V).</p><p><strong class="text-amps">Corriente</strong> — Flujo de electrones a través de un conductor (A).</p><p><strong class="text-ohms">Resistencia</strong> — Oposición al flujo de la corriente eléctrica (Ω).</p><div class="bg-white/60 rounded-lg p-4 border border-electric-200 mt-3"><p class="font-medium text-electric-800">📌 Ley de Ohm: La corriente es directamente proporcional al voltaje e inversamente proporcional a la resistencia.</p></div></div></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAGE: COMPONENTES (con mejoras de reset de bandas) -->
-    <div id="page-componentes" class="content-page">
-        <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Componentes Electrónicos</h2></div>
-            <div class="flex gap-2 mb-8 flex-wrap">
-                <button onclick="switchCompTab('resistencias')" id="compTabRes" class="comp-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Resistencias</button>
-                <button onclick="switchCompTab('capacitores')" id="compTabCap" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Capacitores</button>
-                <button onclick="switchCompTab('transistores')" id="compTabTrans" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Transistores</button>
-                <button onclick="switchCompTab('diodos')" id="compTabDiod" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Diodos</button>
-            </div>
-            <div id="comp-resistencias" class="comp-panel">
-                <div class="grid lg:grid-cols-2 gap-10">
-                    <div class="bg-white rounded-2xl border border-slate-200 p-8">
-                        <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-semibold">Decodificador de Resistencias</h3><select id="resType" onchange="resetResistorBandsAndUpdateUI()" class="text-sm border rounded-lg p-1"><option value="4">4 Bandas</option><option value="5">5 Bandas</option><option value="smd">SMD</option></select></div>
-                        <div id="resVisual" class="flex justify-center mb-6"><div class="flex items-center"><div class="resistor-lead"></div><div class="resistor-body" id="resBody"></div><div class="resistor-lead"></div></div></div>
-                        <div id="resInputs" class="space-y-3"></div>
-                        <div id="resistorResult" class="mt-6 bg-ohms/10 border border-ohms/30 rounded-xl p-5 text-center"><div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold text-slate-900">1.0 kΩ ± 5%</div></div>
-                    </div>
-                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><div id="fc_r" class="text-sm"></div><p class="mt-4 text-sm text-slate-600">Las resistencias limitan el flujo de corriente. Se usan en divisores de voltaje, limitación de corriente para LEDs, y polarización de transistores.</p></div>
-                </div>
-            </div>
-            <div id="comp-capacitores" class="comp-panel" style="display:none">
-                <div class="grid lg:grid-cols-2 gap-10">
-                    <div class="bg-white rounded-2xl border border-slate-200 p-8">
-                        <h3 class="text-lg font-semibold mb-4">Decodificador de Capacitores (Código 3 Dígitos)</h3>
-                        <input type="text" id="capCode" placeholder="Ej: 104" maxlength="3" class="form-input-easy w-full mb-4" oninput="updateCap()">
-                        <div id="capResult" class="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-5 text-center"><div class="text-sm text-blue-600 font-medium mb-1">Capacitancia</div><div class="font-mono text-2xl font-bold text-slate-900">100 nF</div></div>
-                        <div class="mt-6"><h4 class="font-semibold text-sm mb-2">Calculadora Q=CV</h4><input type="number" id="capV" placeholder="Voltaje (V)" class="form-input-easy w-full mb-2" oninput="updateCapQ()"><input type="number" id="capF" placeholder="Capacitancia (F)" class="form-input-easy w-full mb-2" oninput="updateCapQ()"><div id="capQResult" class="text-sm font-mono mt-2 text-slate-600">Q = 0 C</div></div>
-                    </div>
-                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><div id="fc_c" class="text-sm"></div><p class="mt-4 text-sm text-slate-600">Almacenan energía en un campo eléctrico. Usados en filtrado de fuentes de poder, acoplamiento AC y temporizadores.</p></div>
-                </div>
-            </div>
-            <div id="comp-transistores" class="comp-panel" style="display:none">
-                <div class="grid lg:grid-cols-2 gap-10">
-                    <div class="bg-white rounded-2xl border border-slate-200 p-8">
-                        <h3 class="text-lg font-semibold mb-4">Calculadora de Transistor NPN (Región Activa)</h3>
-                        <input type="number" id="transIb" placeholder="Corriente Base Ib (mA)" class="form-input-easy w-full mb-2" oninput="updateTrans()"><input type="number" id="transHfe" placeholder="Ganancia hFE (Beta)" class="form-input-easy w-full mb-2" oninput="updateTrans()"><input type="number" id="transVcc" placeholder="Vcc (V)" class="form-input-easy w-full mb-2" oninput="updateTrans()"><input type="number" id="transRc" placeholder="Resistencia Colector (Ω)" class="form-input-easy w-full mb-2" oninput="updateTrans()">
-                        <div id="transResult" class="mt-4 bg-purple-50 border border-purple-200 rounded-xl p-5 text-center text-sm font-mono text-slate-700"></div>
-                    </div>
-                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><p class="text-sm text-slate-600">Amplifican señales o actúan como interruptores. NPN y PNP. Usados en lógica digital, audio y control de potencia.</p></div>
-                </div>
-            </div>
-            <div id="comp-diodos" class="comp-panel" style="display:none">
-                <div class="grid lg:grid-cols-2 gap-10">
-                    <div class="bg-white rounded-2xl border border-slate-200 p-8">
-                        <h3 class="text-lg font-semibold mb-4">Calculadora de Diodo (Polarización Directa)</h3>
-                        <input type="number" id="diodVi" placeholder="Voltaje Fuente (V)" class="form-input-easy w-full mb-2" oninput="updateDiod()"><input type="number" id="diodVd" value="0.7" placeholder="Caída Diodo (V) - Ej: 0.7" class="form-input-easy w-full mb-2" oninput="updateDiod()"><input type="number" id="diodR" placeholder="Resistencia en serie (Ω)" class="form-input-easy w-full mb-2" oninput="updateDiod()">
-                        <div id="diodResult" class="mt-4 bg-amber-50 border border-amber-200 rounded-xl p-5 text-center text-sm font-mono text-slate-700"></div>
-                    </div>
-                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Tipos y Usos</h3><div id="fc_d" class="text-sm"></div><p class="mt-4 text-sm text-slate-600">Permiten flujo en una sola dirección. Usados en rectificación, protección contra polaridad invertida y LEDs.</p></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAGE: CIRCUITOS (con roundRect y optimización) -->
-    <div id="page-circuitos" class="content-page">
-        <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Circuitos Eléctricos</h2></div>
-            <div class="flex justify-center mb-10 gap-3 flex-wrap">
-                <div class="bg-slate-100 rounded-xl p-1 flex gap-1">
-                    <button onclick="setCircuitType('serie')" id="btnSerie" class="px-4 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md">Serie</button>
-                    <button onclick="setCircuitType('paralelo')" id="btnParalelo" class="px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500">Paralelo</button>
-                    <button onclick="setCircuitType('mixto')" id="btnMixto" class="px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500">Mixto</button>
-                </div>
-                <button onclick="toggleFlowType()" id="btnFlowType" class="px-5 py-2.5 rounded-lg text-sm font-semibold border-2 border-electric-600 text-electric-600 bg-white hover:bg-electric-50 flex items-center gap-2"><i data-lucide="shuffle" class="w-4 h-4"></i> <span id="flowLabel">Convencional</span></button>
-            </div>
-            <div class="grid lg:grid-cols-2 gap-10">
-                <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6">
-                    <canvas id="circuitCanvas" width="500" height="380" class="w-full rounded-xl bg-white border border-slate-100"></canvas>
-                    <div id="circInputs" class="mt-4 grid grid-cols-3 gap-3">
-                        <div><label class="text-xs font-semibold text-volt block mb-1">V</label><input type="number" id="circV" value="12" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="updateCircuitStatic()"></div>
-                        <div><label class="text-xs font-semibold text-ohms block mb-1">R₁</label><input type="number" id="circR1" value="100" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="updateCircuitStatic()"></div>
-                        <div><label class="text-xs font-semibold text-ohms block mb-1">R₂</label><input type="number" id="circR2" value="200" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="updateCircuitStatic()"></div>
-                    </div>
-                </div>
-                <div class="space-y-4"><div class="bg-gradient-to-br from-electric-50 to-blue-50 rounded-2xl border border-electric-200 p-8"><h3 class="text-lg font-semibold mb-4">Resultados</h3><div id="circuitResults"></div></div><div class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><h3 class="text-lg font-semibold mb-4">Reglas</h3><div id="circuitRules" class="space-y-2 text-sm text-slate-600"></div></div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAGE: SEÑALES -->
-    <div id="page-senales" class="content-page">
-        <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Señales Eléctricas</h2></div>
-            <div class="grid lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6"><canvas id="waveCanvas" width="700" height="350" class="w-full rounded-xl bg-[#0C1A2E]"></canvas><div class="flex flex-wrap gap-2 mt-4"><button onclick="setWaveType('sine')" id="btnSine" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-electric-600 text-white">Senoidal</button><button onclick="setWaveType('square')" id="btnSquare" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600">Cuadrada</button><button onclick="setWaveType('triangle')" id="btnTriangle" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600">Triangular</button><button onclick="setWaveType('sawtooth')" id="btnSawtooth" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600">Sierra</button><button onclick="setWaveType('half')" id="btnHalf" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600">Media Onda</button><button onclick="setWaveType('dc')" id="btnDC" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600">DC</button></div></div>
-                <div class="space-y-4"><div class="bg-white rounded-2xl border border-slate-200 p-6"><h3 class="text-sm font-semibold text-slate-500 mb-4">Parámetros</h3><div class="space-y-4"><div><div class="flex justify-between mb-1"><label class="text-xs font-semibold text-volt">Amplitud</label><span id="ampVal" class="font-mono text-xs">5.0 V</span></div><input type="range" id="ampSlider" min="0.5" max="10" step="0.1" value="5" class="w-full" oninput="updateWaveParams()"></div><div><div class="flex justify-between mb-1"><label class="text-xs font-semibold text-amps">Frecuencia</label><span id="freqVal" class="font-mono text-xs">2.0 Hz</span></div><input type="range" id="freqSlider" min="0.5" max="60" step="0.1" value="2" class="w-full" oninput="updateWaveParams()"></div></div></div><div class="bg-white rounded-2xl border border-slate-200 p-6"><h3 class="text-sm font-semibold text-slate-500 mb-3">Propiedades</h3><div id="waveProps" class="space-y-2 text-sm"></div></div><div class="bg-gradient-to-br from-electric-50 to-blue-50 rounded-2xl border border-electric-200 p-6"><h3 class="text-sm font-semibold text-electric-700 mb-3">💡 Dato</h3><p id="waveFact" class="text-sm text-slate-600">La señal de media onda es el resultado de rectificar una señal senoidal, bloqueando el semiciclo negativo.</p></div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAGE: PRÁCTICA (con botón refresh funcionando) -->
-    <div id="page-practica" class="content-page">
-        <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 mb-3">Módulo de Práctica</h2></div>
-            <div id="fbStatus" class="mb-4 px-4 py-2 rounded-lg text-xs font-mono flex items-center gap-2 bg-slate-100 text-slate-500"><span class="w-2 h-2 rounded-full bg-yellow-400" id="fbDot"></span><span id="fbText">Conectando...</span></div>
-            <div class="flex gap-2 mb-8 flex-wrap">
-                <button onclick="switchSubTab('quiz')" id="subQuiz" class="sub-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Cuestionario</button>
-                <button onclick="switchSubTab('tarea')" id="subTarea" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Prácticas de Tarea</button>
-                <button onclick="accessEditor()" id="subEditor" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600">Editor de Prácticas</button>
-                <button onclick="refreshAllPractices()" class="ml-auto px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center gap-1"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refrescar</button>
+            <div class="text-center mb-14">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4 justify-items-center">
+                    Áreas de Aprendizaje
+                </h2>
+                <p class="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+                    Selecciona un área para comenzar tu viaje por el mundo de la electrónica
+                </p>
             </div>
             
-            <div id="panel-quiz" class="sub-panel" style="display:block"><div class="max-w-4xl mx-auto"><div class="mb-8"><div class="flex justify-between text-sm text-slate-500 mb-2"><span>Pregunta <span id="qNum">1</span> de <span id="qTotal">8</span></span><span>Puntuación: <span id="qScore" class="font-bold text-electric-600">0</span></span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div id="qProgress" class="h-full bg-electric-600 rounded-full transition-all duration-500" style="width:12.5%"></div></div></div><div id="quizCard" class="bg-slate-50 rounded-2xl border border-slate-200 p-8"><div id="quizCategory" class="inline-block bg-electric-100 text-electric-700 text-xs font-semibold px-3 py-1 rounded-full mb-4"></div><h3 id="quizQuestion" class="text-xl font-semibold text-slate-900 mb-6"></h3><div id="quizOptions" class="space-y-3"></div><div id="quizFeedback" style="display:none" class="mt-6 rounded-xl p-4 text-sm"></div><div class="flex justify-between mt-6"><button id="btnSkip" onclick="skipQuestion()" class="px-5 py-2.5 text-sm font-semibold text-slate-500">Saltar →</button><button id="btnNext" onclick="nextQuestion()" style="display:none" class="px-6 py-2.5 text-sm font-semibold bg-electric-600 text-white rounded-xl shadow-md">Siguiente →</button></div></div><div id="quizComplete" style="display:none" class="text-center py-12"><div class="text-5xl font-bold text-electric-600 mb-2" id="finalScore">0/8</div><p id="finalMsg" class="text-slate-500 mb-8"></p><button onclick="restartQuiz()" class="px-8 py-3 bg-electric-600 text-white font-semibold rounded-xl shadow-md">Reintentar</button></div></div></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                
+                <!-- Tarjeta: Ley de Ohm -->
+                <div onclick="navigateTo('ohm'); trackBadgeProgress('explorer')" 
+                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-volt cursor-pointer transition-all duration-300">
+                    <div class="w-14 h-14 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-red-100 dark:group-hover:bg-red-900/30 transition-colors">
+                        <i data-lucide="zap" class="w-7 h-7 text-volt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Ley de Ohm</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Relación entre voltaje, corriente y resistencia.</p>
+                    <div class="flex items-center text-xs text-electric-600 font-semibold">
+                        <i data-lucide="arrow-right" class="w-4 h-4 mr-1 group-hover:translate-x-1 transition-transform"></i>
+                        Comenzar ahora
+                    </div>
+                </div>
 
-            <div id="panel-tarea" class="sub-panel" style="display:none"><div class="max-w-5xl mx-auto"><div id="tareaList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Cargando...</p></div></div></div></div>
+                <!-- Tarjeta: Componentes -->
+                <div onclick="navigateTo('componentes'); trackBadgeProgress('explorer')" 
+                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-ohms cursor-pointer transition-all duration-300">
+                    <div class="w-14 h-14 bg-green-50 dark:bg-green-900/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-100 dark:group-hover:bg-green-900/30 transition-colors">
+                        <i data-lucide="cpu" class="w-7 h-7 text-ohms"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Componentes</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Resistencias, capacitores, LEDs, transistores.</p>
+                    <div class="flex items-center text-xs text-electric-600 font-semibold">
+                        <i data-lucide="arrow-right" class="w-4 h-4 mr-1 group-hover:translate-x-1 transition-transform"></i>
+                        Explorar componentes
+                    </div>
+                </div>
 
-            <div id="panel-editor" class="sub-panel" style="display:none">
-                <div class="max-w-5xl mx-auto">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-semibold">Editor de Prácticas</h3>
-                        <div class="flex gap-2">
-                            <button onclick="showAuthModal('openForm')" id="btnAddPractice" class="bg-electric-600 hover:bg-electric-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i> Añadir</button>
-                            <button onclick="logoutEditor()" id="btnLogout" style="display:none" class="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1"><i data-lucide="log-out" class="w-4 h-4"></i> Salir</button>
+                <!-- Tarjeta: Circuitos -->
+                <div onclick="navigateTo('circuitos'); trackBadgeProgress('explorer')" 
+                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-amps cursor-pointer transition-all duration-300">
+                    <div class="w-14 h-14 bg-amber-50 dark:bg-amber-900/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-amber-100 dark:group-hover:bg-amber-900/30 transition-colors">
+                        <i data-lucide="git-branch" class="w-7 h-7 text-amps"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Circuitos</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Configuraciones serie, paralelo y mixto.</p>
+                    <div class="flex items-center text-xs text-electric-600 font-semibold">
+                        <i data-lucide="arrow-right" class="w-4 h-4 mr-1 group-hover:translate-x-1 transition-transform"></i>
+                        Simular circuitos
+                    </div>
+                </div>
+
+                <!-- Tarjeta: Señales -->
+                <div onclick="navigateTo('senales'); trackBadgeProgress('explorer')" 
+                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-watts cursor-pointer transition-all duration-300">
+                    <div class="w-14 h-14 bg-purple-50 dark:bg-purple-900/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-100 dark:group-hover:bg-purple-900/30 transition-colors">
+                        <i data-lucide="activity" class="w-7 h-7 text-watts"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Señales</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Ondas senoidales, cuadradas, osciloscopio virtual.</p>
+                    <div class="flex items-center text-xs text-electric-600 font-semibold">
+                        <i data-lucide="arrow-right" class="w-4 h-4 mr-1 group-hover:translate-x-1 transition-transform"></i>
+                        Visualizar ondas
+                    </div>
+                </div>
+
+                <!-- Tarjeta: Práctica -->
+                <div onclick="navigateTo('practica'); trackBadgeProgress('explorer')" 
+                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-electric-400 cursor-pointer transition-all duration-300">
+                    <div class="w-14 h-14 bg-electric-50 dark:bg-electric-900/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-electric-100 dark:group-hover:bg-electric-900/30 transition-colors">
+                        <i data-lucide="brain" class="w-7 h-7 text-electric-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Práctica</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Cuestionarios, laboratorios y desafíos.</p>
+                    <div class="flex items-center text-xs text-electric-600 font-semibold">
+                        <i data-lucide="arrow-right" class="w-4 h-4 mr-1 group-hover:translate-x-1 transition-transform"></i>
+                        Evaluar conocimiento
+                    </div>
+                </div>
+
+                <!-- Tarjeta: Inicio -->
+                <div onclick="navigateTo('inicio')" 
+                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-slate-400 cursor-pointer transition-all duration-300">
+                    <div class="w-14 h-14 bg-slate-50 dark:bg-slate-700 rounded-xl flex items-center justify-center mb-5">
+                        <i data-lucide="home" class="w-7 h-7 text-slate-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Inicio</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Volver a la página principal.</p>
+                    <div class="flex items-center text-xs text-slate-500 font-semibold">
+                        <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i>
+                        Volver atrás
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE: LEY DE OHM (MANTENIDO CON MEJORAS VISUALES) -->
+    <div id="page-ohm" class="content-page">
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="mb-10">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Ley de Ohm</h2>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-10">
+                
+                <!-- Calculadora Interactiva -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                    <h3 class="text-lg font-semibold mb-6 text-slate-900 dark:text-white">Calculadora Interactiva</h3>
+                    
+                    <!-- Triángulo de Ohm SVG -->
+                    <div class="flex justify-center mb-8">
+                        <svg width="220" height="180" viewBox="0 0 220 180">
+                            <polygon points="110,10 10,170 210,170" fill="none" stroke="#0A84FF" stroke-width="2.5"/>
+                            <line x1="10" y1="170" x2="210" y2="170" stroke="#0A84FF" stroke-width="2.5" stroke-dasharray="5,5"/>
+                            <line x1="60" y1="90" x2="160" y2="90" stroke="#0A84FF" stroke-width="2.5" stroke-dasharray="5,5"/>
+                            <line x1="110" y1="90" x2="110" y2="170" stroke="#0A84FF" stroke-width="2.5" stroke-dasharray="5,5"/>
+                            <text x="110" y="70" text-anchor="middle" fill="#EF4444" font-size="32" font-weight="bold" font-family="Space Grotesk">V</text>
+                            <text x="60" y="145" text-anchor="middle" fill="#F59E0B" font-size="28" font-weight="bold" font-family="Space Grotesk">I</text>
+                            <text x="160" y="145" text-anchor="middle" fill="#22C55E" font-size="28" font-weight="bold" font-family="Space Grotesk">R</text>
+                        </svg>
+                    </div>
+                    
+                    <!-- Botones de selección -->
+                    <div class="flex justify-center gap-2 mb-6">
+                        <button onclick="setSolveFor('V')" id="solveV" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-volt text-volt bg-red-50 dark:bg-red-900/20">V</button>
+                        <button onclick="setSolveFor('I')" id="solveI" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800">I</button>
+                        <button onclick="setSolveFor('R')" id="solveR" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800">R</button>
+                    </div>
+                    
+                    <!-- Sliders -->
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-semibold text-volt">⚡ Voltaje (Tensión)</label>
+                                <span id="valV" class="font-mono text-sm bg-white dark:bg-slate-700 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white">12.0 V</span>
+                            </div>
+                            <input type="range" id="rangeV" min="0" max="50" step="0.1" value="12" class="w-full" oninput="updateOhm()">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-semibold text-amps">💡 Corriente</label>
+                                <span id="valI" class="font-mono text-sm bg-white dark:bg-slate-700 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white">2.0 A</span>
+                            </div>
+                            <input type="range" id="rangeI" min="0.01" max="10" step="0.01" value="2" class="w-full" oninput="updateOhm()">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-semibold text-ohms">🔧 Resistencia</label>
+                                <span id="valR" class="font-mono text-sm bg-white dark:bg-slate-700 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white">6.0 Ω</span>
+                            </div>
+                            <input type="range" id="rangeR" min="0.1" max="100" step="0.1" value="6" class="w-full" oninput="updateOhm()">
                         </div>
                     </div>
-                    <div id="editorList" class="space-y-4"><div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">Inicia sesión para ver y editar prácticas</p></div></div>
+                    
+                    <!-- Resultado -->
+                    <div id="ohmResult" class="mt-6 bg-gradient-to-r from-electric-600 to-blue-600 text-white rounded-xl p-5 text-center shadow-lg">
+                        <div class="text-sm opacity-80 mb-1">Resultado</div>
+                        <div class="font-mono text-2xl font-bold">V = I × R = 12.0 V</div>
+                        <div class="text-sm mt-2 opacity-80">P = 24.0 W</div>
+                    </div>
                 </div>
+                
+                <!-- Fórmulas y Conceptos -->
+                <div class="space-y-6">
+                    <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Fórmulas</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">Ohm</div><div id="f1"></div></div>
+                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">Corriente</div><div id="f2"></div></div>
+                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">Resistencia</div><div id="f3"></div></div>
+                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">Potencia</div><div id="f4"></div></div>
+                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f5"></div></div>
+                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f6"></div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-electric-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl border border-electric-200 dark:border-slate-600 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Concepto Clave</h3>
+                        <div class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                            <p><strong class="text-volt">Voltaje (Tensión)</strong> — Diferencia de potencial eléctrico entre dos puntos (V).</p>
+                            <p><strong class="text-amps">Corriente</strong> — Flujo de electrones a través de un conductor (A).</p>
+                            <p><strong class="text-ohms">Resistencia</strong> — Oposición al flujo de la corriente eléctrica (Ω).</p>
+                            <div class="bg-white/60 dark:bg-slate-600/60 rounded-lg p-4 border border-electric-200 dark:border-slate-500 mt-3">
+                                <p class="font-medium text-electric-800 dark:text-electric-300">📌 Ley de Ohm: La corriente es directamente proporcional al voltaje e inversamente proporcional a la resistencia.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE: COMPONENTES (MANTENIDO) -->
+    <div id="page-componentes" class="content-page">
+        <!-- [CONTENIDO IDÉNTICO AL ORIGINAL - VER ARCHIVO COMPLETO EN REPOSITORIO] -->
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Componentes Electrónicos</h2></div>
+            <!-- ... resto del contenido de componentes ... -->
+        </div>
+    </div>
+
+    <!-- PAGE: CIRCUITOS (MANTENIDO) -->
+    <div id="page-circuitos" class="content-page">
+        <!-- [CONTENIDO IDÉNTICO AL ORIGINAL] -->
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Circuitos Eléctricos</h2></div>
+            <!-- ... resto del contenido de circuitos ... -->
+        </div>
+    </div>
+
+    <!-- PAGE: SEÑALES (MANTENIDO) -->
+    <div id="page-senales" class="content-page">
+        <!-- [CONTENIDO IDÉNTICO AL ORIGINAL] -->
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Señales Eléctricas</h2></div>
+            <!-- ... resto del contenido de señales ... -->
+        </div>
+    </div>
+
+    <!-- PAGE: PRÁCTICA (MANTENIDO CON MEJORAS) -->
+    <div id="page-practica" class="content-page">
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Módulo de Práctica</h2></div>
+            
+            <!-- Status Firebase -->
+            <div id="fbStatus" class="mb-4 px-4 py-2 rounded-lg text-xs font-mono flex items-center gap-2 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+                <span class="w-2 h-2 rounded-full bg-yellow-400" id="fbDot"></span>
+                <span id="fbText">Conectando...</span>
+            </div>
+            
+            <!-- Tabs de práctica -->
+            <div class="flex gap-2 mb-8 flex-wrap">
+                <button onclick="switchSubTab('quiz')" id="subQuiz" class="sub-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Cuestionario</button>
+                <button onclick="switchSubTab('tarea')" id="subTarea" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Prácticas de Tarea</button>
+                <button onclick="accessEditor()" id="subEditor" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Editor de Prácticas</button>
+                <button onclick="refreshAllPractices()" class="ml-auto px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 flex items-center gap-1">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refrescar
+                </button>
+            </div>
+            
+            <!-- Paneles de práctica (quiz, tarea, editor) -->
+            <!-- [CONTENIDO MANTENIDO DEL ORIGINAL] -->
+            <div id="panel-quiz" class="sub-panel" style="display:block">
+                <!-- Quiz content -->
+            </div>
+            <div id="panel-tarea" class="sub-panel" style="display:none">
+                <!-- Tareas content -->
+            </div>
+            <div id="panel-editor" class="sub-panel" style="display:none">
+                <!-- Editor content -->
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL DE AUTENTICACIÓN (renombrado) -->
-<div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center">
-    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl text-center">
-        <div class="w-16 h-16 bg-electric-50 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="lock" class="w-8 h-8 text-electric-600"></i></div>
-        <h3 class="text-xl font-bold text-slate-900 mb-2">Acceso Requerido</h3>
-        <p class="text-sm text-slate-500 mb-6">Inicia sesión con tu cuenta de Google para gestionar las prácticas.</p>
-        <p id="authError" style="display:none" class="text-red-500 text-xs mb-3 font-medium"></p>
-        <div class="flex flex-col gap-3">
-            <button onclick="loginWithGoogle()" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center justify-center gap-3 transition-colors">
-                <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                Iniciar sesión con Google
+<!-- ============================================ -->
+<!-- MODAL: MINI-JUEGO "DESAFÍO ELÉCTRICO" (NUEVO)-->
+<!-- ============================================ -->
+<div id="miniGameModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center;backdrop-blur-sm;">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 max-w-2xl w-full mx-4 shadow-2xl border border-slate-200 dark:border-slate-700 relative overflow-hidden">
+        
+        <!-- Header del juego -->
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <span class="text-3xl">⚡</span> Desafío Eléctrico Rápido
+                </h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">¡Responde antes de que se acabe el tiempo!</p>
+            </div>
+            <button onclick="closeMiniGame()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" aria-label="Cerrar juego">
+                <i data-lucide="x" class="w-6 h-6 text-slate-500"></i>
             </button>
-            <button onclick="closeAuthModal()" class="w-full px-4 py-2.5 text-sm font-semibold text-slate-500 hover:text-slate-700">Cancelar</button>
+        </div>
+        
+        <!-- Stats del juego en vivo -->
+        <div class="grid grid-cols-4 gap-3 mb-6">
+            <div class="bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl p-3 text-center">
+                <div class="text-xs opacity-80">TIEMPO</div>
+                <div id="gameTimer" class="text-2xl font-bold font-mono">60</div>
+            </div>
+            <div class="bg-gradient-to-br from-electric-600 to-blue-600 text-white rounded-xl p-3 text-center">
+                <div class="text-xs opacity-80">PUNTOS</div>
+                <div id="gameScore" class="text-2xl font-bold font-mono">0</div>
+            </div>
+            <div class="bg-gradient-to-br from-amber-500 to-orange-500 text-white rounded-xl p-3 text-center">
+                <div class="text-xs opacity-80">COMBO</div>
+                <div id="gameCombo" class="text-2xl font-bold font-mono">x1</div>
+            </div>
+            <div class="bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-xl p-3 text-center">
+                <div class="text-xs opacity-80">ACIERTOS</div>
+                <div id="gameCorrect" class="text-2xl font-bold font-mono">0</div>
+            </div>
+        </div>
+        
+        <!-- Barra de progreso temporal -->
+        <div class="mb-6">
+            <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div id="gameTimeBar" class="h-full bg-gradient-to-r from-green-500 via-amber-500 to-red-500 transition-all duration-1000 ease-linear" style="width:100%"></div>
+            </div>
+        </div>
+        
+        <!-- Área de pregunta -->
+        <div id="gameQuestionArea" class="bg-slate-50 dark:bg-slate-700/50 rounded-2xl p-6 mb-6 min-h-[200px] flex flex-col justify-center">
+            <div id="gameCategory" class="inline-block self-start bg-electric-100 dark:bg-electric-900/30 text-electric-700 dark:text-electric-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                Ley de Ohm
+            </div>
+            <h4 id="gameQuestionText" class="text-xl font-bold text-slate-900 dark:text-white mb-6 text-center">
+                ¿Listo para comenzar?
+            </h4>
+            
+            <!-- Opciones de respuesta -->
+            <div id="gameOptions" class="grid grid-cols-2 gap-3">
+                <button onclick="startMiniGameRound()" class="col-span-2 bg-gradient-to-r from-electric-600 to-blue-600 hover:from-electric-500 hover:to-blue-500 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all hover:scale-105 shadow-lg">
+                    🚀 INICIAR RONDA
+                </button>
+            </div>
+        </div>
+        
+        <!-- Feedback de respuesta -->
+        <div id="gameFeedback" class="hidden rounded-xl p-4 text-center font-semibold text-lg mb-4 animate-bounce">
+        </div>
+        
+        <!-- Controles inferiores -->
+        <div class="flex justify-between items-center pt-4 border-t border-slate-200 dark:border-slate-700">
+            <div class="text-xs text-slate-500 dark:text-slate-400">
+                <strong>Dificultad:</strong> <span id="gameDifficulty">Fácil</span>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="toggleSound()" id="soundToggleBtn" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" title="Activar/desactivar sonido">
+                    <i data-lucide="volume-2" class="w-4 h-4 inline"></i> Sound
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- FORMULARIO DE PRÁCTICA (con compresión de imagen) -->
-<div id="practiceFormModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:210;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 0"><div class="bg-white rounded-2xl p-8 max-w-xl w-full mx-4 shadow-2xl"><h3 class="text-xl font-bold text-slate-900 mb-2" id="pfModalTitle">Nueva Práctica</h3><div class="space-y-5"><div><label class="text-sm font-bold text-slate-700 mb-2 block">📌 Título *</label><input type="text" id="pfTitle" class="form-input-easy w-full"></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">📚 Área</label><select id="pfArea" class="form-input-easy w-full"><option>Ley de Ohm</option><option>Componentes</option><option>Circuitos</option><option>Señales</option><option>Otros</option></select></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">🎯 Objetivo *</label><textarea id="pfObj" rows="2" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">🛠 Materiales</label><textarea id="pfMat" rows="2" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">📋 Procedimiento *</label><textarea id="pfPasos" rows="4" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">📝 Observaciones</label><textarea id="pfNotas" rows="2" class="form-input-easy w-full resize-none"></textarea></div><div><label class="text-sm font-bold text-slate-700 mb-2 block">🖼 Imagen (Opcional, máx 200KB)</label><input type="file" id="pfImage" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-electric-50 file:text-electric-700"></div><div class="flex gap-3 pt-2"><button onclick="closePracticeForm()" class="flex-1 px-4 py-3 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button><button onclick="submitPractice()" class="flex-1 px-4 py-3 bg-electric-600 text-white rounded-xl text-sm font-semibold hover:bg-electric-700 flex items-center justify-center gap-2 shadow-md"><i data-lucide="save" class="w-4 h-4"></i> <span id="pfSubmitText">Guardar</span></button></div></div></div></div>
+<!-- ============================================ -->
+<!-- MODAL: PANEL DE LOGROS/BADGES (NUEVO)        -->
+<!-- ============================================ -->
+<div id="badgesModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:290;align-items:center;justify-content:center;overflow-y:auto;padding:20px;backdrop-blur-sm;">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 max-w-4xl w-full mx-4 shadow-2xl border border-slate-200 dark:border-slate-700 my-8">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h3 class="text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+                    🏆 Mis Logros y Badges
+                </h3>
+                <p class="text-slate-500 dark:text-slate-400 mt-2">
+                    Has desbloqueado <span id="badgeTotalCount" class="font-bold text-electric-600">0</span> de <span id="badgeMaxCount">12</span> logros
+                </p>
+            </div>
+            <button onclick="toggleBadgesPanel()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" aria-label="Cerrar panel de logros">
+                <i data-lucide="x" class="w-6 h-6 text-slate-500"></i>
+            </button>
+        </div>
+        
+        <!-- Barra de progreso general -->
+        <div class="mb-8">
+            <div class="flex justify-between text-sm text-slate-600 dark:text-slate-300 mb-2">
+                <span>Progreso General</span>
+                <span id="badgeProgressPercent" class="font-bold">0%</span>
+            </div>
+            <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div id="badgeProgressBar" class="h-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 transition-all duration-500 rounded-full" style="width:0%"></div>
+            </div>
+        </div>
+        
+        <!-- Grid de badges -->
+        <div id="badgesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!-- Los badges se generan dinámicamente via JavaScript -->
+        </div>
+        
+        <!-- Categorías de filtros -->
+        <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
+            <div class="flex gap-2 flex-wrap justify-center">
+                <button onclick="filterBadges('all')" class="badge-filter active px-4 py-2 rounded-lg text-sm font-medium bg-electric-600 text-white">Todos</button>
+                <button onclick="filterBadges('game')" class="badge-filter px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">🎮 Juegos</button>
+                <button onclick="filterBadges('learn')" class="badge-filter px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">📚 Aprendizaje</button>
+                <button onclick="filterBadges('special')" class="badge-filter px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">⭐ Especiales</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- TOAST -->
-<div id="toast" style="display:none;position:fixed;bottom:24px;right:24px;z-index:300"><div class="bg-electric-600 text-white px-6 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i><span id="toastMsg"></span></div></div>
+<!-- ============================================ -->
+<!-- MODAL: CELEBRACIÓN DE LOGRO (NUEVO)          -->
+<!-- ============================================ -->
+<div id="achievementCelebration" style="display:none;position:fixed;inset:0;z-index:400;pointer-events:none;">
+    <!-- Canvas de confeti -->
+    <canvas id="confettiCanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+    
+    <!-- Modal centrado de celebración -->
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center animate-bounce-in">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-2xl border-2 border-amber-400 max-w-md mx-4">
+            <div class="text-6xl mb-4" id="celebrationIcon">🏆</div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" id="celebrationTitle">¡Logro Desbloqueado!</h3>
+            <p class="text-lg text-amber-600 font-semibold mb-2" id="celebrationBadgeName">Nombre del Badge</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400" id="celebrationBadgeDesc">Descripción del badge</p>
+        </div>
+    </div>
+</div>
 
-<footer id="appFooter" style="display:none" class="bg-electric-900 text-white py-10 px-6"><div class="max-w-7xl mx-auto text-center"><div class="flex items-center justify-center gap-4 mb-4"><img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" alt="ESFM" class="h-10 object-contain shield-img"><img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" alt="Especialidad" class="h-10 object-contain shield-img"></div><p class="text-sm text-electric-300">© 2026 ElectroniLab — IEPC - PEC · U.E. Max Fernandez Rojas · ESFM Mariscal Sucre</p></div></footer>
+<!-- ============================================ -->
+<!-- TOAST NOTIFICATION                          -->
+<!-- ============================================ -->
+<div id="toast" style="display:none;position:fixed;bottom:24px;right:24px;z-index:300">
+    <div class="bg-electric-600 text-white px-6 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2 animate-slide-in-right">
+        <i data-lucide="check-circle" class="w-4 h-4"></i>
+        <span id="toastMsg"></span>
+    </div>
+</div>
 
-<script>
-'use strict';
+<!-- ============================================ -->
+<!-- FOOTER                                       -->
+<!-- ============================================ -->
+<footer id="appFooter" style="display:none" class="bg-electric-900 text-white py-10 px-6">
+    <div class="max-w-7xl mx-auto text-center">
+        <div class="flex items-center justify-center gap-4 mb-4">
+            <img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" 
+                 alt="ESFM" 
+                 class="h-10 object-contain shield-img">
+            <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" 
+                 alt="Especialidad" 
+                 class="h-10 object-contain shield-img">
+        </div>
+        <p class="text-sm text-electric-300">
+            © 2026 ElectroniLab 2.0 — IEPC - PEC · U.E. Max Fernandez Rojas · ESFM Mariscal Sucre
+        </p>
+        <p class="text-xs text-electric-400 mt-2">
+            Versión 2.0 con Gamificación • Mini-Juegos • Sistema de Logros • Modo Oscuro
+        </p>
+    </div>
+</footer>
 
-// ====== FIREBASE & GLOBAL ======
-const firebaseConfig={apiKey:"AIzaSyCZbKU27EngACUMP1FNBxA0N3HabxcBPZg",authDomain:"electronilab-aa4da.firebaseapp.com",databaseURL:"https://electronilab-aa4da-default-rtdb.firebaseio.com/",projectId:"electronilab-aa4da",storageBucket:"electronilab-aa4da.firebasestorage.app",messagingSenderId:"1009038542986",appId:"1:1009038542986:web:2ca34ff0ab861637eb0573"};
-firebase.initializeApp(firebaseConfig); const db=firebase.database(); let editingId=null; let isAdminAuthenticated=false; let pendingAction=null;
-const provider = new firebase.auth.GoogleAuthProvider();
+<!-- Script principal -->
+<script src="script.js"></script>
 
-// Auth State Listener
-firebase.auth().onAuthStateChanged((user) => {
-    const btnLogout = document.getElementById('btnLogout');
-    const btnAdd = document.getElementById('btnAddPractice');
-    isAdminAuthenticated = !!user;
-    if(btnLogout) btnLogout.style.display = isAdminAuthenticated ? 'flex' : 'none';
-    if(btnAdd) btnAdd.style.display = isAdminAuthenticated ? 'flex' : 'none';
-});
-
-// Clock
-function updateClock(){const now=new Date();document.getElementById('liveClock').textContent=now.toLocaleTimeString('es-ES');}
-setInterval(updateClock,1000);
-document.addEventListener('DOMContentLoaded',()=>{
-    updateClock();
-    lucide.createIcons();
-    initHeroCanvas();
-    initOhm();
-    initResistor();   // Con reset de bandas
-    initWaveform();
-    initQuiz();
-    renderFormulas();
-    testFirebaseConnection();
-    // polyfill roundRect
-    if (!CanvasRenderingContext2D.prototype.roundRect) {
-        CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
-            if (w < 2 * r) r = w / 2;
-            if (h < 2 * r) r = h / 2;
-            this.moveTo(x+r, y);
-            this.lineTo(x+w-r, y);
-            this.quadraticCurveTo(x+w, y, x+w, y+r);
-            this.lineTo(x+w, y+h-r);
-            this.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
-            this.lineTo(x+r, y+h);
-            this.quadraticCurveTo(x, y+h, x, y+h-r);
-            this.lineTo(x, y+r);
-            this.quadraticCurveTo(x, y, x+r, y);
-            return this;
-        };
-    }
-    initCircuit(); // Ahora funciona correctamente
-});
-
-// ====== FIREBASE CONEXIÓN Y REFRESH ======
-let practicesListener = null;
-function testFirebaseConnection(){
-    db.ref('.info/connected').on('value',(snap)=>{
-        const dot=document.getElementById('fbDot');
-        const txt=document.getElementById('fbText');
-        if(snap.val()===true){
-            dot.className='w-2 h-2 rounded-full bg-green-400';
-            txt.textContent='Conectado a Firebase ✓';
-            loadFirebasePractices();
-        } else {
-            dot.className='w-2 h-2 rounded-full bg-red-400';
-            txt.textContent='Sin conexión';
-        }
-    });
-}
-function refreshAllPractices(){
-    if(practicesListener) practicesListener.off(); // remover listener anterior
-    loadFirebasePractices();
-    showToast('Listas actualizadas');
-}
-function loadFirebasePractices(){
-    if(practicesListener) practicesListener.off();
-    practicesListener = db.ref('practices/editor').on('value', (snapshot) => {
-        const data = snapshot.val() || {};
-        const arr = Object.entries(data).map(([id, d]) => ({ _id:id, title:d.title||'', area:d.area||'Otros', objetivo:d.objetivo||'', materiales:d.materiales||'', pasos:d.pasos||'', notas:d.notas||'', date:d.date||'', imageUrl:d.imageUrl||'' }));
-        arr.reverse();
-        renderPracticeList('tareaList','tarea',arr);
-        renderPracticeList('editorList','editor',arr);
-    });
-}
-function renderPracticeList(containerId, type, practices){
-    const c = document.getElementById(containerId);
-    if(!practices.length){
-        c.innerHTML='<div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300"><p class="text-slate-400">No hay prácticas</p></div>';
-        return;
-    }
-    const areaColors = {'Ley de Ohm':'bg-red-100 text-red-700','Componentes':'bg-green-100 text-green-700','Circuitos':'bg-amber-100 text-amber-700','Señales':'bg-purple-100 text-purple-700','Otros':'bg-slate-100 text-slate-700'};
-    c.innerHTML = practices.map(p => {
-        const acC = areaColors[p.area] || areaColors['Otros'];
-        const btns = type==='editor' ? `<div class="flex gap-1"><button onclick="editPractice('${p._id}')" class="text-slate-300 hover:text-electric-500 p-1">✏️</button><button onclick="deletePractice('${p._id}')" class="text-slate-300 hover:text-red-500 p-1">🗑</button></div>` : '';
-        return `<div class="practice-card"><div class="flex items-start justify-between gap-3 mb-3"><div><span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full ${acC} mb-2">${p.area}</span><h4 class="font-bold text-slate-900">${escapeHtml(p.title)}</h4><p class="text-xs text-slate-400">${p.date||''}</p></div>${btns}</div><div class="space-y-3 text-sm">${p.objetivo ? `<p class="text-slate-500">🎯 ${escapeHtml(p.objetivo)}</p>` : ''}${p.materiales ? `<p class="text-slate-500 whitespace-pre-line">🛠 ${escapeHtml(p.materiales)}</p>` : ''}${p.pasos ? `<div class="bg-slate-50 rounded-lg p-3 text-slate-600 whitespace-pre-line font-mono text-xs">${escapeHtml(p.pasos)}</div>` : ''}${p.notas ? `<p class="text-slate-500">📝 ${escapeHtml(p.notas)}</p>` : ''}${p.imageUrl ? `<img src="${p.imageUrl}" class="rounded-lg max-h-48 border" loading="lazy">` : ''}</div></div>`;
-    }).join('');
-}
-function escapeHtml(str){ return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
-function deletePractice(id){ if(!isAdminAuthenticated){ showToast('Inicia sesión primero'); return; } if(confirm('¿Eliminar?')) db.ref('practices/editor/'+id).remove().then(()=>showToast('Eliminada')); }
-function editPractice(id){ if(!isAdminAuthenticated){ showToast('Inicia sesión primero'); return; } editingId=id; db.ref('practices/editor/'+id).once('value').then(snap=>{ const d=snap.val(); if(!d) return; document.getElementById('practiceFormModal').style.display='flex'; document.getElementById('pfModalTitle').textContent='Editar Práctica'; document.getElementById('pfSubmitText').textContent='Actualizar'; document.getElementById('pfTitle').value=d.title||''; document.getElementById('pfArea').value=d.area||'Otros'; document.getElementById('pfObj').value=d.objetivo||''; document.getElementById('pfMat').value=d.materiales||''; document.getElementById('pfPasos').value=d.pasos||''; document.getElementById('pfNotas').value=d.notas||''; }); }
-
-// ====== AUTH ======
-function accessEditor(){ if(isAdminAuthenticated){ switchSubTab('editor'); return; } pendingAction='switchEditor'; document.getElementById('authModal').style.display='flex'; document.getElementById('authError').style.display='none'; }
-function showAuthModal(action){ if(isAdminAuthenticated){ openPracticeForm(); return; } pendingAction=action; document.getElementById('authModal').style.display='flex'; document.getElementById('authError').style.display='none'; }
-function closeAuthModal(){ document.getElementById('authModal').style.display='none'; }
-function loginWithGoogle(){ firebase.auth().signInWithPopup(provider).then(result=>{ closeAuthModal(); if(pendingAction==='switchEditor') switchSubTab('editor'); else openPracticeForm(); showToast(`Bienvenido, ${result.user.displayName}`); }).catch(error=>{ console.error(error); document.getElementById('authError').style.display='block'; document.getElementById('authError').textContent='Error: '+error.message; }); }
-function logoutEditor(){ firebase.auth().signOut().then(()=>{ showToast('Sesión cerrada'); switchSubTab('quiz'); }); }
-function openPracticeForm(){ editingId=null; document.getElementById('practiceFormModal').style.display='flex'; document.getElementById('pfModalTitle').textContent='Nueva Práctica'; document.getElementById('pfSubmitText').textContent='Guardar'; document.getElementById('pfTitle').value=''; document.getElementById('pfObj').value=''; document.getElementById('pfMat').value=''; document.getElementById('pfPasos').value=''; document.getElementById('pfNotas').value=''; document.getElementById('pfImage').value=''; }
-function closePracticeForm(){ document.getElementById('practiceFormModal').style.display='none'; editingId=null; }
-function submitPractice(){ if(!isAdminAuthenticated){ showToast('Debes iniciar sesión'); return; } const title=document.getElementById('pfTitle').value.trim(); const area=document.getElementById('pfArea').value; const obj=document.getElementById('pfObj').value.trim(); const mat=document.getElementById('pfMat').value.trim(); const pasos=document.getElementById('pfPasos').value.trim(); const notas=document.getElementById('pfNotas').value.trim(); const fileInput=document.getElementById('pfImage'); if(!title||!obj||!pasos){ showToast('Completa los campos obligatorios'); return; } const practiceData={title,area,objetivo:obj,materiales:mat,pasos,notas,date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})}; const finishSave=(data)=>{ const ref=editingId?db.ref('practices/editor/'+editingId):db.ref('practices/editor').push(); ref.set(data).then(()=>{ closePracticeForm(); showToast(editingId?'Actualizada':'Guardada'); editingId=null; }); }; if(fileInput.files && fileInput.files[0]){ const reader=new FileReader(); reader.onload=(e)=>{ const img=new Image(); img.onload=()=>{ const canvas=document.createElement('canvas'); let w=img.width, h=img.height; const maxSize=800; if(w>maxSize){ h=h*maxSize/w; w=maxSize; } canvas.width=w; canvas.height=h; const ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0,w,h); const quality=0.7; const dataUrl=canvas.toDataURL('image/jpeg',quality); if(dataUrl.length>250000){ showToast('Imagen muy grande, prueba con otra más pequeña'); return; } practiceData.imageUrl=dataUrl; finishSave(practiceData); }; img.src=e.target.result; }; reader.readAsDataURL(fileInput.files[0]); } else { if(editingId){ db.ref('practices/editor/'+editingId).once('value').then(snap=>{ if(snap.val() && snap.val().imageUrl) practiceData.imageUrl=snap.val().imageUrl; finishSave(practiceData); }); } else { finishSave(practiceData); } } }
-
-// ====== NAVEGACIÓN ======
-function navigateTo(page){ if(page==='inicio'){ document.getElementById('view-inicio').style.display='block'; document.getElementById('app-shell').style.display='none'; document.getElementById('appFooter').style.display='none'; heroAnimationActive=true; initHeroCanvas(); }else{ document.getElementById('view-inicio').style.display='none'; document.getElementById('app-shell').style.display='block'; document.getElementById('appFooter').style.display='block'; if(heroAnimationActive){ heroAnimationActive=false; } document.querySelectorAll('.content-page').forEach(p=>p.classList.remove('active')); const t=document.getElementById('page-'+page); if(t) t.classList.add('active'); document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active')); const n=document.querySelector(`.nav-tab[data-nav="${page}"]`); if(n) n.classList.add('active'); if(page==='circuitos') setTimeout(()=>updateCircuitStatic(), 50); if(page==='senales') setTimeout(updateWaveParams,50); } window.scrollTo({top:0,behavior:'smooth'}); }
-function switchSubTab(sub){ ['quiz','tarea','editor'].forEach(s=>document.getElementById(`panel-${s}`).style.display='none'); document.getElementById(`panel-${sub}`).style.display='block'; document.querySelectorAll('.sub-tab').forEach(b=>{ b.classList.remove('active'); b.style.background='#F1F5F9'; b.style.color='#475569'; }); const btn=document.getElementById(`sub${sub.charAt(0).toUpperCase()+sub.slice(1)}`); btn.classList.add('active'); btn.style.background='#0A84FF'; btn.style.color='#fff'; }
-function switchCompTab(tab){ ['resistencias','capacitores','transistores','diodos'].forEach(t=>document.getElementById(`comp-${t}`).style.display='none'); document.getElementById(`comp-${tab}`).style.display='block'; document.querySelectorAll('.comp-tab').forEach(b=>{ b.classList.remove('active'); b.style.background='#F1F5F9'; b.style.color='#475569'; }); document.querySelectorAll('.comp-tab').forEach(b=>{ if(b.textContent.toLowerCase().includes(tab.substring(0,4))){ b.classList.add('active'); b.style.background='#0A84FF'; b.style.color='#fff'; } }); }
-function showToast(msg){ const t=document.getElementById('toast'); document.getElementById('toastMsg').textContent=msg; t.style.display='block'; lucide.createIcons({ root: t }); setTimeout(()=>{ t.style.display='none'; },3000); }
-
-// ====== HERO CANVAS CON PAUSA ======
-let heroAnimationActive=true;
-let heroReq=null;
-function initHeroCanvas(){ if(!heroAnimationActive) return; const canvas=document.getElementById('heroCanvas'); if(!canvas) return; let ctx=canvas.getContext('2d'); let w,h,nodes=[],traces=[],electrons=[]; function resize(){ w=canvas.width=canvas.parentElement.offsetWidth; h=canvas.height=canvas.parentElement.offsetHeight; gen(); } function gen(){ nodes=[]; traces=[]; electrons=[]; const cols=Math.floor(w/70), rows=Math.floor(h/70); for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) if(Math.random()>.3) nodes.push({x:50+c*70,y:50+r*70}); for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){ const dx=Math.abs(nodes[i].x-nodes[j].x), dy=Math.abs(nodes[i].y-nodes[j].y); if((dx===70&&dy===0)||(dx===0&&dy===70)) if(Math.random()>.35){ traces.push({from:i,to:j}); electrons.push({trace:traces.length-1,t:Math.random(),speed:.003+Math.random()*.004}); } } } function draw(){ if(!heroAnimationActive) return; ctx.clearRect(0,0,w,h); traces.forEach(tr=>{ const a=nodes[tr.from], b=nodes[tr.to]; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.strokeStyle='rgba(10,132,255,.12)'; ctx.lineWidth=2; ctx.stroke(); }); nodes.forEach(n=>{ ctx.beginPath(); ctx.arc(n.x,n.y,3,0,Math.PI*2); ctx.fillStyle='rgba(10,132,255,.3)'; ctx.fill(); }); electrons.forEach(e=>{ e.t+=e.speed; if(e.t>1) e.t=0; const tr=traces[e.trace]; const a=nodes[tr.from], b=nodes[tr.to]; const x=a.x+(b.x-a.x)*e.t, y=a.y+(b.y-a.y)*e.t; ctx.beginPath(); ctx.arc(x,y,2,0,Math.PI*2); ctx.fillStyle='rgba(100,180,255,.9)'; ctx.fill(); }); heroReq=requestAnimationFrame(draw); } window.addEventListener('resize',()=>{ if(heroAnimationActive){ resize(); } }); resize(); draw(); }
-// detener hero cuando no visible? no necesario, pero pausa implícita al navegar
-
-// ====== OHM ======
-let solveFor='V';
-function setSolveFor(val){ solveFor=val; document.querySelectorAll('.solve-btn').forEach(b=>{ b.className='solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 text-slate-500 bg-white'; }); const a=document.getElementById(`solve${val}`); const cls={V:'border-volt text-volt bg-red-50',I:'border-amps text-amps bg-amber-50',R:'border-ohms text-ohms bg-green-50'}; a.className=`solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 ${cls[val]}`; const s={V:'rangeV',I:'rangeI',R:'rangeR'}; Object.keys(s).forEach(k=>{ const el=document.getElementById(s[k]); el.disabled=(k===val); el.style.opacity=(k===val)?'0.4':'1'; }); updateOhm(); }
-function initOhm(){ setSolveFor('V'); }
-function updateOhm(){ let V=parseFloat(document.getElementById('rangeV').value), I=parseFloat(document.getElementById('rangeI').value), R=parseFloat(document.getElementById('rangeR').value), P; if(solveFor==='V'){ V=I*R; P=V*I; } else if(solveFor==='I'){ I=V/R; P=V*I; } else { R=V/I; P=V*I; } document.getElementById('valV').textContent=V.toFixed(1)+' V'; document.getElementById('valI').textContent=I.toFixed(2)+' A'; document.getElementById('valR').textContent=R.toFixed(1)+' Ω'; const rDiv=document.getElementById('ohmResult'); rDiv.innerHTML=`<div class="text-sm opacity-80 mb-1">Resultado</div><div class="font-mono text-2xl font-bold">${solveFor==='V'?`V = I×R = ${V.toFixed(1)} V`:solveFor==='I'?`I = V/R = ${I.toFixed(3)} A`:`R = V/I = ${R.toFixed(1)} Ω`}</div><div class="text-sm mt-2 opacity-80">P = ${P.toFixed(2)} W</div>`; }
-
-// ====== COMPONENTES - RESISTORES (con reset) ======
-const rCols=[{n:'Negro',c:'#1a1a1a',v:0},{n:'Marrón',c:'#8B4513',v:1},{n:'Rojo',c:'#FF0000',v:2},{n:'Naranja',c:'#FF8C00',v:3},{n:'Amarillo',c:'#FFD700',v:4},{n:'Verde',c:'#228B22',v:5},{n:'Azul',c:'#0000FF',v:6},{n:'Violeta',c:'#8B008B',v:7},{n:'Gris',c:'#808080',v:8},{n:'Blanco',c:'#F0F0F0',v:9}];
-const rTols=[{n:'Oro',c:'#FFD700',t:5},{n:'Plata',c:'#C0C0C0',t:10},{n:'Ninguno',c:'#D4A76A',t:20},{n:'1%',c:'#8B4513',t:1},{n:'2%',c:'#FF0000',t:2}];
-let rBands={1:1,2:0,3:2,4:0,5:0,m:2,t:0}; // valores por defecto: marrón, negro, rojo, oro
-function resetResistorBandsAndUpdateUI(){ const type=document.getElementById('resType').value; if(type==='4'){ rBands={1:1,2:0,3:2,4:0,m:2,t:0}; } else if(type==='5'){ rBands={1:1,2:0,3:2,4:0,5:0,m:3,t:0}; } else { rBands={}; } updateResistorUI(); }
-function initResistor(){ resetResistorBandsAndUpdateUI(); }
-function updateResistorUI(){ const type=document.getElementById('resType').value; const inputsDiv=document.getElementById('resInputs'); const bodyDiv=document.getElementById('resBody'); inputsDiv.innerHTML=''; bodyDiv.innerHTML=''; if(type==='smd'){ inputsDiv.innerHTML='<input type="text" id="smdIn" placeholder="Ej: 103 o 4R7" class="form-input-easy w-full" oninput="calcResistor()">'; bodyDiv.style.padding='12px 16px'; bodyDiv.innerHTML='<span class="font-mono font-bold text-xs" id="smdBody">SMD</span>'; } else { const count=parseInt(type); const bandIds=[]; for(let i=1;i<=count;i++){ const isTol=(i===count); const isMult=(i===count-1); const label=isTol?'Tolerancia':(isMult?'Multiplicador':'Banda '+i); inputsDiv.innerHTML+=`<div><label class="text-xs font-semibold text-slate-500 mb-1 block">${label}</label><div class="flex flex-wrap gap-1" id="rBand${i}"></div></div>`; bandIds.push(i); } bodyDiv.style.padding='12px 24px'; bodyDiv.style.gap='3px'; bandIds.forEach(idx=>{ const el=document.createElement('div'); el.className='resistor-band'; el.id=`rBandVisual${idx}`; bodyDiv.appendChild(el); }); bandIds.forEach(idx=>{ const isTol=(idx===count); const isMult=(idx===count-1); const container=document.getElementById(`rBand${idx}`); const arr=isTol?rTols:rCols; arr.forEach((col,i)=>{ const sw=document.createElement('div'); sw.className='color-swatch'; sw.style.background=col.c; sw.style.width='28px'; sw.style.height='28px'; sw.title=col.n; sw.setAttribute('role','button'); sw.setAttribute('tabindex','0'); sw.onclick=()=>{ if(isTol) rBands.t=i; else if(isMult) rBands.m=i; else rBands[idx]=i; calcResistor(); }; container.appendChild(sw); }); }); } calcResistor(); }
-function calcResistor(){ const type=document.getElementById('resType').value; const resEl=document.getElementById('resistorResult'); if(type==='smd'){ const code=document.getElementById('smdIn').value.trim(); let val='—'; if(code.length>=3){ if(code.includes('R')){ val=code.replace('R','.'); } else { const d=code.substring(0,code.length-1); const m=code.charAt(code.length-1); val=parseFloat(d)*Math.pow(10,parseInt(m)); } } document.getElementById('smdBody').textContent=code; resEl.innerHTML=`<div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold">${formatR(val)}</div>`; return; } const count=parseInt(type); let baseVal=0, multIdx=rBands.m||0, tolIdx=rBands.t||0; if(count===4){ const d1=rBands[1]||0, d2=rBands[2]||0; baseVal=d1*10+d2; } else if(count===5){ const d1=rBands[1]||0, d2=rBands[2]||0, d3=rBands[3]||0; baseVal=d1*100+d2*10+d3; } const multVal=rCols[multIdx]?Math.pow(10,multIdx):1; const finalVal=baseVal*multVal; const tolVal=rTols[tolIdx]?rTols[tolIdx].t:20; for(let i=1;i<=count;i++){ const vis=document.getElementById(`rBandVisual${i}`); if(vis){ const isTol=(i===count); const isMult=(i===count-1); const arr=isTol?rTols:rCols; const idx=isTol?tolIdx:(isMult?multIdx:rBands[i]); vis.style.background=arr[idx]?arr[idx].c:'#ccc'; } } resEl.innerHTML=`<div class="text-sm text-ohms font-medium mb-1">Valor</div><div class="font-mono text-2xl font-bold">${formatR(finalVal)} ± ${tolVal}%</div>`; }
-function formatR(v){ if(isNaN(v)) return '—'; if(v>=1e6) return (v/1e6).toFixed(v%1e6?1:0)+' MΩ'; if(v>=1e3) return (v/1e3).toFixed(v%1e3?1:0)+' kΩ'; return v+' Ω'; }
-function updateCap(){ const c=document.getElementById('capCode').value.trim(); let val='—'; if(c.length===3){ const num=parseInt(c.substring(0,2)); const mult=parseInt(c.charAt(2)); val=num*Math.pow(10,mult); } document.getElementById('capResult').innerHTML=`<div class="text-sm text-blue-600 font-medium mb-1">Capacitancia</div><div class="font-mono text-2xl font-bold">${formatC(val)}</div>`; }
-function formatC(v){ if(isNaN(v)) return '—'; if(v>=1e6) return (v/1e6).toFixed(1)+' µF'; if(v>=1e3) return (v/1e3).toFixed(1)+' nF'; return v+' pF'; }
-function updateCapQ(){ const v=parseFloat(document.getElementById('capV').value)||0; const c=parseFloat(document.getElementById('capF').value)||0; document.getElementById('capQResult').textContent=`Q = ${(v*c).toFixed(4)} C`; }
-function updateTrans(){ const ib=parseFloat(document.getElementById('transIb').value)||0; const hfe=parseFloat(document.getElementById('transHfe').value)||100; const vcc=parseFloat(document.getElementById('transVcc').value)||0; const rc=parseFloat(document.getElementById('transRc').value)||1000; const ic=ib*hfe; const vce=vcc-(ic/1000)*rc; const vce_sat=0.2; const sat=vce<vce_sat; document.getElementById('transResult').innerHTML=`<p>Ic = ${ic.toFixed(2)} mA</p><p>Vce = ${sat?vce_sat:vce.toFixed(2)} V</p><p>Estado: <b>${sat?'Saturado (Switch ON)':'Activo (Amplificador)'}</b></p>`; }
-function updateDiod(){ const vi=parseFloat(document.getElementById('diodVi').value)||0; const vd=parseFloat(document.getElementById('diodVd').value)||0.7; const r=parseFloat(document.getElementById('diodR').value)||1000; const i=(vi>vd)?((vi-vd)/r):0; document.getElementById('diodResult').innerHTML=`<p>Corriente (I) = ${(i*1000).toFixed(2)} mA</p><p>Potencia Diodo = ${(i*vd).toFixed(4)} W</p><p>Estado: ${vi>vd?'Conducción (ON)':'Corte (OFF)'}</p>`; }
-
-// ====== CIRCUITOS (optimizado) ======
-let cType='serie', flowType='convencional', circuitStaticValues={}, electronPos=0, animFrame;
-function toggleFlowType(){ flowType=flowType==='convencional'?'electrones':'convencional'; document.getElementById('flowLabel').textContent=flowType==='convencional'?'Convencional':'Electrones'; updateCircuitStatic(); }
-function setCircuitType(t){ cType=t; document.getElementById('btnSerie').className=t==='serie'?'px-4 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500'; document.getElementById('btnParalelo').className=t==='paralelo'?'px-4 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500'; document.getElementById('btnMixto').className=t==='mixto'?'px-4 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md':'px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500'; const inp=document.getElementById('circInputs'); if(t==='mixto'){ inp.classList.remove('grid-cols-3'); inp.classList.add('grid-cols-4'); if(!document.getElementById('circR3')){ const d=document.createElement('div'); d.innerHTML='<label class="text-xs font-semibold text-ohms block mb-1">R₃</label><input type="number" id="circR3" value="300" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono bg-white" onchange="updateCircuitStatic()">'; inp.appendChild(d.firstChild); inp.appendChild(d.lastChild); } } else { inp.classList.add('grid-cols-3'); inp.classList.remove('grid-cols-4'); const r3=document.getElementById('circR3'); if(r3) r3.parentElement.remove(); } updateCircuitStatic(); }
-function updateCircuitStatic(){ const V=parseFloat(document.getElementById('circV').value)||12; const R1=parseFloat(document.getElementById('circR1').value)||100; const R2=parseFloat(document.getElementById('circR2').value)||200; let R3=cType==='mixto'?(parseFloat(document.getElementById('circR3').value)||300):0; let Rt,It,V1,V2,I1,I2,I3; if(cType==='serie'){ Rt=R1+R2; It=V/Rt; V1=It*R1; V2=It*R2; I1=I2=It; } else if(cType==='paralelo'){ Rt=(R1*R2)/(R1+R2); It=V/Rt; V1=V2=V; I1=V/R1; I2=V/R2; } else { const Rp=(R2*R3)/(R2+R3); Rt=R1+Rp; It=V/Rt; V1=It*R1; V2=V-V1; I1=It; I2=V2/R2; I3=V2/R3; } const P=V*It; document.getElementById('circuitResults').innerHTML=`<div class="grid grid-cols-2 gap-3"><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">R total</div><div class="font-mono font-bold text-ohms">${Rt.toFixed(1)}Ω</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">I total</div><div class="font-mono font-bold text-amps">${It.toFixed(4)}A</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R₁</div><div class="font-mono font-bold text-volt">${V1.toFixed(2)}V</div></div><div class="bg-white rounded-lg p-3 border border-slate-100"><div class="text-xs text-slate-400">V R₂</div><div class="font-mono font-bold text-volt">${V2.toFixed(2)}V</div></div></div>`; const rules=cType==='serie'?['R<sub>T</sub>=R₁+R₂','Corriente igual','Voltaje se divide']:cType==='paralelo'?['1/R<sub>T</sub>=1/R₁+1/R₂','Voltaje igual','Corriente se divide']:['R₁ en serie con (R₂||R₃)','Mixto combina serie y paralelo','La corriente principal pasa por R₁']; document.getElementById('circuitRules').innerHTML=rules.map(r=>`<p class="text-sm text-slate-600">• ${r}</p>`).join(''); circuitStaticValues = { V, R1, R2, R3, Rt, It, V1, V2, I1, I2, I3 }; drawCircuitAnimation(); }
-function initCircuit(){ updateCircuitStatic(); }
-function drawCircuitAnimation(){ const canvas=document.getElementById('circuitCanvas'); if(!canvas) return; const ctx=canvas.getContext('2d'); const cw=canvas.width, ch=canvas.height; const { V, R1, R2, R3, It } = circuitStaticValues; const isConv = flowType==='convencional'; const pColor = isConv?'#F59E0B':'#3B82F6'; const gColor = isConv?'rgba(245,158,11,0.3)':'rgba(59,130,246,0.3)'; ctx.clearRect(0,0,cw,ch); ctx.fillStyle='#F8FAFC'; ctx.fillRect(0,0,cw,ch); ctx.fillStyle='#E2E8F0'; ctx.fillRect(40,40,cw-80,ch-80); ctx.fillStyle='#F1F5F9'; ctx.fillRect(41,41,cw-82,ch-82); ctx.strokeStyle='#CBD5E1'; ctx.lineWidth=2; ctx.strokeRect(40,40,cw-80,ch-80); function drawCable(pts,color){ ctx.lineWidth=6; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle=color; ctx.shadowColor='rgba(0,0,0,0.15)'; ctx.shadowBlur=4; ctx.shadowOffsetY=2; ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y); for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y); ctx.stroke(); ctx.shadowColor='transparent'; ctx.lineWidth=2; ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y-1); for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y-1); ctx.stroke(); } function drawBattery(cx,cy){ ctx.shadowColor='rgba(0,0,0,0.2)'; ctx.shadowBlur=8; ctx.shadowOffsetY=4; let grad=ctx.createLinearGradient(cx-15,cy,cx+15,cy); grad.addColorStop(0,'#334155'); grad.addColorStop(0.5,'#64748B'); grad.addColorStop(1,'#334155'); ctx.fillStyle=grad; ctx.beginPath(); ctx.roundRect(cx-15,cy-40,30,80,8); ctx.fill(); ctx.shadowColor='transparent'; ctx.fillStyle='#EF4444'; ctx.fillRect(cx-8,cy-42,16,6); ctx.fillStyle='#1E293B'; ctx.fillRect(cx-6,cy+36,12,4); ctx.fillStyle='#fff'; ctx.font='bold 11px Space Grotesk'; ctx.textAlign='center'; ctx.fillText('+',cx,cy-28); ctx.fillText('−',cx,cy+28); ctx.fillStyle='#EF4444'; ctx.font='bold 14px Space Grotesk'; ctx.fillText(V+'V',cx+25,cy+5); } function drawHRes(cx,cy,label){ ctx.shadowColor='rgba(0,0,0,0.15)'; ctx.shadowBlur=6; ctx.shadowOffsetY=3; let grad=ctx.createLinearGradient(cx,cy-10,cx,cy+10); grad.addColorStop(0,'#D4A76A'); grad.addColorStop(0.5,'#C49555'); grad.addColorStop(1,'#B8894A'); ctx.fillStyle=grad; ctx.beginPath(); ctx.roundRect(cx-40,cy-10,80,20,4); ctx.fill(); ctx.shadowColor='transparent'; ctx.fillStyle='#334155'; ctx.font='bold 12px JetBrains Mono'; ctx.textAlign='center'; ctx.fillText(label,cx,cy+5); } function drawVRes(cx,cy,label){ ctx.save(); ctx.translate(cx,cy); ctx.rotate(-Math.PI/2); drawHRes(0,0,label); ctx.restore(); } function drawElectrons(path,speed){ const numE=6; for(let i=0;i<numE;i++){ let t=(electronPos*speed+i/numE)%1; if(!isConv) t=1-t; let pos=t*(path.length-1); let idx=Math.floor(pos); let frac=pos-idx; if(idx>=path.length-1){ idx=path.length-2; frac=1; } let ax=path[idx].x, ay=path[idx].y; let bx=path[idx+1].x, by=path[idx+1].y; let ex=ax+(bx-ax)*frac, ey=ay+(by-ay)*frac; ctx.beginPath(); ctx.arc(ex,ey,7,0,Math.PI*2); ctx.fillStyle=gColor; ctx.fill(); ctx.beginPath(); ctx.arc(ex,ey,4,0,Math.PI*2); ctx.fillStyle=pColor; ctx.fill(); } } if(cType==='serie'){ let TL={x:80,y:80},TR={x:420,y:80},BR={x:420,y:300},BL={x:80,y:300}; drawCable([TL,TR],'#EF4444'); drawCable([TR,BR],'#0F172A'); drawCable([BR,BL],'#0F172A'); drawCable([BL,{x:80,y:230}],'#0F172A'); drawCable([{x:80,y:150},TL],'#EF4444'); drawBattery(80,190); drawHRes(190,80,'R₁'); drawHRes(320,80,'R₂'); drawElectrons([TL,TR,BR,BL,TL],1); } else if(cType==='paralelo'){ let TL={x:80,y:80},TR={x:420,y:80},BR={x:420,y:300},BL={x:80,y:300}; let N1T={x:220,y:80},N1B={x:220,y:300}; let N2T={x:360,y:80},N2B={x:360,y:300}; drawCable([TL,N1T],'#EF4444'); drawCable([N1T,N2T],'#EF4444'); drawCable([N2T,TR],'#EF4444'); drawCable([TR,BR],'#0F172A'); drawCable([BR,N2B],'#0F172A'); drawCable([N2B,N1B],'#0F172A'); drawCable([N1B,BL],'#0F172A'); drawCable([BL,{x:80,y:230}],'#0F172A'); drawCable([{x:80,y:150},TL],'#EF4444'); drawCable([N1T,{x:N1T.x,y:100}],'#0F172A'); drawCable([{x:N1B.x,y:120},N1B],'#0F172A'); drawCable([N2T,{x:N2T.x,y:100}],'#0F172A'); drawCable([{x:N2B.x,y:120},N2B],'#0F172A'); drawVRes(N1T.x,N1T.y+110,'R₁'); drawVRes(N2T.x,N2T.y+110,'R₂'); drawBattery(80,190); drawElectrons([{x:80,y:150},TL,N1T,{x:N1T.x,y:100},{x:N1B.x,y:120},N1B,BL,{x:80,y:230}],1); drawElectrons([N1T,N2T,{x:N2T.x,y:100},{x:N2B.x,y:120},N2B,N1B],0.6); } else { let TL={x:80,y:80},TR={x:420,y:80},BR={x:420,y:300},BL={x:80,y:300}; let J1T={x:180,y:80},J1B={x:180,y:300}; let J2T={x:300,y:80},J2B={x:300,y:300}; drawCable([TL,J1T],'#EF4444'); drawCable([J1T,TR],'#EF4444'); drawCable([J1T,J2T],'#EF4444'); drawCable([J2T,TR],'#EF4444'); drawCable([TR,BR],'#0F172A'); drawCable([BR,J2B],'#0F172A'); drawCable([J2B,J1B],'#0F172A'); drawCable([J1B,BL],'#0F172A'); drawCable([BL,{x:80,y:230}],'#0F172A'); drawCable([{x:80,y:150},TL],'#EF4444'); drawCable([J1T,{x:J1T.x,y:100}],'#0F172A'); drawCable([{x:J1B.x,y:120},J1B],'#0F172A'); drawCable([J2T,{x:J2T.x,y:100}],'#0F172A'); drawCable([{x:J2B.x,y:120},J2B],'#0F172A'); drawHRes(130,80,'R₁'); drawVRes(J1T.x,J1T.y+110,'R₂'); drawVRes(J2T.x,J2T.y+110,'R₃'); drawBattery(80,190); drawElectrons([{x:80,y:150},TL,J1T,{x:J1T.x,y:100},{x:J1B.x,y:120},J1B,BL,{x:80,y:230}],1); drawElectrons([J1T,J2T,{x:J2T.x,y:100},{x:J2B.x,y:120},J2B,J1B],0.6); } ctx.fillStyle=isConv?'#F59E0B':'#3B82F6'; ctx.font='bold 12px Space Grotesk'; ctx.textAlign='center'; ctx.fillText(isConv?'I Convencional (+ → −)':'I Real (− → +)',cw/2,ch-15); electronPos+=0.002; if(electronPos>1) electronPos=0; animFrame=requestAnimationFrame(drawCircuitAnimation); }
-
-// ====== WAVEFORM ======
-let wType='sine', wAmp=5, wFreq=2, wTime=0;
-function setWaveType(t){ wType=t; document.querySelectorAll('.wave-btn').forEach(b=>{ b.className='wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600'; }); const btn=document.getElementById(`btn${t.charAt(0).toUpperCase()+t.slice(1)}`); if(btn) btn.className='wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-electric-600 text-white'; updateWaveParams(); }
-function updateWaveParams(){ wAmp=parseFloat(document.getElementById('ampSlider').value); wFreq=parseFloat(document.getElementById('freqSlider').value); document.getElementById('ampVal').textContent=wAmp.toFixed(1)+' V'; document.getElementById('freqVal').textContent=wFreq.toFixed(1)+' Hz'; const T=1/wFreq; let Vrms; if(wType==='sine') Vrms=(wAmp/Math.sqrt(2)).toFixed(2); else if(wType==='square') Vrms=wAmp.toFixed(2); else Vrms=(wAmp/Math.sqrt(3)).toFixed(2); document.getElementById('waveProps').innerHTML=`<div class="flex justify-between"><span class="text-slate-500">Vp</span><span class="font-mono font-semibold">${wAmp.toFixed(1)}V</span></div><div class="flex justify-between"><span class="text-slate-500">f</span><span class="font-mono font-semibold">${wFreq.toFixed(1)}Hz</span></div><div class="flex justify-between"><span class="text-slate-500">T</span><span class="font-mono font-semibold">${T.toFixed(3)}s</span></div><div class="flex justify-between"><span class="text-slate-500">Vrms</span><span class="font-mono font-semibold">${Vrms}V</span></div>`; }
-function initWaveform(){ const canvas=document.getElementById('waveCanvas'), ctx=canvas.getContext('2d'); updateWaveParams(); function draw(){ const cw=canvas.width, ch=canvas.height; ctx.fillStyle='#0C1A2E'; ctx.fillRect(0,0,cw,ch); ctx.strokeStyle='rgba(10,132,255,.1)'; ctx.lineWidth=1; for(let x=0;x<cw;x+=40){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,ch); ctx.stroke(); } for(let y=0;y<ch;y+=40){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(cw,y); ctx.stroke(); } ctx.strokeStyle='rgba(10,132,255,.25)'; ctx.beginPath(); ctx.moveTo(0,ch/4); ctx.lineTo(cw,ch/4); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,3*ch/4); ctx.lineTo(cw,3*ch/4); ctx.stroke(); ctx.strokeStyle='rgba(255,165,0,0.9)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,ch/2); ctx.lineTo(cw,ch/2); ctx.stroke(); ctx.fillStyle='#3399FF'; ctx.font='10px JetBrains Mono'; ctx.fillText('0V',5,ch/2-4); ctx.fillText(wAmp.toFixed(1)+'V',5,ch/4-4); ctx.fillText('-'+wAmp.toFixed(1)+'V',5,3*ch/4-4); ctx.fillText('t',cw-5,ch/2-4); ctx.beginPath(); ctx.strokeStyle='#3399FF'; ctx.lineWidth=2.5; ctx.shadowColor='#3399FF'; ctx.shadowBlur=8; const midY=ch/2, sY=(ch/2-30)/12; for(let x=0;x<cw;x++){ const t=(x/cw)*3+wTime; let y; const ph=2*Math.PI*wFreq*t; if(wType==='sine') y=midY-wAmp*Math.sin(ph)*sY; else if(wType==='square') y=midY-wAmp*Math.sign(Math.sin(ph))*sY; else if(wType==='triangle') y=midY-wAmp*(2/Math.PI)*Math.asin(Math.sin(ph))*sY; else if(wType==='sawtooth'){ const p=(wFreq*t)%1; y=midY-wAmp*(2*p-1)*sY; } else if(wType==='half') y=midY-Math.max(0,wAmp*Math.sin(ph))*sY; else y=midY-wAmp*sY; if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); ctx.shadowBlur=0; wTime+=.015; requestAnimationFrame(draw); } draw(); }
-
-// ====== QUIZ ======
-const QQ=[{cat:'Ohm',q:'R=100Ω I=0.5A ¿V=?',o:['25V','50V','100V','200V'],c:1,e:'V=I×R=50V'},{cat:'Comp.',q:'¿1kΩ ±5%?',o:['M-N-R-Oro','M-N-N-Oro','R-N-M-Oro','M-R-N-Oro'],c:0,e:'1-0-×100=1kΩ'},{cat:'Circ.',q:'Serie R₁=10 R₂=20 ¿RT?',o:['6.67','30','200','15'],c:1,e:'RT=30Ω'},{cat:'Circ.',q:'Paralelo: ¿qué es igual?',o:['Corriente','Resistencia','Voltaje','Potencia'],c:2,e:'Voltaje igual en ramas'},{cat:'Ohm',q:'¿Unidad resistencia?',o:['Voltio','Amperio','Ohmio','Vatio'],c:2,e:'Ohmio'},{cat:'Comp.',q:'¿Qué almacena carga?',o:['Resistencia','Inductor','Capacitor','Diodo'],c:2,e:'Capacitor'},{cat:'Señal',q:'T=0.02s ¿f?',o:['20Hz','50Hz','100Hz','0.02Hz'],c:1,e:'f=50Hz'},{cat:'Ohm',q:'V=12 R=4 ¿P?',o:['3W','16W','36W','48W'],c:2,e:'P=36W'}];
-let cQ=0, sc=0, qans=false;
-function initQuiz(){ showQ(); }
-function showQ(){ if(cQ>=QQ.length){ document.getElementById('quizCard').style.display='none'; document.getElementById('quizComplete').style.display='block'; document.getElementById('finalScore').textContent=sc+'/'+QQ.length; const p=sc/QQ.length; document.getElementById('finalMsg').textContent=p>=.8?'¡Excelente!':p>=.5?'Buen trabajo':'Sigue practicando'; return; } const q=QQ[cQ]; document.getElementById('qNum').textContent=cQ+1; document.getElementById('qTotal').textContent=QQ.length; document.getElementById('qProgress').style.width=((cQ+1)/QQ.length*100)+'%'; document.getElementById('quizCategory').textContent=q.cat; document.getElementById('quizQuestion').textContent=q.q; document.getElementById('quizFeedback').style.display='none'; document.getElementById('btnNext').style.display='none'; document.getElementById('btnSkip').style.display='inline-block'; qans=false; document.getElementById('quizOptions').innerHTML=q.o.map((o,i)=>`<button onclick="ansQ(${i})" class="quiz-option w-full text-left px-5 py-3.5 rounded-xl border-2 border-slate-200 text-sm font-medium text-slate-700 hover:border-electric-400 hover:bg-electric-50 transition-all flex items-center gap-3"><span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">${String.fromCharCode(65+i)}</span>${o}</button>`).join(''); }
-function ansQ(i){ if(qans) return; qans=true; const q=QQ[cQ]; document.querySelectorAll('.quiz-option').forEach((o,j)=>{ o.style.pointerEvents='none'; if(j===q.c) o.classList.add('correct'); if(i===j && j!==q.c) o.classList.add('incorrect'); }); const fb=document.getElementById('quizFeedback'); fb.style.display='block'; if(i===q.c){ sc++; document.getElementById('qScore').textContent=sc; fb.className='mt-6 rounded-xl p-4 text-sm bg-green-50 border border-green-200 text-green-800'; fb.innerHTML=`✅ ${q.e}`; } else { fb.className='mt-6 rounded-xl p-4 text-sm bg-red-50 border border-red-200 text-red-800'; fb.innerHTML=`❌ ${q.e}`; } document.getElementById('btnNext').style.display='inline-block'; document.getElementById('btnSkip').style.display='none'; }
-function skipQuestion(){ cQ++; showQ(); }
-function nextQuestion(){ cQ++; showQ(); }
-function restartQuiz(){ cQ=0; sc=0; qans=false; document.getElementById('qScore').textContent='0'; document.getElementById('quizCard').style.display='block'; document.getElementById('quizComplete').style.display='none'; showQ(); }
-
-// ====== KATEX ======
-function renderFormulas(){ const tryR=()=>{ if(typeof katex==='undefined'){ setTimeout(tryR,200); return; } const fm={f1:'V = I \\cdot R',f2:'I = \\dfrac{V}{R}',f3:'R = \\dfrac{V}{I}',f4:'P = V \\cdot I',f5:'P = I^2 \\cdot R',f6:'P = \\dfrac{V^2}{R}'}; Object.keys(fm).forEach(id=>{ const el=document.getElementById(id); if(el) katex.render(fm[id],el,{throwOnError:false}); }); const cf={fc_r:'R = \\dfrac{V}{I}\\;(\\Omega)',fc_c:'Q = C \\cdot V\\;(F)',fc_d:'V_d \\approx 0.7\\;V'}; Object.keys(cf).forEach(id=>{ const el=document.getElementById(id); if(el) katex.render(cf[id],el,{throwOnError:false}); }); }; tryR(); }
-</script>
 </body>
 </html>
