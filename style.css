@@ -1,97 +1,132 @@
 /* ============================================
-   ELECTRONILAB 2.0 - ESTILOS PRINCIPALES
-   Incluye: Modo Oscuro, Animaciones, Componentes
+   ELECTRONILAB 2.0 - STYLESHEET COMPLETO
+   Versión Gamificada con Dark Mode
    ============================================ */
 
-/* ===== VARIABLES CSS (CUSTOM PROPERTIES) ===== */
+/* ============================================
+   1. CSS VARIABLES (Custom Properties)
+   ============================================ */
 :root {
-    /* Colores base (modo claro) */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-tertiary: #f1f5f9;
-    --text-primary: #0f172a;
+    /* Tema Claro - Colores Primarios */
+    --bg-primary: #F8FAFC;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #F1F5F9;
+    
+    /* Texto */
+    --text-primary: #0F172A;
     --text-secondary: #475569;
-    --text-muted: #94a3b8;
-    --border-color: #e2e8f0;
+    --text-muted: #94A3B8;
+    
+    /* Bordes y Sombras */
+    --border-color: #E2E8F0;
     --shadow-color: rgba(0, 0, 0, 0.1);
     
-    /* Colores eléctricos */
+    /* Eléctricos */
     --electric-primary: #0A84FF;
     --electric-hover: #0066CC;
-    --volt-color: #EF4444;
-    --amps-color: #F59E0B;
-    --ohms-color: #22C55E;
-    --watts-color: #8B5CF6;
     
     /* Transiciones */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
+    --transition-base: all 0.3s ease;
 }
 
-/* Tema oscuro */
+/* Tema Oscuro */
 [data-theme="dark"] {
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
+    --bg-primary: #0F172A;
+    --bg-secondary: #1E293B;
     --bg-tertiary: #334155;
-    --text-primary: #f1f5f9;
-    --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
+    
+    --text-primary: #F8FAFC;
+    --text-secondary: #CBD5E1;
+    --text-muted: #64748B;
+    
     --border-color: #334155;
     --shadow-color: rgba(0, 0, 0, 0.4);
+    
+    --electric-primary: #0A84FF;
+    --electric-hover: #3399FF;
 }
 
-/* ===== RESET Y BASE ===== */
+/* ============================================
+   2. RESET Y BASE
+   ============================================ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: 'Space Grotesk', sans-serif;
-    margin: 0;
-    overflow-x: hidden;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    transition: background-color var(--transition-normal), color var(--transition-normal);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
-.font-mono {
-    font-family: 'JetBrains Mono', monospace;
+/* Skip link para accesibilidad */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--electric-primary);
+    color: white;
+    padding: 8px 16px;
+    z-index: 1000;
+    transition: top 0.3s;
 }
 
-/* Canvas global */
-canvas {
-    display: block;
+.skip-link:focus {
+    top: 0;
 }
 
-/* ===== TIPOGRAFÍA ===== */
+/* Focus visible para accesibilidad */
+:focus-visible {
+    outline: 3px solid var(--electric-primary);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   3. TIPOGRAFÍA
+   ============================================ */
 h1, h2, h3, h4, h5, h6 {
-    color: var(--text-primary);
     font-weight: 700;
     line-height: 1.2;
+    color: var(--text-primary);
 }
 
 p {
-    line-height: 1.6;
     color: var(--text-secondary);
 }
 
-/* ===== UTILIDADES DE FONDO ===== */
+.font-mono {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* ============================================
+   4. UTILIDADES FONDO (Graph Paper)
+   ============================================ */
 .graph-paper {
-    background-color: var(--bg-secondary);
-    background-image: linear-gradient(rgba(10, 132, 255, 0.04) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(10, 132, 255, 0.04) 1px, transparent 1px);
+    background-color: var(--bg-primary);
+    background-image: 
+        linear-gradient(rgba(10, 132, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(10, 132, 255, 0.04) 1px, transparent 1px);
     background-size: 24px 24px;
 }
 
 [data-theme="dark"] .graph-paper {
-    background-image: linear-gradient(rgba(10, 132, 255, 0.06) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(10, 132, 255, 0.06) 1px, transparent 1px);
+    background-image: 
+        linear-gradient(rgba(10, 132, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(10, 132, 255, 0.06) 1px, transparent 1px);
 }
 
-/* ===== NAVEGACIÓN Y VISTAS ===== */
+/* ============================================
+   5. LAYOUT VISTAS
+   ============================================ */
 .view {
     display: none;
     min-height: 100vh;
@@ -103,7 +138,7 @@ p {
 
 .content-page {
     display: none;
-    animation: fadeIn var(--transition-normal) ease;
+    animation: fadeIn 0.3s ease;
 }
 
 .content-page.active {
@@ -121,27 +156,38 @@ p {
     }
 }
 
-/* Tabs de navegación */
+/* ============================================
+   6. NAVEGACIÓN
+   ============================================ */
 .nav-tab {
-    transition: all var(--transition-fast);
+    transition: var(--transition-base);
     cursor: pointer;
-    position:relative;
-    border-bottom: 3px solid transparent;
+    position: relative;
+    color: var(--text-secondary);
+}
+
+.nav-tab:hover:not(.active) {
+    background-color: rgba(10, 132, 255, 0.04);
 }
 
 .nav-tab.active {
     color: var(--electric-primary);
-    background: rgba(10, 132, 255, 0.08);
-    border-bottom-color: var(--electric-primary);
+    background-color: rgba(10, 132, 255, 0.08);
 }
 
-.nav-tab:hover:not(.active) {
-    background: rgba(10, 132, 255, 0.04);
+.nav-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--electric-primary);
+    border-radius: 3px 3px 0 0;
 }
 
-/* Sub-tabs */
 .sub-tab {
-    transition: all var(--transition-fast);
+    transition: var(--transition-base);
     cursor: pointer;
 }
 
@@ -152,7 +198,7 @@ p {
 }
 
 .comp-tab {
-    transition: all var(--transition-fast);
+    transition: var(--transition-base);
     cursor: pointer;
 }
 
@@ -161,7 +207,9 @@ p {
     color: white !important;
 }
 
-/* ===== HERO SECTION ===== */
+/* ============================================
+   7. HERO SECTION
+   ============================================ */
 #heroCanvas {
     position: absolute;
     top: 0;
@@ -172,16 +220,13 @@ p {
 }
 
 .hero-title-glow {
-    text-shadow: 0 0 20px rgba(10, 132, 255, 0.5),
-                 0 0 40px rgba(10, 132, 255, 0.3),
-                 0 0 60px rgba(10, 132, 255, 0.1);
+    text-shadow: 0 0 30px rgba(10, 132, 255, 0.5);
 }
 
 .shield-img {
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
-/* Formas geométricas flotantes */
 .hero-shape {
     position: absolute;
     border: 1px solid rgba(51, 153, 255, 0.15);
@@ -195,41 +240,39 @@ p {
     animation: float-shape 6s ease-in-out infinite;
 }
 
-@keyframes pulse-ring {
-    0% { transform: scale(0.8); opacity: 0.6; }
-    50% { transform: scale(1.2); opacity: 0.2; }
-    100% { transform: scale(0.8); opacity: 0.6; }
-}
-
-@keyframes float-shape {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(5deg); }
-}
-
-/* Botón EXPERIMENTA YA especial */
+/* Botón principal con efecto shine */
 .btn-experimenta {
     position: relative;
     overflow: hidden;
 }
 
-.btn-experimenta::before {
+.btn-experimenta::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.7s;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
 }
 
-.btn-experimenta:hover::before {
-    left: 100%;
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
 }
 
-/* ===== TARJETAS DE ÁREAS ===== */
+/* ============================================
+   8. TARJETAS
+   ============================================ */
 .area-card {
-    transition: all var(--transition-normal);
+    transition: var(--transition-base);
     cursor: pointer;
 }
 
@@ -238,14 +281,13 @@ p {
     box-shadow: 0 12px 40px rgba(10, 132, 255, 0.15);
 }
 
-/* ===== TARJETAS DE FÓRMULAS ===== */
 .formula-card {
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    transition: all var(--transition-normal);
+    transition: var(--transition-base);
 }
 
 .formula-card:hover {
@@ -254,7 +296,22 @@ p {
     transform: translateY(-2px);
 }
 
-/* ===== COMPONENTES DE RESISTORES ===== */
+.practice-card {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    background: var(--bg-secondary);
+    transition: var(--transition-base);
+}
+
+.practice-card:hover {
+    border-color: var(--electric-primary);
+    box-shadow: 0 2px 12px rgba(10, 132, 255, 0.1);
+}
+
+/* ============================================
+   9. COMPONENTES ESPECÍFICOS
+   ============================================ */
 .resistor-body {
     display: flex;
     align-items: center;
@@ -270,7 +327,7 @@ p {
     height: 52px;
     border-radius: 2px;
     box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
-    transition: background var(--transition-fast);
+    transition: background 0.3s;
 }
 
 .resistor-lead {
@@ -286,7 +343,7 @@ p {
     border-radius: 8px;
     cursor: pointer;
     border: 3px solid transparent;
-    transition: all var(--transition-fast);
+    transition: all 0.2s;
 }
 
 .color-swatch:hover,
@@ -294,21 +351,6 @@ p {
     border-color: var(--electric-primary);
     transform: scale(1.15);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* ===== QUIZ / CUESTIONARIO ===== */
-.quiz-option {
-    background: var(--bg-primary);
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    padding: 16px;
-    transition: all var(--transition-fast);
-    cursor: pointer;
-}
-
-.quiz-option:hover:not(.disabled) {
-    border-color: var(--electric-primary);
-    background: rgba(10, 132, 255, 0.05);
 }
 
 .quiz-option.correct {
@@ -323,12 +365,7 @@ p {
     color: #991B1B !important;
 }
 
-.quiz-option.disabled {
-    pointer-events: none;
-    opacity: 0.7;
-}
-
-/* ===== INPUTS Y FORMULARIOS ===== */
+/* Inputs range personalizados */
 input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
@@ -369,9 +406,8 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 12px;
     padding: 12px 16px;
     font-size: 15px;
-    transition: all var(--transition-fast);
+    transition: all 0.2s;
     color: var(--text-primary);
-    width: 100%;
 }
 
 .form-input-easy:focus {
@@ -381,21 +417,6 @@ input[type="range"]::-moz-range-thumb {
     outline: none;
 }
 
-/* ===== TARJETAS DE PRÁCTICA ===== */
-.practice-card {
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 16px;
-    background: var(--bg-primary);
-    transition: all var(--transition-normal);
-}
-
-.practice-card:hover {
-    border-color: var(--electric-primary);
-    box-shadow: 0 2px 12px rgba(10, 132, 255, 0.1);
-}
-
-/* ===== SECCIÓN TÍTULO ===== */
 .section-title::before {
     content: '';
     display: block;
@@ -406,7 +427,314 @@ input[type="range"]::-moz-range-thumb {
     margin-bottom: 12px;
 }
 
-/* ===== SCROLLBAR PERSONALIZADO ===== */
+/* Canvas */
+canvas {
+    display: block;
+}
+
+/* Polyfill roundRect si no existe */
+canvas {
+    display: block;
+}
+
+/* ============================================
+   10. QUIZ/PRÁCTICA ESTILOS
+   ============================================ */
+.quiz-option {
+    transition: all 0.2s;
+}
+
+.quiz-option:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* ============================================
+   11. [NUEVO] MINI-JUEGO ESTILOS
+   ============================================ */
+#miniGameModal {
+    backdrop-filter: blur(8px);
+}
+
+.game-option-btn {
+    padding: 16px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.game-option-btn:hover:not(:disabled) {
+    border-color: var(--electric-primary);
+    background: rgba(10, 132, 255, 0.05);
+    transform: translateX(4px);
+}
+
+.game-option-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.game-option-btn.selected-correct {
+    background: linear-gradient(135deg, #DCFCE7, #BBF7D0) !important;
+    border-color: #22C55E !important;
+    color: #166534 !important;
+}
+
+.game-option-btn.selected-incorrect {
+    background: linear-gradient(135deg, #FEE2E2, #FECACA) !important;
+    border-color: #EF4444 !important;
+    color: #991B1B !important;
+    animation: shake 0.5s ease;
+}
+
+.feedback-correct {
+    background: linear-gradient(135deg, #DCFCE7, #D1FAE5);
+    border: 2px solid #22C55E;
+    border-radius: 12px;
+    padding: 16px;
+    color: #166534;
+    font-size: 14px;
+}
+
+.feedback-incorrect {
+    background: linear-gradient(135deg, #FEE2E2, #FECACA);
+    border: 2px solid #EF4444;
+    border-radius: 12px;
+    padding: 16px;
+    color: #991B1B;
+    font-size: 14px;
+}
+
+/* Game stats cards con gradientes */
+.game-stat-card {
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    color: white;
+}
+
+.game-stat-time {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+}
+
+.game-stat-score {
+    background: linear-gradient(135deg, #0A84FF, #0066CC);
+}
+
+.game-stat-combo {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.game-stat-correct {
+    background: linear-gradient(135deg, #22C55E, #16A34A);
+}
+
+/* Animación pulso glow para botón de inicio */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(10, 132, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(10, 132, 255, 0.8);
+    }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ============================================
+   12. [NUEVO] BADGES ESTILOS
+   ============================================ */
+.badge-card {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    text-center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.badge-card.unlocked {
+    border-color: #F59E0B;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.badge-card.locked {
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+.badge-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.badge-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.badge-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.badge-lock-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+}
+
+.badge-lock-overlay span {
+    font-size: 32px;
+}
+
+/* Filtros de badges */
+.filter-badge-btn {
+    transition: all 0.2s;
+}
+
+.filter-badge-btn.active {
+    background: var(--electric-primary) !important;
+    color: white !important;
+}
+
+.filter-badge-btn:not(.active):hover {
+    background: var(--bg-tertiary) !important;
+}
+
+/* ============================================
+   13. [NUEVO] CELEBRACIÓN ESTILOS
+   ============================================ */
+#achievementCelebration {
+    backdrop-filter: blur(4px);
+}
+
+@keyframes bounce-in {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.3);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.animate-bounce-in {
+    animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================
+   14. ANIMACIONES KEYFRAMES
+   ============================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-right {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes bounce-in {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.3);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(10, 132, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(10, 132, 255, 0.8);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+@keyframes float-shape {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.6;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.2;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0.6;
+    }
+}
+
+/* ============================================
+   15. SCROLLBAR CUSTOM
+   ============================================ */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -417,284 +745,141 @@ input[type="range"]::-moz-range-thumb {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--text-muted);
+    background: #94A3B8;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-secondary);
+    background: #64748B;
 }
 
-/* ===== ANIMACIONES ADICIONALES ===== */
-
-/* Slide in desde la derecha (para toast) */
-@keyframes slide-in-right {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: #1E293B;
 }
 
-.animate-slide-in-right {
-    animation: slide-in-right 0.3s ease-out;
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: #475569;
 }
 
-/* Bounce suave (para celebraciones) */
-@keyframes bounce-in {
-    0% {
-        transform: translate(-50%, -50%) scale(0.3);
-        opacity: 0;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.05);
-    }
-    70% {
-        transform: translate(-50%, -50%) scale(0.9);
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: #64748B;
 }
 
-.animate-bounce-in {
-    animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #94A3B8 var(--bg-tertiary);
 }
 
-/* Pulse para elementos importantes */
-@keyframes pulse-glow {
-    0%, 100% {
-        box-shadow: 0 0 5px rgba(10, 132, 255, 0.5);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(10, 132, 255, 0.8), 0 0 30px rgba(10, 132, 255, 0.4);
-    }
+[data-theme="dark"] * {
+    scrollbar-color: #475569 #1E293B;
 }
 
-.animate-pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite;
-}
+/* ============================================
+   16. RESPONSIVE DESIGN
+   ============================================ */
 
-/* Shake para errores */
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
-
-.animate-shake {
-    animation: shake 0.5s ease-in-out;
-}
-
-/* ===== MINI-JUEGO ESTILOS ===== */
-#miniGameModal .game-active {
-    /* Estilos cuando el juego está activo */
-}
-
-.game-option-btn {
-    background: var(--bg-primary);
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    padding: 16px;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-primary);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    text-align: center;
-}
-
-.game-option-btn:hover:not(:disabled) {
-    border-color: var(--electric-primary);
-    background: rgba(10, 132, 255, 0.05);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(10, 132, 255, 0.15);
-}
-
-.game-option-btn.correct {
-    background: #DCFCE7 !important;
-    border-color: #22C55E !important;
-    color: #166534 !important;
-    animation: pulse-glow 0.5s ease;
-}
-
-.game-option-btn.incorrect {
-    background: #FEE2E2 !important;
-    border-color: #EF4444 !important;
-    color: #991B1B !important;
-    animation: shake 0.5s ease;
-}
-
-.game-option-btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-/* Feedback del juego */
-.feedback-correct {
-    background: linear-gradient(135deg, #DCFCE7, #BBF7D0);
-    color: #166534;
-    border: 2px solid #22C55E;
-}
-
-.feedback-incorrect {
-    background: linear-gradient(135deg, #FEE2E2, #FECACA);
-    color: #991B1B;
-    border: 2px solid #EF4444;
-}
-
-/* ===== BADGES/LOGROS ESTILOS ===== */
-.badge-card {
-    background: var(--bg-secondary);
-    border: 2px solid var(--border-color);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    transition: all var(--transition-normal);
-    position: relative;
-    overflow: hidden;
-}
-
-.badge-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
-.badge-card.locked {
-    opacity: 0.5;
-    filter: grayscale(100%);
-}
-
-.badge-card.locked:hover {
-    opacity: 0.7;
-}
-
-.badge-card.unlocked {
-    border-color: #F59E0B;
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
-}
-
-.badge-icon {
-    font-size: 3rem;
-    margin-bottom: 8px;
-    display: block;
-}
-
-.badge-name {
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-}
-
-.badge-desc {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    line-height: 1.3;
-}
-
-.badge-lock-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2rem;
-    opacity: 0.8;
-}
-
-/* Filtros de badges */
-.badge-filter {
-    transition: all var(--transition-fast);
-    cursor: pointer;
-}
-
-.badge-filter.active {
-    background: var(--electric-primary) !important;
-    color: white !important;
-}
-
-/* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 768px) {
-    .hero-title-glow {
-        font-size: 2.5rem !important;
+/* Mobile (< 480px) */
+@media (max-width: 480px) {
+    .hero-shape {
+        display: none;
     }
     
-    .btn-experimenta {
-        padding: 16px 32px !important;
-        font-size: 16px !important;
+    .float-geo {
+        display: none;
     }
     
-    #videoHeroContainer {
-        margin-bottom: 24px;
+    h1 {
+        font-size: 2rem !important;
     }
     
     .area-card {
-        padding: 24px !important;
+        padding: 24px 16px;
     }
     
-    /* En móviles, ajustar grids */
-    .grid-cols-4 {
-        grid-template-columns: repeat(2, 1fr) !important;
+    .game-option-btn {
+        padding: 12px 16px;
+        font-size: 14px;
+        min-height: 50px;
+    }
+    
+    #miniGameModal .grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .badge-card {
+        padding: 16px;
+    }
+    
+    .badge-icon {
+        font-size: 36px;
+    }
+    
+    #badgesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Ocultar botones secundarios en mobile */
+    #btnFlowType {
+        display: none;
     }
 }
 
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.75rem !important;
+/* Tablet (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    #badgesGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
     
-    .shield-img {
-        height: 64px !important;
+    .game-options-grid {
+        grid-template-columns: 1fr;
     }
-    
-    /* Ocultar botones secundarios en móvil muy pequeño */
-    .hide-mobile {
+}
+
+/* Desktop (> 768px) */
+@media (min-width: 769px) {
+    #badgesGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Large desktop (> 1024px) */
+@media (min-width: 1024px) {
+    #badgesGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ============================================
+   17. PRINT STYLES
+   ============================================ */
+@media print {
+    nav, footer, #toast, #miniGameModal, #badgesModal, 
+    #achievementCelebration, #authModal, #practiceFormModal {
         display: none !important;
     }
-}
-
-/* ===== PRINT STYLES (para imprimir certificados) ===== */
-@media print {
+    
     body {
         background: white !important;
         color: black !important;
     }
     
-    nav, footer, #app-shell, button, .no-print {
+    .content-page {
+        display: block !important;
+    }
+    
+    .view {
         display: none !important;
     }
     
-    .content-page {
+    #app-shell {
         display: block !important;
     }
 }
 
-/* ===== ACCESIBILIDAD ===== */
-/* Focus visible para navegación por teclado */
-*:focus-visible {
-    outline: 3px solid var(--electric-primary);
-    outline-offset: 2px;
-}
-
-/* Skip link para lectores de pantalla */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--electric-primary);
-    color: white;
-    padding: 8px;
-    z-index: 9999;
-    transition: top 0.3s;
-}
-
-.skip-link:focus {
-    top: 0;
-}
+/* ============================================
+   18. ACCESIBILIDAD
+   ============================================ */
 
 /* Reducir movimiento para usuarios sensibles */
 @media (prefers-reduced-motion: reduce) {
@@ -704,5 +889,100 @@ input[type="range"]::-moz-range-thumb {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
+    
+    .hero-shape,
+    .float-geo {
+        animation: none !important;
+    }
+    
+    .btn-experimenta::after {
+        animation: none !important;
+    }
+}
+
+/* Alto contraste */
+@media (prefers-contrast: high) {
+    :root {
+        --border-color: #000000;
+        --shadow-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .badge-card {
+        border-width: 3px;
+    }
+    
+    .game-option-btn {
+        border-width: 3px;
+    }
+}
+
+/* ============================================
+   19. UTILIDADES ADICIONALES
+   ============================================ */
+
+/* Sombra suave universal */
+.shadow-soft {
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+/* Texto truncado */
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Centrado absoluto */
+.absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Efecto glassmorphism */
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .glass {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gradientes útiles */
+.gradient-electric {
+    background: linear-gradient(135deg, #0A84FF, #0066CC);
+}
+
+.gradient-success {
+    background: linear-gradient(135deg, #22C55E, #16A34A);
+}
+
+.gradient-warning {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.gradient-danger {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+}
+
+/* Badge de dificultad */
+.difficulty-easy {
+    background: linear-gradient(135deg, #DCFCE7, #BBF7D0);
+    color: #166534;
+}
+
+.difficulty-medium {
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    color: #92400E;
+}
+
+.difficulty-hard {
+    background: linear-gradient(135deg, #FEE2E2, #FECACA);
+    color: #991B1B;
 }
