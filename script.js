@@ -1,140 +1,31 @@
-/**
- * ============================================
- * ELECTRONILAB 2.0 - SCRIPT PRINCIPAL
- * Versión: 2.0.0
- * Features: Mini-Juego, Badges, Modo Oscuro, Audio
- * ============================================
- */
+/* ============================================
+   ELECTRONILAB 2.0 - JAVASCRIPT COMPLETO
+   Versión Gamificada con Todas las Features
+   ============================================ */
 
 'use strict';
 
-// ===== CONFIGURACIÓN GLOBAL =====
+/* ============================================
+   SECCIÓN 1: CONFIGURACIÓN Y CONSTANTES
+   ============================================ */
 const CONFIG = {
     version: '2.0.0',
-    appName: 'ElectroniLab',
-    debug: false, // Cambiar a true para ver logs en consola
+    debug: true,
     
-    // Configuración del mini-juego
+    // Configuración del juego
     game: {
-        defaultTime: 60, // segundos por ronda
+        defaultTime: 60,
         basePoints: 10,
         speedBonus: {
-            fast: { threshold: 3, multiplier: 3 },    // < 3s = x3 puntos
-            medium: { threshold: 5, multiplier: 2 },   // < 5s = x2 puntos
-            slow: { threshold: 8, multiplier: 1.5 }    // < 8s = x1.5 puntos
+            fast: { threshold: 3, multiplier: 3 },
+            medium: { threshold: 5, multiplier: 2 },
+            slow: { threshold: 8, multiplier: 1.5 }
         },
-        difficultyThreshold: 3 // aciertos seguidos para subir dificultad
+        maxCombo: 5,
+        difficultyThreshold: 3 // Cada 3 aciertos sube dificultad
     },
     
-    // Configuración de badges
-    badges: [
-        // === BADGES DEL MINI-JUEGO ===
-        { 
-            id: 'speed-demon', 
-            name: '⚡ Rayo Veloz', 
-            desc: 'Responde 5 veces en menos de 3 segundos', 
-            icon: '⚡', 
-            category: 'game',
-            condition: () => gameStats.fastResponses >= 5 
-        },
-        { 
-            id: 'perfect-10', 
-            name: '🎯 Perfección Absoluta', 
-            desc: 'Obtén 10 aciertos consecutivos sin errores', 
-            icon: '🎯', 
-            category: 'game',
-            condition: () => gameStats.maxStreak >= 10 
-        },
-        { 
-            id: 'ohm-master', 
-            name: '🧠 Maestro de Ohm', 
-            desc: 'Acumula 500 puntos totales en desafíos', 
-            icon: '🧠', 
-            category: 'game',
-            condition: () => gameStats.totalScore >= 500 
-        },
-        { 
-            id: 'combo-king', 
-            name: '🔥 Rey del Combo', 
-            desc: 'Alcanza un combo de x5 o mayor', 
-            icon: '🔥', 
-            category: 'game',
-            condition: () => gameStats.maxCombo >= 5 
-        },
-        { 
-            id: 'marathon', 
-            name: '🏃 Maratonista Electrónico', 
-            desc: 'Completa 5 rondas completas de 60 segundos', 
-            icon: '🏃', 
-            category: 'game',
-            condition: () => gameStats.roundsCompleted >= 5 
-        },
-        
-        // === BADGES DE APRENDIZAJE ===
-        { 
-            id: 'explorer', 
-            name: '🗺️ Explorador Curioso', 
-            desc: 'Visita todas las áreas de aprendizaje', 
-            icon: '🗺️', 
-            category: 'learn',
-            condition: () => learningStats.sectionsVisited.size >= 6 
-        },
-        { 
-            id: 'circuit-builder', 
-            name: '🔧 Constructor de Circuitos', 
-            desc: 'Simula al menos 10 circuitos diferentes', 
-            icon: '🔧', 
-            category: 'learn',
-            condition: () => learningStats.circuitsSimulated >= 10 
-        },
-        { 
-            id: 'component-wizard', 
-            name: '🎩 Mago de Componentes', 
-            desc: 'Decodifica o calcula 50 resistencias/capacitores', 
-            icon: '🎩', 
-            category: 'learn',
-            condition: () => learningStats.componentsCalculated >= 50 
-        },
-        { 
-            id: 'wave-rider', 
-            name: '🌊 Surfista de Ondas', 
-            desc: 'Experimenta con los 5 tipos de señales', 
-            icon: '🌊', 
-            category: 'learn',
-            condition: () => learningStats.wavesExplored.size >= 5 
-        },
-        
-        // === BADGES ESPECIALES ===
-        { 
-            id: 'night-owl', 
-            name: '🦉 Búho Nocturno', 
-            desc: 'Usa el modo oscuro más de 5 veces', 
-            icon: '🦉', 
-            category: 'special',
-            condition: () => specialStats.darkModeUses >= 5 
-        },
-        { 
-            id: 'curious', 
-            name: '🤔 Mente Inquisitiva', 
-            desc: 'Lee todas las secciones conceptuales disponibles', 
-            icon: '🤔', 
-            category: 'special',
-            condition: () => learningStats.conceptsRead.size >= 10 // Ajustar número real
-        },
-        { 
-            id: 'legendary', 
-            name: '👑 Leyenda de ElectroniLab', 
-            desc: '¡Desbloquea TODOS los demás logros!', 
-            icon: '👑', 
-            category: 'special',
-            condition: () => {
-                const otherBadges = CONFIG.badges.filter(b => b.id !== 'legendary');
-                return otherBadges.every(b => unlockedBadges.includes(b.id));
-            }
-        }
-    ],
-    
-    // Firebase config (mantener la original)
+    // Firebase credentials
     firebase: {
         apiKey: "AIzaSyCZbKU27EngACUMP1FNBxA0N3HabxcBPZg",
         authDomain: "electronilab-aa4da.firebaseapp.com",
@@ -143,24 +34,114 @@ const CONFIG = {
         storageBucket: "electronilab-aa4da.firebasestorage.app",
         messagingSenderId: "1009038542986",
         appId: "1:1009038542986:web:2ca34ff0ab861637eb0573"
-    }
+    },
+    
+    // Definición de los 12 badges
+    badges: [
+        {
+            id: 'speed-demon',
+            icon: '⚡',
+            name: 'Rayo Veloz',
+            category: 'game',
+            description: 'Responde 5 veces en menos de 3 segundos'
+        },
+        {
+            id: 'perfect-10',
+            icon: '🎯',
+            name: 'Perfección Absoluta',
+            category: 'game',
+            description: 'Obtén 10 aciertos consecutivos sin errores'
+        },
+        {
+            id: 'ohm-master',
+            icon: '🧠',
+            name: 'Maestro de Ohm',
+            category: 'game',
+            description: 'Acumula 500 puntos totales en desafíos'
+        },
+        {
+            id: 'combo-king',
+            icon: '🔥',
+            name: 'Rey del Combo',
+            category: 'game',
+            description: 'Alcanza un combo de x5 o mayor'
+        },
+        {
+            id: 'marathon',
+            icon: '🏃',
+            name: 'Maratonista Electrónico',
+            category: 'game',
+            description: 'Completa 5 rondas completas de 60 segundos'
+        },
+        {
+            id: 'explorer',
+            icon: '🗺️',
+            name: 'Explorador Curioso',
+            category: 'learn',
+            description: 'Visita todas las áreas de aprendizaje (6 secciones)'
+        },
+        {
+            id: 'circuit-builder',
+            icon: '🔧',
+            name: 'Constructor de Circuitos',
+            category: 'learn',
+            description: 'Simula al menos 10 circuitos diferentes'
+        },
+        {
+            id: 'component-wizard',
+            icon: '🎩',
+            name: 'Mago de Componentes',
+            category: 'learn',
+            description: 'Decodifica o calcula 50 resistencias/capacitores'
+        },
+        {
+            id: 'wave-rider',
+            icon: '🌊',
+            name: 'Surfista de Ondas',
+            category: 'learn',
+            description: 'Experimenta con los 5 tipos de señales eléctricas'
+        },
+        {
+            id: 'night-owl',
+            icon: '🦉',
+            name: 'Búho Nocturno',
+            category: 'special',
+            description: 'Usa el modo oscuro más de 5 veces'
+        },
+        {
+            id: 'curious',
+            icon: '🤔',
+            name: 'Mente Inquisitiva',
+            category: 'special',
+            description: 'Lee todas las secciones conceptuales disponibles'
+        },
+        {
+            id: 'legendary',
+            icon: '👑',
+            name: 'Leyenda de ElectroniLab',
+            category: 'special',
+            description: '¡Desbloquea TODOS los demás logros!'
+        }
+    ]
 };
 
-// ===== ESTADO GLOBAL DE LA APLICACIÓN =====
+/* ============================================
+   SECCIÓN 2: VARIABLES DE ESTADO GLOBALES
+   ============================================ */
+
+// Estado principal de la aplicación
 let appState = {
     currentView: 'inicio',
-    currentPage: 'areas',
+    currentPage: null,
     isDarkMode: false,
     soundEnabled: true,
-    isAdminAuthenticated: false,
-    editingId: null,
-    pendingAction: null
+    isAdminAuthenticated: false
 };
 
-// ===== ESTADÍSTICAS DEL MINI-JUEGO =====
+// Estadísticas del mini-juego
 let gameStats = {
     isActive: false,
-    timeLeft: CONFIG.game.defaultTime,
+    timeLeft: 60,
     score: 0,
     combo: 0,
     maxCombo: 0,
@@ -170,13 +151,13 @@ let gameStats = {
     roundsCompleted: 0,
     maxStreak: 0,
     currentStreak: 0,
-    difficulty: 'easy', // easy, medium, hard
+    difficulty: 'easy', // easy | medium | hard
     questionStartTime: 0,
     timerInterval: null,
     currentQuestion: null
 };
 
-// ===== ESTADÍSTICAS DE APRENDIZAJE =====
+// Estadísticas de aprendizaje (para badges)
 let learningStats = {
     sectionsVisited: new Set(),
     circuitsSimulated: 0,
@@ -185,35 +166,31 @@ let learningStats = {
     conceptsRead: new Set()
 };
 
-// ===== ESTADÍSTICAS ESPECIALES =====
+// Estadísticas especiales (para badges)
 let specialStats = {
     darkModeUses: 0
 };
 
-// ===== BADGES DESBLOQUEADOS =====
-let unlockedBadges = JSON.parse(localStorage.getItem('electronilab_badges') || '[]');
+// Badges desbloqueados
+let unlockedBadges = [];
 
-// ===== VARIABLES DE FIREBASE =====
-let db;
+// Variables globales auxiliares
+let db = null;
 let practicesListener = null;
-let provider;
-
-// ===== AUDIO CONTEXT (PARA EFECTOS SONOROS) =====
+let provider = null;
 let audioContext = null;
+let confettiAnimationId = null;
 
-// ============================================
-// INICIALIZACIÓN PRINCIPAL
-// ============================================
+/* ============================================
+   SECCIÓN 3: INICIALIZACIÓN PRINCIPAL
+   ============================================ */
 document.addEventListener('DOMContentLoaded', () => {
-    console.log(`%c⚡ ${CONFIG.appName} v${CONFIG.version}`, 'color: #0A84FF; font-size: 20px; font-weight: bold;');
+    console.log('%c⚡ ElectroniLab 2.0 Gamificado', 'color: #0A84FF; font-size: 20px; font-weight: bold;');
+    console.log('%cVersión: ' + CONFIG.version, 'color: #22C55E;');
     
-    // Inicializar Firebase
+    // Inicializar sistemas
     initFirebase();
-    
-    // Inicializar UI
     initUI();
-    
-    // Inicializar módulos
     initHeroCanvas();
     initOhm();
     initResistor();
@@ -223,10 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initCircuit();
     
     // Inicializar nuevas features
-    initDarkMode();
-    initAudio();
-    loadBadgesFromStorage();
-    updateBadgeUI();
+    initDarkMode();      // Feature D
+    initAudio();         // Feature E
+    loadBadgesFromStorage(); // Feature C
+    updateBadgeUI();     // Actualizar contadores
     
     // Polyfill roundRect si no existe
     if (!CanvasRenderingContext2D.prototype.roundRect) {
@@ -246,72 +223,37 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
     
-    // Iniciar reloj
+    // Reloj
     updateClock();
     setInterval(updateClock, 1000);
     
-    // Iniciar icons de Lucide
+    // Icons
     lucide.createIcons();
-    
-    log('✅ Aplicación inicializada completamente');
 });
 
-// ============================================
-// SISTEMA DE LOGS (DEBUG)
-// ============================================
-function log(message, data = null) {
+/* ============================================
+   SECCIÓN 4: UTILIDADES GENERALES
+   ============================================ */
+
+/**
+ * Log condicional para debug
+ */
+function log(msg, data) {
     if (CONFIG.debug) {
-        console.log(`[${new Date().toLocaleTimeString()}]`, message, data || '');
+        console.log(`[ElectroniLab] ${msg}`, data || '');
     }
 }
 
-function logError(message, error = null) {
-    console.error(`[ERROR ${new Date().toLocaleTimeString()}]`, message, error || '');
+/**
+ * Log de errores
+ */
+function logError(msg, err) {
+    console.error(`[ElectroniLab ERROR] ${msg}`, err || '');
 }
 
-// ============================================
-// FIREBASE INICIALIZACIÓN
-// ============================================
-function initFirebase() {
-    try {
-        firebase.initializeApp(CONFIG.firebase);
-        db = firebase.database();
-        provider = new firebase.auth.GoogleAuthProvider();
-        
-        // Listener de autenticación
-        firebase.auth().onAuthStateChanged((user) => {
-            appState.isAdminAuthenticated = !!user;
-            updateAuthUI();
-        });
-        
-        // Testear conexión
-        testFirebaseConnection();
-        
-        log('✅ Firebase inicializado');
-    } catch (error) {
-        logError('Error inicializando Firebase:', error);
-    }
-}
-
-function updateAuthUI() {
-    const btnLogout = document.getElementById('btnLogout');
-    const btnAdd = document.getElementById('btnAddPractice');
-    
-    if (btnLogout) btnLogout.style.display = appState.isAdminAuthenticated ? 'flex' : 'none';
-    if (btnAdd) btnAdd.style.display = appState.isAdminAuthenticated ? 'flex' : 'none';
-}
-
-// ============================================
-// UI INICIALIZACIÓN
-// ============================================
-function initUI() {
-    log('🎨 Inicializando interfaz...');
-    // La UI se inicializa componente por componente
-}
-
-// ============================================
-// RELOJ EN VIVO
-// ============================================
+/**
+ * Actualizar reloj en formato es-ES
+ */
 function updateClock() {
     const now = new Date();
     const clockEl = document.getElementById('liveClock');
@@ -320,232 +262,12 @@ function updateClock() {
     }
 }
 
-// ============================================
-// MODO OSCURO/CLARO
-// ============================================
-function initDarkMode() {
-    // Cargar preferencia guardada
-    const savedTheme = localStorage.getItem('electronilab_theme') || 'light';
-    setTheme(savedTheme, false); // false = no guardar de nuevo
-    
-    log(`🌙 Modo oscuro inicializado: ${savedTheme}`);
-}
-
-function toggleDarkMode() {
-    const newTheme = appState.isDarkMode ? 'light' : 'dark';
-    setTheme(newTheme, true);
-    
-    // Trackear uso para badge
-    if (newTheme === 'dark') {
-        specialStats.darkModeUses++;
-        saveSpecialStats();
-        checkAndUnlockBadges();
-    }
-    
-    showToast(newTheme === 'dark' ? '🌙 Modo oscuro activado' : '☀️ Modo claro activado');
-}
-
-function setTheme(theme, saveToStorage = true) {
-    appState.isDarkMode = theme === 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
-    
-    if (saveToStorage) {
-        localStorage.setItem('electronilab_theme', theme);
-    }
-    
-    // Re-render icons para que cambien de color
-    setTimeout(() => lucide.createIcons(), 100);
-}
-
-// ============================================
-// SISTEMA DE AUDIO
-// ============================================
-function initAudio() {
-    // Audio context se crea bajo demanda (por políticas del navegador)
-    log('🔊 Sistema de audio listo');
-}
-
-function playSound(type) {
-    if (!appState.soundEnabled) return;
-    
-    try {
-        if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        
-        switch(type) {
-            case 'correct':
-                oscillator.frequency.value = 523.25; // Do (C5)
-                oscillator.type = 'sine';
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.2);
-                break;
-                
-            case 'incorrect':
-                oscillator.frequency.value = 200;
-                oscillator.type = 'sawtooth';
-                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.3);
-                break;
-                
-            case 'achievement':
-                // Secuencia de notas para celebración
-                const notes = [523.25, 659.25, 783.99, 1046.50]; // Do, Mi, Sol, Do agudo
-                notes.forEach((freq, i) => {
-                    const osc = audioContext.createOscillator();
-                    const gain = audioContext.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioContext.destination);
-                    osc.frequency.value = freq;
-                    osc.type = 'sine';
-                    gain.gain.setValueAtTime(0.2, audioContext.currentTime + i * 0.1);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.1 + 0.2);
-                    osc.start(audioContext.currentTime + i * 0.1);
-                    osc.stop(audioContext.currentTime + i * 0.1 + 0.2);
-                });
-                return; // Return early because we handled oscillators differently
-                
-            case 'click':
-                oscillator.frequency.value = 800;
-                oscillator.type = 'sine';
-                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.05);
-                break;
-        }
-    } catch (error) {
-        logError('Error reproduciendo sonido:', error);
-    }
-}
-
-function toggleSound() {
-    appState.soundEnabled = !appState.soundEnabled;
-    const btn = document.getElementById('soundToggleBtn');
-    if (btn) {
-        btn.innerHTML = appState.soundEnabled ? 
-            '<i data-lucide="volume-2" class="w-4 h-4 inline"></i> ON' :
-            '<i data-lucide="volume-x" class="w-4 h-4 inline"></i> OFF';
-        lucide.createIcons({ root: btn });
-    }
-    showToast(appState.soundEnabled ? '🔊 Sonido activado' : '🔇 Sonido silenciado');
-}
-
-// ============================================
-// NAVEGACIÓN PRINCIPAL
-// ============================================
-function navigateTo(page) {
-    log(`📍 Navegando a: ${page}`);
-    
-    // Trackear visitas para badge explorer
-    if (page !== 'inicio') {
-        learningStats.sectionsVisited.add(page);
-        saveLearningStats();
-        checkAndUnlockBadges();
-    }
-    
-    if (page === 'inicio') {
-        document.getElementById('view-inicio').style.display = 'block';
-        document.getElementById('app-shell').style.display = 'none';
-        document.getElementById('appFooter').style.display = 'none';
-        // Reiniciar canvas hero si es necesario
-        initHeroCanvas();
-    } else {
-        document.getElementById('view-inicio').style.display = 'none';
-        document.getElementById('app-shell').style.display = 'block';
-        document.getElementById('appFooter').style.display = 'block';
-        
-        // Ocultar todas las páginas, mostrar la seleccionada
-        document.querySelectorAll('.content-page').forEach(p => p.classList.remove('active'));
-        const targetPage = document.getElementById('page-' + page);
-        if (targetPage) targetPage.classList.add('active');
-        
-        // Actualizar tab activo
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        const activeTab = document.querySelector(`.nav-tab[data-nav="${page}"]`);
-        if (activeTab) activeTab.classList.add('active');
-        
-        // Inicializaciones específicas por página
-        if (page === 'circuitos') setTimeout(() => updateCircuitStatic(), 50);
-        if (page === 'senales') setTimeout(updateWaveParams, 50);
-    }
-    
-    appState.currentView = page;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ============================================
-// SUB-TABS (Práctica)
-// ============================================
-function switchSubTab(sub) {
-    ['quiz', 'tarea', 'editor'].forEach(s => {
-        const panel = document.getElementById('panel-' + s);
-        if (panel) panel.style.display = 'none';
-    });
-    
-    const targetPanel = document.getElementById('panel-' + sub);
-    if (targetPanel) targetPanel.style.display = 'block';
-    
-    // Actualizar estilos de tabs
-    document.querySelectorAll('.sub-tab').forEach(b => {
-        b.classList.remove('active');
-        b.style.background = 'var(--bg-tertiary)';
-        b.style.color = 'var(--text-secondary)';
-    });
-    
-    const activeBtn = document.getElementById('sub' + sub.charAt(0).toUpperCase() + sub.slice(1));
-    if (activeBtn) {
-        activeBtn.classList.add('active');
-        activeBtn.style.background = 'var(--electric-primary)';
-        activeBtn.style.color = 'white';
-    }
-}
-
-// ============================================
-// COMP-TABS (Componentes)
-// ============================================
-function switchCompTab(tab) {
-    ['resistencias', 'capacitores', 'transistores', 'diodos'].forEach(t => {
-        const panel = document.getElementById('comp-' + t);
-        if (panel) panel.style.display = 'none';
-    });
-    
-    const targetPanel = document.getElementById('comp-' + tab);
-    if (targetPanel) targetPanel.style.display = 'block';
-    
-    // Actualizar estilos
-    document.querySelectorAll('.comp-tab').forEach(b => {
-        b.classList.remove('active');
-        b.style.background = 'var(--bg-tertiary)';
-        b.style.color = 'var(--text-secondary)';
-    });
-    
-    document.querySelectorAll('.comp-tab').forEach(b => {
-        if (b.textContent.toLowerCase().includes(tab.substring(0, 4))) {
-            b.classList.add('active');
-            b.style.background = 'var(--electric-primary)';
-            b.style.color = 'white';
-        }
-    });
-}
-
-// ============================================
-// TOAST NOTIFICATIONS
-// ============================================
+/**
+ * Mostrar notificación toast
+ */
 function showToast(msg, duration = 3000) {
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toastMsg');
-    
     if (toast && toastMsg) {
         toastMsg.textContent = msg;
         toast.style.display = 'block';
@@ -557,791 +279,50 @@ function showToast(msg, duration = 3000) {
     }
 }
 
-// ============================================
-// VIDEO HERO
-// ============================================
-function playVideo() {
-    const placeholder = document.getElementById('videoPlaceholder');
-    const frame = document.getElementById('videoFrame');
-    const urlInput = document.getElementById('videoUrl');
-    
-    if (placeholder && frame && urlInput) {
-        placeholder.style.display = 'none';
-        frame.src = urlInput.value + '?autoplay=1&rel=0';
-        frame.classList.remove('hidden');
-        frame.classList.add('block');
-    }
+/**
+ * Sanitizar HTML para prevenir XSS
+ */
+function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
 }
 
-// ============================================
-// MINI-JUEGO "DESAFÍO ELÉCTRICO"
-// ============================================
-const GAME_QUESTIONS = {
-    easy: [
-        { cat: 'Ohm', q: 'Si V = 12V y R = 4Ω, ¿cuál es I?', options: ['3 A', '48 A', '0.33 A', '8 A'], correct: 0, explanation: 'I = V/R = 12/4 = 3 A' },
-        { cat: 'Ohm', q: 'Si I = 2A y R = 10Ω, ¿cuál es V?', options: ['20 V', '5 V', '0.2 V', '12 V'], correct: 0, explanation: 'V = I×R = 2×10 = 20 V' },
-        { cat: 'Ohm', q: 'Si V = 9V e I = 0.5A, ¿cuál es R?', options: ['18 Ω', '4.5 Ω', '0.05 Ω', '9 Ω'], correct: 0, explanation: 'R = V/I = 9/0.5 = 18 Ω' },
-        { cat: 'Comp.', q: '¿Qué componente almacena carga eléctrica?', options: ['Resistor', 'Capacitor', 'Inductor', 'Diodo'], correct: 1, explanation: 'El capacitor almacena carga en un campo eléctrico' },
-        { cat: 'Comp.', q: '¿Qué unidad mide la resistencia?', options: ['Voltio', 'Amperio', 'Ohmio', 'Vatio'], correct: 2, explanation: 'La resistencia se mide en Ohmios (Ω)' },
-        { cat: 'Señal', q: '¿Cuál es la frecuencia de la corriente doméstica (T=0.02s)?', options: ['50 Hz', '60 Hz', '0.02 Hz', '100 Hz'], correct: 0, explanation: 'f = 1/T = 1/0.02 = 50 Hz' }
-    ],
-    medium: [
-        { cat: 'Ohm', q: 'Un LED rojo (Vf=2V, If=20mA) con fuente de 9V. ¿R necesaria?', options: ['350 Ω', '450 Ω', '150 Ω', '250 Ω'], correct: 0, explanation: 'R = (9V-2V)/0.02A = 350 Ω' },
-        { cat: 'Ohm', q: 'Si P = 12W y V = 6V, ¿cuál es R?', options: ['3 Ω', '72 Ω', '2 Ω', '0.5 Ω'], correct: 0, explanation: 'R = V²/P = 36/12 = 3 Ω' },
-        { cat: 'Circ.', q: 'En serie: R₁=100Ω, R₂=200Ω. ¿R_total?', options: ['300 Ω', '66.67 Ω', '150 Ω', '20000 Ω'], correct: 0, explanation: 'R_serie = R₁ + R₂ = 100 + 200 = 300 Ω' },
-        { cat: 'Circ.', q: 'En paralelo: R₁=100Ω, R₂=100Ω. ¿R_total?', options: ['50 Ω', '200 Ω', '100 Ω', '25 Ω'], correct: 0, explanation: '1/R = 1/100 + 1/100 = 2/100 → R = 50 Ω' },
-        { cat: 'Comp.', q: 'Un resistor tiene bandas: Marrón-Negro-Rojo-Oro. ¿Valor?', options: ['1 kΩ ±5%', '10 kΩ ±5%', '100 Ω ±5%', '1 MΩ ±5%'], correct: 0, explanation: '1-0 ×100 = 1000Ω = 1kΩ ±5%' },
-        { cat: 'Potencia', q: 'Si I = 3A y R = 8Ω, ¿potencia disipada?', options: ['72 W', '24 W', '11 W', '192 W'], correct: 0, explanation: 'P = I²R = 9×8 = 72 W' }
-    ],
-    hard: [
-        { cat: 'Ohm', q: 'Divisor de voltaje: Vin=12V, R1=R2=1kΩ. ¿Vout?', options: ['6 V', '12 V', '3 V', '9 V'], correct: 0, explanation: 'Vout = Vin × (R2/(R1+R2)) = 12 × (1k/2k) = 6V' },
-        { cat: 'Mixto', q: 'Circuito mixto: R1=100Ω serie con (R2=200Ω||R3=200Ω). V=12V. ¿Itotal?', options: ['40 mA', '60 mA', '120 mA', '30 mA'], correct: 0, explanation: 'Rp = 100Ω, Rt = 200Ω, It = 12/200 = 0.06A = 60mA... espera, recalculemos: Rp = (200×200)/(200+200) = 100Ω, Rt = 100+100 = 200Ω, It = 12/200 = 0.06A = 60mA. Respuesta B.' },
-        { cat: 'Señal', q: 'Onda senoidal: Vp=10V. ¿Valor RMS?', options: ['7.07 V', '10 V', '14.14 V', '5 V'], correct: 0, explanation: 'Vrms = Vp/√2 = 10/1.414 ≈ 7.07V' },
-        { cat: 'Transistor', q: 'NPN: Ib=0.1mA, β=100. ¿Ic?', options: ['10 mA', '1 mA', '100 mA', '0.01 mA'], correct: 0, explanation: 'Ic = β × Ib = 100 × 0.1mA = 10mA' },
-        { cat: 'Capacitor', q: 'Capacitor 104 (código 3 dígitos). ¿Valor?', options: ['100 nF', '10 nF', '1 µF', '10 µF'], correct: 0, explanation: '10 × 10⁴ pF = 100000 pF = 100 nF' },
-        { cat: 'Diodo', q: 'Diodo ideal: Vi=5V, Vd=0.7V, R=430Ω. ¿I?', options: ['10 mA', '5 mA', '12 mA', '1 mA'], correct: 0, explanation: 'I = (Vi-Vd)/R = (5-0.7)/430 = 0.01A = 10mA' }
-    ]
-};
+/* ============================================
+   SECCIÓN 5: FIREBASE (Auth + Database)
+   ============================================ */
 
-function openMiniGame() {
-    const modal = document.getElementById('miniGameModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        resetGameState();
-        showGameStartScreen();
-        playSound('click');
-    }
-}
-
-function closeMiniGame() {
-    const modal = document.getElementById('miniGameModal');
-    if (modal) {
-        modal.style.display = 'none';
-        stopGameTimer();
-        playSound('click');
-    }
-}
-
-function resetGameState() {
-    gameStats.isActive = false;
-    gameStats.timeLeft = CONFIG.game.defaultTime;
-    gameStats.score = 0;
-    gameStats.combo = 0;
-    gameStats.maxCombo = 0;
-    gameStats.correctAnswers = 0;
-    gameStats.currentStreak = 0;
-    gameStats.difficulty = 'easy';
-    gameStats.currentQuestion = null;
-    
-    updateGameUI();
-}
-
-function showGameStartScreen() {
-    const questionArea = document.getElementById('gameQuestionArea');
-    const optionsDiv = document.getElementById('gameOptions');
-    const feedbackDiv = document.getElementById('gameFeedback');
-    
-    if (questionArea && optionsDiv && feedbackDiv) {
-        document.getElementById('gameCategory').textContent = '🎮 Listo';
-        document.getElementById('gameQuestionText').innerHTML = '⚡ <strong>Desafío Eléctrico Rápido</strong><br><span class="text-base font-normal text-slate-600 dark:text-slate-300">Tienes 60 segundos para responder la máxima cantidad de preguntas posibles. ¡Cuanto más rápido, más puntos!</span>';
+/**
+ * Inicializar Firebase
+ */
+function initFirebase() {
+    try {
+        firebase.initializeApp(CONFIG.firebase);
+        db = firebase.database();
+        provider = new firebase.auth.GoogleAuthProvider();
         
-        optionsDiv.innerHTML = `
-            <button onclick="startMiniGameRound()" class="col-span-2 bg-gradient-to-r from-electric-600 to-blue-600 hover:from-electric-500 hover:to-blue-500 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all hover:scale-105 shadow-lg">
-                🚀 INICIAR RONDA
-            </button>
-        `;
-        
-        feedbackDiv.className = 'hidden rounded-xl p-4 text-center font-semibold text-lg mb-4';
-        feedbackDiv.style.display = 'none';
-    }
-    
-    updateGameUI();
-}
-
-function startMiniGameRound() {
-    log('🎮 Iniciando ronda del mini-juego');
-    
-    gameStats.isActive = true;
-    gameStats.timeLeft = CONFIG.game.defaultTime;
-    gameStats.score = 0;
-    gameStats.combo = 0;
-    gameStats.correctAnswers = 0;
-    gameStats.currentStreak = 0;
-    gameStats.difficulty = 'easy';
-    
-    updateGameUI();
-    startGameTimer();
-    nextGameQuestion();
-}
-
-function startGameTimer() {
-    stopGameTimer(); // Limpiar timer anterior si existe
-    
-    gameStats.timerInterval = setInterval(() => {
-        gameStats.timeLeft--;
-        updateGameUI();
-        
-        // Actualizar barra de tiempo visualmente
-        const timeBar = document.getElementById('gameTimeBar');
-        if (timeBar) {
-            const percentage = (gameStats.timeLeft / CONFIG.game.defaultTime) * 100;
-            timeBar.style.width = percentage + '%';
-        }
-        
-        if (gameStats.timeLeft <= 0) {
-            endGameRound();
-        }
-    }, 1000);
-}
-
-function stopGameTimer() {
-    if (gameStats.timerInterval) {
-        clearInterval(gameStats.timerInterval);
-        gameStats.timerInterval = null;
-    }
-}
-
-function nextGameQuestion() {
-    if (!gameStats.isActive) return;
-    
-    // Seleccionar pregunta según dificultad
-    const questions = GAME_QUESTIONS[gameStats.difficulty];
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    gameStats.currentQuestion = questions[randomIndex];
-    gameStats.questionStartTime = Date.now();
-    
-    // Renderizar pregunta
-    renderGameQuestion();
-}
-
-function renderGameQuestion() {
-    const q = gameStats.currentQuestion;
-    if (!q) return;
-    
-    const categoryEl = document.getElementById('gameCategory');
-    const questionEl = document.getElementById('gameQuestionText');
-    const optionsEl = document.getElementById('gameOptions');
-    const feedbackEl = document.getElementById('gameFeedback');
-    
-    if (categoryEl) categoryEl.textContent = q.cat;
-    if (questionEl) questionEl.textContent = q.q;
-    if (feedbackEl) {
-        feedbackEl.style.display = 'none';
-        feedbackEl.className = 'hidden rounded-xl p-4 text-center font-semibold text-lg mb-4';
-    }
-    
-    if (optionsEl) {
-        // Mezclar opciones (pero recordar cuál es la correcta)
-        const shuffledOptions = q.options.map((opt, idx) => ({ text: opt, originalIndex: idx }))
-                                         .sort(() => Math.random() - 0.5);
-        
-        optionsEl.innerHTML = shuffledOptions.map((opt, idx) => `
-            <button onclick="answerGameQuestion(${opt.originalIndex}, this)" 
-                    class="game-option-btn col-span-1" 
-                    data-index="${opt.originalIndex}">
-                <span class="font-bold text-electric-600 mr-2">${String.fromCharCode(65 + idx)})</span>
-                ${opt.text}
-            </button>
-        `).join('');
-    }
-    
-    updateGameUI();
-}
-
-function answerGameQuestion(selectedIndex, buttonElement) {
-    if (!gameStats.isActive || !gameStats.currentQuestion) return;
-    
-    const q = gameStats.currentQuestion;
-    const isCorrect = selectedIndex === q.correct;
-    const timeTaken = (Date.now() - gameStats.questionStartTime) / 1000; // en segundos
-    
-    // Deshabilitar todos los botones
-    document.querySelectorAll('.game-option-btn').forEach(btn => {
-        btn.disabled = true;
-        if (btn.dataset.index == q.correct) {
-            btn.classList.add('correct');
-        } else if (btn === buttonElement && !isCorrect) {
-            btn.classList.add('incorrect');
-        }
-    });
-    
-    // Mostrar feedback
-    const feedbackEl = document.getElementById('gameFeedback');
-    if (feedbackEl) {
-        feedbackEl.style.display = 'block';
-        feedbackEl.className = isCorrect ? 'feedback-correct rounded-xl p-4 text-center font-semibold text-lg mb-4 animate-bounce' : 'feedback-incorrect rounded-xl p-4 text-center font-semibold text-lg mb-4 animate-shake';
-        feedbackEl.innerHTML = isCorrect ? 
-            `✅ ¡Correcto! ${q.explanation}` : 
-            `❌ Incorrecto. ${q.explanation}`;
-    }
-    
-    // Calcular puntos y actualizar estadísticas
-    if (isCorrect) {
-        let points = CONFIG.game.basePoints;
-        
-        // Bonus por velocidad
-        if (timeTaken < CONFIG.game.speedBonus.fast.threshold) {
-            points *= CONFIG.game.speedBonus.fast.multiplier;
-            gameStats.fastResponses++;
-        } else if (timeTaken < CONFIG.game.speedBonus.medium.threshold) {
-            points *= CONFIG.game.speedBonus.medium.multiplier;
-        } else if (timeTaken < CONFIG.game.speedBonus.slow.threshold) {
-            points *= CONFIG.game.speedBonus.slow.multiplier;
-        }
-        
-        // Aplicar combo
-        gameStats.combo++;
-        gameStats.currentStreak++;
-        if (gameStats.combo > gameStats.maxCombo) gameStats.maxCombo = gameStats.combo;
-        if (gameStats.currentStreak > gameStats.maxStreak) gameStats.maxStreak = gameStats.currentStreak;
-        
-        const comboMultiplier = Math.min(gameStats.combo, 5); // Máximo x5
-        points = Math.floor(points * comboMultiplier);
-        
-        gameStats.score += points;
-        gameStats.correctAnswers++;
-        gameStats.totalScore += points;
-        
-        playSound('correct');
-        
-        log(`✅ Correcto! +${points} pts (combo: x${comboMultiplier}, tiempo: ${timeTaken.toFixed(1)}s)`);
-        
-        // Subir dificultad cada 3 aciertos
-        if (gameStats.currentStreak % CONFIG.game.difficultyThreshold === 0) {
-            if (gameStats.difficulty === 'easy') gameStats.difficulty = 'medium';
-            else if (gameStats.difficulty === 'medium') gameStats.difficulty = 'hard';
+        // Auth state listener
+        firebase.auth().onAuthStateChanged((user) => {
+            const btnLogout = document.getElementById('btnLogout');
+            const btnAdd = document.getElementById('btnAddPractice');
             
-            const diffEl = document.getElementById('gameDifficulty');
-            if (diffEl) {
-                diffEl.textContent = gameStats.difficulty === 'easy' ? 'Fácil' : 
-                                     gameStats.difficulty === 'medium' ? 'Medio' : 'Difícil';
-            }
+            appState.isAdminAuthenticated = !!user;
             
-            showToast(`🔥 ¡Dificultad aumentada: ${gameStats.difficulty.toUpperCase()}!`);
-        }
-    } else {
-        // Resetear combo en error
-        gameStats.combo = 0;
-        gameStats.currentStreak = 0;
-        
-        playSound('incorrect');
-        log(`❌ Incorrecto. Combo reseteado.`);
-    }
-    
-    updateGameUI();
-    
-    // Siguiente pregunta después de breve delay
-    setTimeout(() => {
-        if (gameStats.isActive) {
-            nextGameQuestion();
-        }
-    }, 1500); // 1.5 segundos para leer feedback
-}
-
-function endGameRound() {
-    gameStats.isActive = false;
-    stopGameTimer();
-    
-    gameStats.roundsCompleted++;
-    
-    log(`🏁 Ronda finalizada. Score: ${gameStats.score}, Correctas: ${gameStats.correctAnswers}`);
-    
-    // Guardar estadísticas permanentes
-    saveGameStats();
-    
-    // Verificar badges
-    checkAndUnlockBadges();
-    
-    // Mostrar pantalla de resultados
-    showGameResults();
-}
-
-function showGameResults() {
-    const questionArea = document.getElementById('gameQuestionArea');
-    const optionsEl = document.getElementById('gameOptions');
-    const feedbackEl = document.getElementById('gameFeedback');
-    
-    if (questionArea && optionsEl) {
-        document.getElementById('gameCategory').textContent = '🏆 Resultados';
-        document.getElementById('gameQuestionText').innerHTML = `
-            <div class="text-center space-y-4">
-                <div class="text-5xl font-bold text-electric-600">${gameStats.score}</div>
-                <div class="text-lg text-slate-600 dark:text-slate-300">Puntos obtenidos</div>
-                
-                <div class="grid grid-cols-3 gap-4 mt-6 text-sm">
-                    <div class="bg-green-100 dark:bg-green-900/30 rounded-lg p-3">
-                        <div class="font-bold text-green-700 dark:text-green-300">${gameStats.correctAnswers}</div>
-                        <div class="text-xs">Correctas</div>
-                    </div>
-                    <div class="bg-amber-100 dark:bg-amber-900/30 rounded-lg p-3">
-                        <div class="font-bold text-amber-700 dark:text-amber-300">x${gameStats.maxCombo}</div>
-                        <div class="text-xs">Max Combo</div>
-                    </div>
-                    <div class="bg-purple-100 dark:bg-purple-900/30 rounded-lg p-3">
-                        <div class="font-bold text-purple-700 dark:text-purple-300">${gameStats.roundsCompleted}</div>
-                        <div class="text-xs">Rondas</div>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        optionsEl.innerHTML = `
-            <button onclick="startMiniGameRound()" class="col-span-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all hover:scale-105 shadow-lg">
-                🔄 Jugar de Nuevo
-            </button>
-            <button onclick="closeMiniGame()" class="col-span-2 mt-3 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 font-bold py-3 px-6 rounded-xl text-lg transition-all">
-                ✖ Cerrar
-            </button>
-        `;
-        
-        if (feedbackEl) feedbackEl.style.display = 'none';
-    }
-    
-    updateGameUI();
-}
-
-function updateGameUI() {
-    // Timer
-    const timerEl = document.getElementById('gameTimer');
-    if (timerEl) timerEl.textContent = gameStats.timeLeft;
-    
-    // Score
-    const scoreEl = document.getElementById('gameScore');
-    if (scoreEl) scoreEl.textContent = gameStats.score;
-    
-    // Combo
-    const comboEl = document.getElementById('gameCombo');
-    if (comboEl) comboEl.textContent = 'x' + Math.max(1, gameStats.combo);
-    
-    // Correct answers
-    const correctEl = document.getElementById('gameCorrect');
-    if (correctEl) correctEl.textContent = gameStats.correctAnswers;
-    
-    // Difficulty
-    const diffEl = document.getElementById('gameDifficulty');
-    if (diffEl) {
-        diffEl.textContent = gameStats.difficulty === 'easy' ? 'Fácil' : 
-                             gameStats.difficulty === 'medium' ? 'Medio' : 'Difícil';
-    }
-}
-
-function saveGameStats() {
-    try {
-        const statsToSave = {
-            totalScore: gameStats.totalScore,
-            fastResponses: gameStats.fastResponses,
-            maxCombo: gameStats.maxCombo,
-            roundsCompleted: gameStats.roundsCompleted,
-            maxStreak: gameStats.maxStreak,
-            lastPlayed: new Date().toISOString()
-        };
-        
-        // Merge con stats existentes
-        const existing = JSON.parse(localStorage.getItem('electronilab_gamestats') || '{}');
-        const merged = {
-            totalScore: (existing.totalScore || 0) + statsToSave.totalScore,
-            fastResponses: (existing.fastResponses || 0) + statsToSave.fastResponses,
-            maxCombo: Math.max(existing.maxCombo || 0, statsToSave.maxCombo),
-            roundsCompleted: (existing.roundsCompleted || 0) + statsToSave.roundsCompleted,
-            maxStreak: Math.max(existing.maxStreak || 0, statsToSave.maxStreak),
-            lastPlayed: statsToSave.lastPlayed
-        };
-        
-        localStorage.setItem('electronilab_gamestats', JSON.stringify(merged));
-        log('💾 Estadísticas de juego guardadas');
-    } catch (error) {
-        logError('Error guardando stats de juego:', error);
-    }
-}
-
-function loadGameStats() {
-    try {
-        return JSON.parse(localStorage.getItem('electronilab_gamestats') || '{}');
-    } catch {
-        return {};
-    }
-}
-
-// ============================================
-// SISTEMA DE BADGES/LOGROS
-// ============================================
-function checkAndUnlockBadges() {
-    const gameStatsLoaded = loadGameStats();
-    const learningStatsLoaded = loadLearningStats();
-    const specialStatsLoaded = loadSpecialStats();
-    
-    let newlyUnlocked = [];
-    
-    CONFIG.badges.forEach(badge => {
-        if (!unlockedBadges.includes(badge.id)) {
-            // Crear contexto para evaluar condición
-            try {
-                // Pasar variables globales necesarias a la función condition
-                const context = {
-                    gameStats: { ...gameStatsLoaded, ...gameStats },
-                    learningStats: learningStatsLoaded,
-                    specialStats: specialStatsLoaded
-                };
-                
-                // Evaluar condición (las funciones usan variables globales así que necesitamos inyectarlas)
-                // Esto es un workaround simple; en producción usaríamos un sistema más robusto
-                if (evaluateBadgeCondition(badge)) {
-                    unlockedBadges.push(badge.id);
-                    newlyUnlocked.push(badge);
-                    log(`🏆 Badge desbloqueado: ${badge.name}`);
-                }
-            } catch (error) {
-                logError(`Error evaluando badge ${badge.id}:`, error);
-            }
-        }
-    });
-    
-    if (newlyUnlocked.length > 0) {
-        saveBadgesToStorage();
-        updateBadgeUI();
-        
-        // Mostrar celebración para cada nuevo badge (con delay)
-        newlyUnlocked.forEach((badge, index) => {
-            setTimeout(() => {
-                showAchievementCelebration(badge);
-                playSound('achievement');
-            }, index * 2500); // Cada celebración dura ~2.5s
-        });
-    }
-}
-
-function evaluateBadgeCondition(badge) {
-    // Cargar stats actuales desde storage
-    const gs = loadGameStats();
-    const ls = loadLearningStats();
-    const ss = loadSpecialStats();
-    
-    switch(badge.id) {
-        case 'speed-demon':
-            return (gs.fastResponses || 0) >= 5;
-        case 'perfect-10':
-            return (gs.maxStreak || 0) >= 10;
-        case 'ohm-master':
-            return (gs.totalScore || 0) >= 500;
-        case 'combo-king':
-            return (gs.maxCombo || 0) >= 5;
-        case 'marathon':
-            return (gs.roundsCompleted || 0) >= 5;
-        case 'explorer':
-            return (ls.sectionsVisited?.size || 0) >= 6;
-        case 'circuit-builder':
-            return (ls.circuitsSimulated || 0) >= 10;
-        case 'component-wizard':
-            return (ls.componentsCalculated || 0) >= 50;
-        case 'wave-rider':
-            return (ls.wavesExplored?.size || 0) >= 5;
-        case 'night-owl':
-            return (ss.darkModeUses || 0) >= 5;
-        case 'curious':
-            return (ls.conceptsRead?.size || 0) >= 5; // Reducido a 5 para testing
-        case 'legendary':
-            const otherBadges = CONFIG.badges.filter(b => b.id !== 'legendary');
-            return otherBadges.every(b => unlockedBadges.includes(b.id));
-        default:
-            return false;
-    }
-}
-
-function showAchievementCelebration(badge) {
-    const celebration = document.getElementById('achievementCelebration');
-    if (!celebration) return;
-    
-    // Actualizar contenido
-    document.getElementById('celebrationIcon').textContent = badge.icon;
-    document.getElementById('celebrationTitle').textContent = '¡Logro Desbloqueado!';
-    document.getElementById('celebrationBadgeName').textContent = badge.name;
-    document.getElementById('celebrationBadgeDesc').textContent = badge.desc;
-    
-    // Mostrar modal
-    celebration.style.display = 'block';
-    celebration.style.pointerEvents = 'auto';
-    
-    // Iniciar confeti
-    startConfetti();
-    
-    // Ocultar después de 3 segundos
-    setTimeout(() => {
-        celebration.style.display = 'none';
-        celebration.style.pointerEvents = 'none';
-        stopConfetti();
-    }, 3000);
-}
-
-function toggleBadgesPanel() {
-    const modal = document.getElementById('badgesModal');
-    if (modal) {
-        const isVisible = modal.style.display === 'flex';
-        modal.style.display = isVisible ? 'none' : 'flex';
-        
-        if (!isVisible) {
-            renderBadgesGrid();
-            playSound('click');
-        }
-    }
-}
-
-function renderBadgesGrid(filter = 'all') {
-    const grid = document.getElementById('badgesGrid');
-    if (!grid) return;
-    
-    const filteredBadges = filter === 'all' ? 
-        CONFIG.badges : 
-        CONFIG.badges.filter(b => b.category === filter);
-    
-    grid.innerHTML = filteredBadges.map(badge => {
-        const isUnlocked = unlockedBadges.includes(badge.id);
-        
-        return `
-            <div class="badge-card ${isUnlocked ? 'unlocked' : 'locked'}" data-category="${badge.category}">
-                ${!isUnlocked ? '<div class="badge-lock-overlay">🔒</div>' : ''}
-                <span class="badge-icon">${isUnlocked ? badge.icon : '❓'}</span>
-                <div class="badge-name">${isUnlocked ? badge.name : '???'}</div>
-                <div class="badge-desc">${isUnlocked ? badge.desc : 'Completa los requisitos para desbloquear'}</div>
-            </div>
-        `;
-    }).join('');
-    
-    // Actualizar contadores
-    const totalCount = document.getElementById('badgeTotalCount');
-    const maxCount = document.getElementById('badgeMaxCount');
-    const progressPercent = document.getElementById('badgeProgressPercent');
-    const progressBar = document.getElementById('badgeProgressBar');
-    
-    if (totalCount) totalCount.textContent = unlockedBadges.length;
-    if (maxCount) maxCount.textContent = CONFIG.badges.length;
-    
-    const percent = Math.round((unlockedBadges.length / CONFIG.badges.length) * 100);
-    if (progressPercent) progressPercent.textContent = percent + '%';
-    if (progressBar) progressBar.style.width = percent + '%';
-    
-    // Actualizar badges count en header
-    updateBadgeCountInHeader();
-}
-
-function filterBadges(category) {
-    // Actualizar botones activos
-    document.querySelectorAll('.badge-filter').forEach(btn => {
-        btn.classList.remove('active', 'bg-electric-600', 'text-white');
-        btn.classList.add('bg-slate-100', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300');
-    });
-    
-    event.target.classList.add('active');
-    event.target.classList.remove('bg-slate-100', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300');
-    event.target.classList.add('bg-electric-600', 'text-white');
-    
-    renderBadgesGrid(category);
-}
-
-function updateBadgeUI() {
-    updateBadgeCountInHeader();
-}
-
-function updateBadgeCountInHeader() {
-    const count = unlockedBadges.length;
-    
-    // Actualizar en hero (si existe)
-    const heroBadge = document.getElementById('badgeCountHero');
-    if (heroBadge) {
-        if (count > 0) {
-            heroBadge.textContent = count;
-            heroBadge.classList.remove('hidden');
-            heroBadge.classList.add('flex');
-        } else {
-            heroBadge.classList.add('hidden');
-            heroBadge.classList.remove('flex');
-        }
-    }
-    
-    // Actualizar en nav (si existe)
-    const navBadge = document.getElementById('badgeCountNav');
-    if (navBadge) {
-        if (count > 0) {
-            navBadge.textContent = count;
-            navBadge.classList.remove('hidden');
-            navBadge.classList.add('flex');
-        } else {
-            navBadge.classList.add('hidden');
-            navBadge.classList.remove('flex');
-        }
-    }
-}
-
-function saveBadgesToStorage() {
-    try {
-        localStorage.setItem('electronilab_badges', JSON.stringify(unlockedBadges));
-        log('💾 Badges guardados en localStorage');
-    } catch (error) {
-        logError('Error guardando badges:', error);
-    }
-}
-
-function loadBadgesFromStorage() {
-    try {
-        unlockedBadges = JSON.parse(localStorage.getItem('electronilab_badges') || '[]');
-        log(`🏆 Cargados ${unlockedBadges.length} badges`);
-    } catch (error) {
-        unlockedBadges = [];
-        logError('Error cargando badges:', error);
-    }
-}
-
-// ============================================
-// TRACKING DE PROGRESO PARA BADGES
-// ============================================
-function trackBadgeProgress(action) {
-    switch(action) {
-        case 'explorer':
-            // Ya se trackea en navigateTo
-            break;
-        case 'circuit-simulated':
-            learningStats.circuitsSimulated++;
-            break;
-        case 'component-calculated':
-            learningStats.componentsCalculated++;
-            break;
-        case 'wave-explored':
-            // Se pasa el tipo de onda como parámetro adicional
-            if (arguments[1]) {
-                learningStats.wavesExplored.add(arguments[1]);
-            }
-            break;
-        case 'concept-read':
-            if (arguments[1]) {
-                learningStats.conceptsRead.add(arguments[1]);
-            }
-            break;
-    }
-    
-    saveLearningStats();
-    checkAndUnlockBadges();
-}
-
-function saveLearningStats() {
-    try {
-        const serializable = {
-            sectionsVisited: Array.from(learningStats.sectionsVisited),
-            circuitsSimulated: learningStats.circuitsSimulated,
-            componentsCalculated: learningStats.componentsCalculated,
-            wavesExplored: Array.from(learningStats.wavesExplored),
-            conceptsRead: Array.from(learningStats.conceptsRead)
-        };
-        localStorage.setItem('electronilab_learning', JSON.stringify(serializable));
-    } catch (error) {
-        logError('Error guardando learning stats:', error);
-    }
-}
-
-function loadLearningStats() {
-    try {
-        const saved = JSON.parse(localStorage.getItem('electronilab_learning') || '{}');
-        return {
-            sectionsVisited: new Set(saved.sectionsVisited || []),
-            circuitsSimulated: saved.circuitsSimulated || 0,
-            componentsCalculated: saved.componentsCalculated || 0,
-            wavesExplored: new Set(saved.wavesExplored || []),
-            conceptsRead: new Set(saved.conceptsRead || [])
-        };
-    } catch {
-        return {
-            sectionsVisited: new Set(),
-            circuitsSimulated: 0,
-            componentsCalculated: 0,
-            wavesExplored: new Set(),
-            conceptsRead: new Set()
-        };
-    }
-}
-
-function saveSpecialStats() {
-    try {
-        localStorage.setItem('electronilab_special', JSON.stringify(specialStats));
-    } catch (error) {
-        logError('Error guardando special stats:', error);
-    }
-}
-
-function loadSpecialStats() {
-    try {
-        return JSON.parse(localStorage.getItem('electronilab_special') || '{}');
-    } catch {
-        return { darkModeUses: 0 };
-    }
-}
-
-// ============================================
-// SISTEMA DE CONFETI (CANVAS)
-// ============================================
-let confettiAnimationId = null;
-let confettiParticles = [];
-
-function startConfetti() {
-    const canvas = document.getElementById('confettiCanvas');
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    // Crear partículas
-    confettiParticles = [];
-    const colors = ['#0A84FF', '#EF4444', '#F59E0B', '#22C55E', '#8B5CF6', '#FFD700'];
-    
-    for (let i = 0; i < 150; i++) {
-        confettiParticles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height - canvas.height,
-            w: Math.random() * 10 + 5,
-            h: Math.random() * 6 + 3,
-            color: colors[Math.floor(Math.random() * colors.length)],
-            speed: Math.random() * 3 + 2,
-            angle: Math.random() * 360,
-            spin: Math.random() * 10 - 5
-        });
-    }
-    
-    function animateConfetti() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        confettiParticles.forEach(p => {
-            ctx.save();
-            ctx.translate(p.x + p.w/2, p.y + p.h/2);
-            ctx.rotate(p.angle * Math.PI / 180);
-            ctx.fillStyle = p.color;
-            ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-            ctx.restore();
-            
-            p.y += p.speed;
-            p.angle += p.spin;
-            
-            // Reiniciar si sale de pantalla
-            if (p.y > canvas.height) {
-                p.y = -20;
-                p.x = Math.random() * canvas.width;
-            }
+            if (btnLogout) btnLogout.style.display = appState.isAdminAuthenticated ? 'flex' : 'none';
+            if (btnAdd) btnAdd.style.display = appState.isAdminAuthenticated ? 'flex' : 'none';
         });
         
-        confettiAnimationId = requestAnimationFrame(animateConfetti);
+        testFirebaseConnection();
+        log('Firebase inicializado correctamente');
+    } catch (error) {
+        logError('Error inicializando Firebase', error);
     }
-    
-    animateConfetti();
 }
 
-function stopConfetti() {
-    if (confettiAnimationId) {
-        cancelAnimationFrame(confettiAnimationId);
-        confettiAnimationId = null;
-    }
-    confettiParticles = [];
-}
-
-// ============================================
-// FIREBASE: CONEXIÓN Y PRÁCTICAS
-// ============================================
+/**
+ * Probar conexión Firebase
+ */
 function testFirebaseConnection() {
     if (!db) return;
     
@@ -1350,22 +331,28 @@ function testFirebaseConnection() {
         const txt = document.getElementById('fbText');
         
         if (snap.val() === true) {
-            if (dot) dot.className = 'w-2 h-2 rounded-full bg-green-400';
-            if (txt) txt.textContent = 'Conectado a Firebase ✓';
+            dot.className = 'w-2 h-2 rounded-full bg-green-400';
+            txt.textContent = 'Conectado a Firebase ✓';
             loadFirebasePractices();
         } else {
-            if (dot) dot.className = 'w-2 h-2 rounded-full bg-red-400';
-            if (txt) txt.textContent = 'Sin conexión';
+            dot.className = 'w-2 h-2 rounded-full bg-red-400';
+            txt.textContent = 'Sin conexión';
         }
     });
 }
 
+/**
+ * Refrescar prácticas
+ */
 function refreshAllPractices() {
     if (practicesListener) practicesListener.off();
     loadFirebasePractices();
-    showToast('📋 Listas de prácticas actualizadas');
+    showToast('Listas actualizadas');
 }
 
+/**
+ * Cargar prácticas desde Firebase
+ */
 function loadFirebasePractices() {
     if (!db) return;
     
@@ -1384,3 +371,2536 @@ function loadFirebasePractices() {
             date: d.date || '',
             imageUrl: d.imageUrl || ''
         }));
+        arr.reverse();
+        
+        renderPracticeList('tareaList', 'tarea', arr);
+        renderPracticeList('editorList', 'editor', arr);
+    });
+}
+
+/**
+ * Renderizar lista de prácticas
+ */
+function renderPracticeList(containerId, type, practices) {
+    const c = document.getElementById(containerId);
+    if (!c) return;
+    
+    if (!practices.length) {
+        c.innerHTML = `
+            <div class="text-center py-12 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600">
+                <p class="text-slate-400">No hay prácticas</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const areaColors = {
+        'Ley de Ohm': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+        'Componentes': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+        'Circuitos': 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+        'Señales': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+        'Otros': 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'
+    };
+    
+    c.innerHTML = practices.map(p => {
+        const acC = areaColors[p.area] || areaColors['Otros'];
+        const btns = type === 'editor' ? `
+            <div class="flex gap-1">
+                <button onclick="editPractice('${p._id}')" class="text-slate-300 hover:text-electric-500 p-1" aria-label="Editar">✏️</button>
+                <button onclick="deletePractice('${p._id}')" class="text-slate-300 hover:text-red-500 p-1" aria-label="Eliminar">🗑️</button>
+            </div>
+        ` : '';
+        
+        return `
+            <div class="practice-card">
+                <div class="flex items-start justify-between gap-3 mb-3">
+                    <div>
+                        <span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full ${acC} mb-2">${escapeHtml(p.area)}</span>
+                        <h4 class="font-bold text-slate-900 dark:text-white">${escapeHtml(p.title)}</h4>
+                        <p class="text-xs text-slate-400">${p.date || ''}</p>
+                    </div>
+                    ${btns}
+                </div>
+                <div class="space-y-3 text-sm">
+                    ${p.objetivo ? `<p class="text-slate-500 dark:text-slate-400">🎯 ${escapeHtml(p.objetivo)}</p>` : ''}
+                    ${p.materiales ? `<p class="text-slate-500 dark:text-slate-400 whitespace-pre-line">🛠 ${escapeHtml(p.materiales)}</p>` : ''}
+                    ${p.pasos ? `<div class="bg-slate-50 dark:bg-slate-700 rounded-lg p-3 text-slate-600 dark:text-slate-300 whitespace-pre-line font-mono text-xs">${escapeHtml(p.pasos)}</div>` : ''}
+                    ${p.notas ? `<p class="text-slate-500 dark:text-slate-400">📝 ${escapeHtml(p.notas)}</p>` : ''}
+                    ${p.imageUrl ? `<img src="${p.imageUrl}" class="rounded-lg max-h-48 border" loading="lazy" alt="Imagen de práctica">` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * Eliminar práctica
+ */
+function deletePractice(id) {
+    if (!appState.isAdminAuthenticated) {
+        showToast('Inicia sesión primero');
+        return;
+    }
+    if (confirm('¿Eliminar esta práctica?')) {
+        db.ref('practices/editor/' + id).remove()
+            .then(() => showToast('Práctica eliminada'))
+            .catch(err => logError('Error eliminando', err));
+    }
+}
+
+/**
+ * Editar práctica
+ */
+function editPractice(id) {
+    if (!appState.isAdminAuthenticated) {
+        showToast('Inicia sesión primero');
+        return;
+    }
+    
+    editingId = id;
+    db.ref('practices/editor/' + id).once('value')
+        .then(snap => {
+            const d = snap.val();
+            if (!d) return;
+            
+            document.getElementById('practiceFormModal').style.display = 'flex';
+            document.getElementById('pfModalTitle').textContent = 'Editar Práctica';
+            document.getElementById('pfSubmitText').textContent = 'Actualizar';
+            document.getElementById('pfTitle').value = d.title || '';
+            document.getElementById('pfArea').value = d.area || 'Otros';
+            document.getElementById('pfObj').value = d.objetivo || '';
+            document.getElementById('pfMat').value = d.materiales || '';
+            document.getElementById('pfPasos').value = d.pasos || '';
+            document.getElementById('pfNotas').value = d.notas || '';
+        })
+        .catch(err => logError('Error cargando práctica', err));
+}
+
+/* ============================================
+   SECCIÓN 6: AUTENTICACIÓN
+   ============================================ */
+
+let editingId = null;
+let pendingAction = null;
+
+function accessEditor() {
+    if (appState.isAdminAuthenticated) {
+        switchSubTab('editor');
+        return;
+    }
+    pendingAction = 'switchEditor';
+    showAuthModal();
+}
+
+function showAuthModal(action) {
+    if (appState.isAdminAuthenticated) {
+        openPracticeForm();
+        return;
+    }
+    pendingAction = action;
+    document.getElementById('authModal').style.display = 'flex';
+    document.getElementById('authError').style.display = 'none';
+}
+
+function closeAuthModal() {
+    document.getElementById('authModal').style.display = 'none';
+}
+
+function loginWithGoogle() {
+    firebase.auth().signInWithPopup(provider)
+        .then(result => {
+            closeAuthModal();
+            if (pendingAction === 'switchEditor') switchSubTab('editor');
+            else openPracticeForm();
+            showToast(`Bienvenido, ${result.user.displayName}`);
+        })
+        .catch(error => {
+            logError('Error en login Google', error);
+            document.getElementById('authError').style.display = 'block';
+            document.getElementById('authError').textContent = 'Error: ' + error.message;
+        });
+}
+
+function logoutEditor() {
+    firebase.auth().signOut()
+        .then(() => {
+            showToast('Sesión cerrada');
+            switchSubTab('quiz');
+        })
+        .catch(err => logError('Error cerrando sesión', err));
+}
+
+function openPracticeForm() {
+    editingId = null;
+    document.getElementById('practiceFormModal').style.display = 'flex';
+    document.getElementById('pfModalTitle').textContent = 'Nueva Práctica';
+    document.getElementById('pfSubmitText').textContent = 'Guardar';
+    document.getElementById('pfTitle').value = '';
+    document.getElementById('pfObj').value = '';
+    document.getElementById('pfMat').value = '';
+    document.getElementById('pfPasos').value = '';
+    document.getElementById('pfNotas').value = '';
+    document.getElementById('pfImage').value = '';
+}
+
+function closePracticeForm() {
+    document.getElementById('practiceFormModal').style.display = 'none';
+    editingId = null;
+}
+
+function submitPractice() {
+    if (!appState.isAdminAuthenticated) {
+        showToast('Debes iniciar sesión');
+        return;
+    }
+    
+    const title = document.getElementById('pfTitle').value.trim();
+    const area = document.getElementById('pfArea').value;
+    const obj = document.getElementById('pfObj').value.trim();
+    const mat = document.getElementById('pfMat').value.trim();
+    const pasos = document.getElementById('pfPasos').value.trim();
+    const notas = document.getElementById('pfNotas').value.trim();
+    const fileInput = document.getElementById('pfImage');
+    
+    if (!title || !obj || !pasos) {
+        showToast('Completa los campos obligatorios');
+        return;
+    }
+    
+    const practiceData = {
+        title,
+        area,
+        objetivo: obj,
+        materiales: mat,
+        pasos,
+        notas,
+        date: new Date().toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+        })
+    };
+    
+    const finishSave = (data) => {
+        const ref = editingId 
+            ? db.ref('practices/editor/' + editingId)
+            : db.ref('practices/editor').push();
+        
+        ref.set(data)
+            .then(() => {
+                closePracticeForm();
+                showToast(editingId ? 'Práctica actualizada' : 'Práctica guardada');
+                editingId = null;
+                
+                // Track badge de componente wizard
+                trackBadgeProgress('component_calculated');
+            })
+            .catch(err => logError('Error guardando', err));
+    };
+    
+    if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                let w = img.width, h = img.height;
+                const maxSize = 800;
+                if (w > maxSize) {
+                    h = h * maxSize / w;
+                    w = maxSize;
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, w, h);
+                const quality = 0.7;
+                const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                
+                if (dataUrl.length > 250000) {
+                    showToast('Imagen muy grande, prueba con otra más pequeña');
+                    return;
+                }
+                
+                practiceData.imageUrl = dataUrl;
+                finishSave(practiceData);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+    } else {
+        if (editingId) {
+            db.ref('practices/editor/' + editingId).once('value')
+                .then(snap => {
+                    if (snap.val() && snap.val().imageUrl) {
+                        practiceData.imageUrl = snap.val().imageUrl;
+                    }
+                    finishSave(practiceData);
+                });
+        } else {
+            finishSave(practiceData);
+        }
+    }
+}
+
+/* ============================================
+   SECCIÓN 7: NAVEGACIÓN
+   ============================================ */
+
+let heroAnimationActive = true;
+
+function navigateTo(page) {
+    if (page === 'inicio') {
+        document.getElementById('view-inicio').style.display = 'block';
+        document.getElementById('app-shell').style.display = 'none';
+        document.getElementById('appFooter').style.display = 'none';
+        heroAnimationActive = true;
+        initHeroCanvas();
+    } else {
+        document.getElementById('view-inicio').style.display = 'none';
+        document.getElementById('app-shell').style.display = 'block';
+        document.getElementById('appFooter').style.display = 'block';
+        
+        if (heroAnimationActive) {
+            heroAnimationActive = false;
+        }
+        
+        document.querySelectorAll('.content-page').forEach(p => p.classList.remove('active'));
+        const targetPage = document.getElementById('page-' + page);
+        if (targetPage) targetPage.classList.add('active');
+        
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        const navTab = document.querySelector(`.nav-tab[data-nav="${page}"]`);
+        if (navTab) navTab.classList.add('active');
+        
+        // Track badge explorer
+        learningStats.sectionsVisited.add(page);
+        saveLearningStats();
+        checkAndUnlockBadges();
+        
+        if (page === 'circuitos') setTimeout(() => updateCircuitStatic(), 50);
+        if (page === 'senales') setTimeout(updateWaveParams, 50);
+    }
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function switchSubTab(sub) {
+    ['quiz', 'tarea', 'editor'].forEach(s => {
+        const panel = document.getElementById(`panel-${s}`);
+        if (panel) panel.style.display = 'none';
+    });
+    
+    const targetPanel = document.getElementById(`panel-${sub}`);
+    if (targetPanel) targetPanel.style.display = 'block';
+    
+    document.querySelectorAll('.sub-tab').forEach(b => {
+        b.classList.remove('active');
+        b.style.background = '#F1F5F9';
+        b.style.color = '#475569';
+    });
+    
+    const activeBtn = document.getElementById(`sub${sub.charAt(0).toUpperCase() + sub.slice(1)}`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.style.background = '#0A84FF';
+        activeBtn.style.color = '#fff';
+    }
+}
+
+function switchCompTab(tab) {
+    ['resistencias', 'capacitores', 'transistores', 'diodos'].forEach(t => {
+        const panel = document.getElementById(`comp-${t}`);
+        if (panel) panel.style.display = 'none';
+    });
+    
+    const targetPanel = document.getElementById(`comp-${tab}`);
+    if (targetPanel) targetPanel.style.display = 'block';
+    
+    document.querySelectorAll('.comp-tab').forEach(b => {
+        b.classList.remove('active');
+        b.style.background = '#F1F5F9';
+        b.style.color = '#475569';
+    });
+    
+    document.querySelectorAll('.comp-tab').forEach(b => {
+        if (b.textContent.toLowerCase().includes(tab.substring(0, 4))) {
+            b.classList.add('active');
+            b.style.background = '#0A84FF';
+            b.style.color = '#fff';
+        }
+    });
+}
+
+/* ============================================
+   SECCIÓN 8: LEY DE OHM (MANTENER EXISTENTE)
+   ============================================ */
+let solveFor = 'V';
+
+function setSolveFor(val) {
+    solveFor = val;
+    
+    document.querySelectorAll('.solve-btn').forEach(b => {
+        b.className = 'solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 dark:border-slate-600 text-slate-500 bg-white dark:bg-slate-700';
+    });
+    
+    const activeBtn = document.getElementById(`solve${val}`);
+    const cls = {
+        V: 'border-volt text-volt bg-red-50 dark:bg-red-900/20',
+        I: 'border-amps text-amps bg-amber-50 dark:bg-amber-900/20',
+        R: 'border-ohms text-ohms bg-green-50 dark:bg-green-900/20'
+    };
+    
+    activeBtn.className = `solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 ${cls[val]}`;
+    
+    const inputs = { V: 'rangeV', I: 'rangeI', R: 'rangeR' };
+    Object.keys(inputs).forEach(k => {
+        const el = document.getElementById(inputs[k]);
+        el.disabled = (k === val);
+        el.style.opacity = (k === val) ? '0.4' : '1';
+    });
+    
+    updateOhm();
+}
+
+function initOhm() {
+    setSolveFor('V');
+}
+
+function updateOhm() {
+    let V = parseFloat(document.getElementById('rangeV').value);
+    let I = parseFloat(document.getElementById('rangeI').value);
+    let R = parseFloat(document.getElementById('rangeR').value);
+    let P;
+    
+    if (solveFor === 'V') {
+        V = I * R;
+        P = V * I;
+    } else if (solveFor === 'I') {
+        I = V / R;
+        P = V * I;
+    } else {
+        R = V / I;
+        P = V * I;
+    }
+    
+    document.getElementById('valV').textContent = V.toFixed(1) + ' V';
+    document.getElementById('valI').textContent = I.toFixed(2) + ' A';
+    document.getElementById('valR').textContent = R.toFixed(1) + ' Ω';
+    
+    const resultDiv = document.getElementById('ohmResult');
+    resultDiv.innerHTML = `
+        <div class="text-sm opacity-80 mb-1">Resultado</div>
+        <div class="font-mono text-2xl font-bold">
+            ${solveFor === 'V' ? `V = I×R = ${V.toFixed(1)} V` :
+              solveFor === 'I' ? `I = V/R = ${I.toFixed(3)} A` :
+              `R = V/I = ${R.toFixed(1)} Ω`}
+        </div>
+        <div class="text-sm mt-2 opacity-80">P = ${P.toFixed(2)} W</div>
+    `;
+}
+
+/* ============================================
+   SECCIÓN 9: COMPONENTES (MANTENER EXISTENTE)
+   ============================================ */
+const rCols = [
+    { n: 'Negro', c: '#1a1a1a', v: 0 },
+    { n: 'Marrón', c: '#8B4513', v: 1 },
+    { n: 'Rojo', c: '#FF0000', v: 2 },
+    { n: 'Naranja', c: '#FF8C00', v: 3 },
+    { n: 'Amarillo', c: '#FFD700', v: 4 },
+    { n: 'Verde', c: '#228B22', v: 5 },
+    { n: 'Azul', c: '#0000FF', v: 6 },
+    { n: 'Violeta', c: '#8B008B', v: 7 },
+    { n: 'Gris', c: '#808080', v: 8 },
+    { n: 'Blanco', c: '#F0F0F0', v: 9 }
+];
+
+const rTols = [
+    { n: 'Oro', c: '#FFD700', t: 5 },
+    { n: 'Plata', c: '#C0C0C0', t: 10 },
+    { n: 'Ninguno', c: '#D4A76A', t: 20 },
+    { n: '1%', c: '#8B4513', t: 1 },
+    { n: '2%', c: '#FF0000', t: 2 }
+];
+
+let rBands = { 1: 1, 2: 0, 3: 2, 4: 0, m: 2, t: 0 };
+
+function resetResistorBandsAndUpdateUI() {
+    const type = document.getElementById('resType').value;
+    
+    if (type === '4') {
+        rBands = { 1: 1, 2: 0, 3: 2, 4: 0, m: 2, t: 0 };
+    } else if (type === '5') {
+        rBands = { 1: 1, 2: 0, 3: 2, 4: 0, 5: 0, m: 3, t: 0 };
+    } else {
+        rBands = {};
+    }
+    
+    updateResistorUI();
+}
+
+function initResistor() {
+    resetResistorBandsAndUpdateUI();
+}
+
+function updateResistorUI() {
+    const type = document.getElementById('resType').value;
+    const inputsDiv = document.getElementById('resInputs');
+    const bodyDiv = document.getElementById('resBody');
+    
+    inputsDiv.innerHTML = '';
+    bodyDiv.innerHTML = '';
+    
+    if (type === 'smd') {
+        inputsDiv.innerHTML = `
+            <input type="text" id="smdIn" placeholder="Ej: 103 o 4R7" 
+                   class="form-input-easy w-full" oninput="calcResistor()">
+        `;
+        bodyDiv.style.padding = '12px 16px';
+        bodyDiv.innerHTML = '<span class="font-mono font-bold text-xs" id="smdBody">SMD</span>';
+    } else {
+        const count = parseInt(type);
+        const bandIds = [];
+        
+        for (let i = 1; i <= count; i++) {
+            const isTol = (i === count);
+            const isMult = (i === count - 1);
+            const label = isTol ? 'Tolerancia' : (isMult ? 'Multiplicador' : 'Banda ' + i);
+            
+            inputsDiv.innerHTML += `
+                <div>
+                    <label class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 block">${label}</label>
+                    <div class="flex flex-wrap gap-1" id="rBand${i}"></div>
+                </div>
+            `;
+            bandIds.push(i);
+        }
+        
+        bodyDiv.style.padding = '12px 24px';
+        bodyDiv.style.gap = '3px';
+        
+        bandIds.forEach(idx => {
+            const el = document.createElement('div');
+            el.className = 'resistor-band';
+            el.id = `rBandVisual${idx}`;
+            bodyDiv.appendChild(el);
+        });
+        
+        bandIds.forEach(idx => {
+            const isTol = (idx === count);
+            const isMult = (idx === count - 1);
+            const container = document.getElementById(`rBand${idx}`);
+            const arr = isTol ? rTols : rCols;
+            
+            arr.forEach((col, i) => {
+                const sw = document.createElement('div');
+                sw.className = 'color-swatch';
+                sw.style.background = col.c;
+                sw.style.width = '28px';
+                sw.style.height = '28px';
+                sw.title = col.n;
+                sw.setAttribute('role', 'button');
+                sw.setAttribute('tabindex', '0');
+                sw.onclick = () => {
+                    if (isTol) rBands.t = i;
+                    else if (isMult) rBands.m = i;
+                    else rBands[idx] = i;
+                    
+                    calcResistor();
+                    trackBadgeProgress('component_calculated');
+                };
+                container.appendChild(sw);
+            });
+        });
+    }
+    
+    calcResistor();
+}
+
+function calcResistor() {
+    const type = document.getElementById('resType').value;
+    const resEl = document.getElementById('resistorResult');
+    
+    if (type === 'smd') {
+        const code = document.getElementById('smdIn').value.trim();
+        let val = '—';
+        
+        if (code.length >= 3) {
+            if (code.includes('R')) {
+                val = code.replace('R', '.');
+            } else {
+                const d = code.substring(0, code.length - 1);
+                const m = code.charAt(code.length - 1);
+                val = parseFloat(d) * Math.pow(10, parseInt(m));
+            }
+        }
+        
+        document.getElementById('smdBody').textContent = code;
+        resEl.innerHTML = `
+            <div class="text-sm text-ohms font-medium mb-1">Valor</div>
+            <div class="font-mono text-2xl font-bold text-slate-900 dark:text-white">${formatR(val)}</div>
+        `;
+        return;
+    }
+    
+    const count = parseInt(type);
+    let baseVal = 0;
+    const multIdx = rBands.m || 0;
+    const tolIdx = rBands.t || 0;
+    
+    if (count === 4) {
+        const d1 = rBands[1] || 0;
+        const d2 = rBands[2] || 0;
+        baseVal = d1 * 10 + d2;
+    } else if (count === 5) {
+        const d1 = rBands[1] || 0;
+        const d2 = rBands[2] || 0;
+        const d3 = rBands[3] || 0;
+        baseVal = d1 * 100 + d2 * 10 + d3;
+    }
+    
+    const multVal = rCols[multIdx] ? Math.pow(10, multIdx) : 1;
+    const finalVal = baseVal * multVal;
+    const tolVal = rTols[tolIdx] ? rTols[tolIdx].t : 20;
+    
+    for (let i = 1; i <= count; i++) {
+        const vis = document.getElementById(`rBandVisual${i}`);
+        if (vis) {
+            const isTol = (i === count);
+            const isMult = (i === count - 1);
+            const arr = isTol ? rTols : rCols;
+            const idx = isTol ? tolIdx : (isMult ? multIdx : rBands[i]);
+            vis.style.background = arr[idx] ? arr[idx].c : '#ccc';
+        }
+    }
+    
+    resEl.innerHTML = `
+        <div class="text-sm text-ohms font-medium mb-1">Valor</div>
+        <div class="font-mono text-2xl font-bold text-slate-900 dark:text-white">${formatR(finalVal)} ± ${tolVal}%</div>
+    `;
+}
+
+function formatR(v) {
+    if (isNaN(v)) return '—';
+    if (v >= 1e6) return (v / 1e6).toFixed(v % 1e6 ? 1 : 0) + ' MΩ';
+    if (v >= 1e3) return (v / 1e3).toFixed(v % 1e3 ? 1 : 0) + ' kΩ';
+    return v + ' Ω';
+}
+
+function formatC(v) {
+    if (isNaN(v)) return '—';
+    if (v >= 1e6) return (v / 1e6).toFixed(1) + ' µF';
+    if (v >= 1e3) return (v / 1e3).toFixed(1) + ' nF';
+    return v + ' pF';
+}
+
+function updateCap() {
+    const c = document.getElementById('capCode').value.trim();
+    let val = '—';
+    
+    if (c.length === 3) {
+        const num = parseInt(c.substring(0, 2));
+        const mult = parseInt(c.charAt(2));
+        val = num * Math.pow(10, mult);
+    }
+    
+    document.getElementById('capResult').innerHTML = `
+        <div class="text-sm text-blue-600 dark:text-blue-400 font-medium mb-1">Capacitancia</div>
+        <div class="font-mono text-2xl font-bold text-slate-900 dark:text-white">${formatC(val)}</div>
+    `;
+}
+
+function updateCapQ() {
+    const v = parseFloat(document.getElementById('capV').value) || 0;
+    const c = parseFloat(document.getElementById('capF').value) || 0;
+    document.getElementById('capQResult').textContent = `Q = ${(v * c).toFixed(4)} C`;
+}
+
+function updateTrans() {
+    const ib = parseFloat(document.getElementById('transIb').value) || 0;
+    const hfe = parseFloat(document.getElementById('transHfe').value) || 100;
+    const vcc = parseFloat(document.getElementById('transVcc').value) || 0;
+    const rc = parseFloat(document.getElementById('transRc').value) || 1000;
+    
+    const ic = ib * hfe;
+    const vce = vcc - (ic / 1000) * rc;
+    const vce_sat = 0.2;
+    const sat = vce < vce_sat;
+    
+    document.getElementById('transResult').innerHTML = `
+        <p>Ic = ${ic.toFixed(2)} mA</p>
+        <p>Vce = ${sat ? vce_sat : vce.toFixed(2)} V</p>
+        <p>Estado: <b>${sat ? 'Saturado (Switch ON)' : 'Activo (Amplificador)'}</b></p>
+    `;
+}
+
+function updateDiod() {
+    const vi = parseFloat(document.getElementById('diodVi').value) || 0;
+    const vd = parseFloat(document.getElementById('diodVd').value) || 0.7;
+    const r = parseFloat(document.getElementById('diodR').value) || 1000;
+    
+    const i = (vi > vd) ? ((vi - vd) / r) : 0;
+    
+    document.getElementById('diodResult').innerHTML = `
+        <p>Corriente (I) = ${(i * 1000).toFixed(2)} mA</p>
+        <p>Potencia Diodo = ${(i * vd).toFixed(4)} W</p>
+        <p>Estado: ${vi > vd ? 'Conducción (ON)' : 'Corte (OFF)'}</p>
+    `;
+}
+
+/* ============================================
+   SECCIÓN 10: CIRCUITOS (MANTENER EXISTENTE)
+   ============================================ */
+let cType = 'serie';
+let flowType = 'convencional';
+let circuitStaticValues = {};
+let electronPos = 0;
+let animFrame;
+
+function toggleFlowType() {
+    flowType = flowType === 'convencional' ? 'electrones' : 'convencional';
+    document.getElementById('flowLabel').textContent = flowType === 'convencional' ? 'Convencional' : 'Electrones';
+    updateCircuitStatic();
+}
+
+function setCircuitType(t) {
+    cType = t;
+    
+    ['btnSerie', 'btnParalelo', 'btnMixto'].forEach((id, idx) => {
+        const types = ['serie', 'paralelo', 'mixto'];
+        const btn = document.getElementById(id);
+        btn.className = types[idx] === t
+            ? 'px-4 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md'
+            : 'px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500 dark:text-slate-300';
+    });
+    
+    const inp = document.getElementById('circInputs');
+    
+    if (t === 'mixto') {
+        inp.classList.remove('grid-cols-3');
+        inp.classList.add('grid-cols-4');
+        
+        if (!document.getElementById('circR3')) {
+            const d = document.createElement('div');
+            d.innerHTML = `
+                <label class="text-xs font-semibold text-ohms block mb-1">R₃</label>
+                <input type="number" id="circR3" value="300" 
+                       class="w-full px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-mono bg-white dark:bg-slate-700 text-slate-900 dark:text-white" 
+                       onchange="updateCircuitStatic()">
+            `;
+            inp.appendChild(d.firstChild);
+            inp.appendChild(d.lastChild);
+        }
+    } else {
+        inp.classList.add('grid-cols-3');
+        inp.classList.remove('grid-cols-4');
+        
+        const r3 = document.getElementById('circR3');
+        if (r3) r3.parentElement.remove();
+    }
+    
+    updateCircuitStatic();
+    
+    // Track badge circuit builder
+    learningStats.circuitsSimulated++;
+    saveLearningStats();
+    checkAndUnlockBadges();
+}
+
+function updateCircuitStatic() {
+    const V = parseFloat(document.getElementById('circV').value) || 12;
+    const R1 = parseFloat(document.getElementById('circR1').value) || 100;
+    const R2 = parseFloat(document.getElementById('circR2').value) || 200;
+    let R3 = cType === 'mixto' ? (parseFloat(document.getElementById('circR3').value) || 300) : 0;
+    
+    let Rt, It, V1, V2, I1, I2, I3;
+    
+    if (cType === 'serie') {
+        Rt = R1 + R2;
+        It = V / Rt;
+        V1 = It * R1;
+        V2 = It * R2;
+        I1 = I2 = It;
+    } else if (cType === 'paralelo') {
+        Rt = (R1 * R2) / (R1 + R2);
+        It = V / Rt;
+        V1 = V2 = V;
+        I1 = V / R1;
+        I2 = V / R2;
+    } else {
+        const Rp = (R2 * R3) / (R2 + R3);
+        Rt = R1 + Rp;
+        It = V / Rt;
+        V1 = It * R1;
+        V2 = V - V1;
+        I1 = It;
+        I2 = V2 / R2;
+        I3 = V2 / R3;
+    }
+    
+    const P = V * It;
+    
+    document.getElementById('circuitResults').innerHTML = `
+        <div class="grid grid-cols-2 gap-3">
+            <div class="bg-white dark:bg-slate-700 rounded-lg p-3 border border-slate-100 dark:border-slate-600">
+                <div class="text-xs text-slate-400 dark:text-slate-500">R total</div>
+                <div class="font-mono font-bold text-ohms">${Rt.toFixed(1)}Ω</div>
+            </div>
+            <div class="bg-white dark:bg-slate-700 rounded-lg p-3 border border-slate-100 dark:border-slate-600">
+                <div class="text-xs text-slate-400 dark:text-slate-500">I total</div>
+                <div class="font-mono font-bold text-amps">${It.toFixed(4)}A</div>
+            </div>
+            <div class="bg-white dark:bg-slate-700 rounded-lg p-3 border border-slate-100 dark:border-slate-600">
+                <div class="text-xs text-slate-400 dark:text-slate-500">V R₁</div>
+                <div class="font-mono font-bold text-volt">${V1.toFixed(2)}V</div>
+            </div>
+            <div class="bg-white dark:bg-slate-700 rounded-lg p-3 border border-slate-100 dark:border-slate-600">
+                <div class="text-xs text-slate-400 dark:text-slate-500">V R₂</div>
+                <div class="font-mono font-bold text-volt">${V2.toFixed(2)}V</div>
+            </div>
+        </div>
+    `;
+    
+    const rules = cType === 'serie'
+        ? ['R<sub>T</sub>=R₁+R₂', 'Corriente igual', 'Voltaje se divide']
+        : cType === 'paralelo'
+        ? ['1/R<sub>T</sub>=1/R₁+1/R₂', 'Voltaje igual', 'Corriente se divide']
+        : ['R₁ en serie con (R₂||R₃)', 'Mixto combina serie y paralelo', 'La corriente principal pasa por R₁'];
+    
+    document.getElementById('circuitRules').innerHTML = rules.map(r =>
+        `<p class="text-sm text-slate-600 dark:text-slate-300">• ${r}</p>`
+    ).join('');
+    
+    circuitStaticValues = { V, R1, R2, R3, Rt, It, V1, V2, I1, I2, I3 };
+    drawCircuitAnimation();
+}
+
+function initCircuit() {
+    updateCircuitStatic();
+}
+
+function drawCircuitAnimation() {
+    const canvas = document.getElementById('circuitCanvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const cw = canvas.width, ch = canvas.height;
+    const { V, R1, R2, R3, It } = circuitStaticValues;
+    const isConv = flowType === 'convencional';
+    const pColor = isConv ? '#F59E0B' : '#3B82F6';
+    const gColor = isConv ? 'rgba(245,158,11,0.3)' : 'rgba(59,130,246,0.3)';
+    
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.fillStyle = '#F8FAFC';
+    ctx.fillRect(0, 0, cw, ch);
+    ctx.fillStyle = '#E2E8F0';
+    ctx.fillRect(40, 40, cw - 80, ch - 80);
+    ctx.fillStyle = '#F1F5F9';
+    ctx.fillRect(41, 41, cw - 82, ch - 82);
+    ctx.strokeStyle = '#CBD5E1';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(40, 40, cw - 80, ch - 80);
+    
+    function drawCable(pts, color) {
+        ctx.lineWidth = 6;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = color;
+        ctx.shadowColor = 'rgba(0,0,0,0.15)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetY = 2;
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+        ctx.stroke();
+        ctx.shadowColor = 'transparent';
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y - 1);
+        for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y - 1);
+        ctx.stroke();
+    }
+    
+    function drawBattery(cx, cy) {
+        ctx.shadowColor = 'rgba(0,0,0,0.2)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 4;
+        let grad = ctx.createLinearGradient(cx - 15, cy, cx + 15, cy);
+        grad.addColorStop(0, '#334155');
+        grad.addColorStop(0.5, '#64748B');
+        grad.addColorStop(1, '#334155');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.roundRect(cx - 15, cy - 40, 30, 80, 8);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+        ctx.fillStyle = '#EF4444';
+        ctx.fillRect(cx - 8, cy - 42, 16, 6);
+        ctx.fillStyle = '#1E293B';
+        ctx.fillRect(cx - 6, cy + 36, 12, 4);
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 11px Space Grotesk';
+        ctx.textAlign = 'center';
+        ctx.fillText('+', cx, cy - 28);
+        ctx.fillText('−', cx, cy + 28);
+        ctx.fillStyle = '#EF4444';
+        ctx.font = 'bold 14px Space Grotesk';
+        ctx.fillText(V + 'V', cx + 25, cy + 5);
+    }
+    
+    function drawHRes(cx, cy, label) {
+        ctx.shadowColor = 'rgba(0,0,0,0.15)';
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetY = 3;
+        let grad = ctx.createLinearGradient(cx, cy - 10, cx, cy + 10);
+        grad.addColorStop(0, '#D4A76A');
+        grad.addColorStop(0.5, '#C49555');
+        grad.addColorStop(1, '#B8894A');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.roundRect(cx - 40, cy - 10, 80, 20, 4);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+        ctx.fillStyle = '#334155';
+        ctx.font = 'bold 12px JetBrains Mono';
+        ctx.textAlign = 'center';
+        ctx.fillText(label, cx, cy + 5);
+    }
+    
+    function drawVRes(cx, cy, label) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(-Math.PI / 2);
+        drawHRes(0, 0, label);
+        ctx.restore();
+    }
+    
+    function drawElectrons(path, speed) {
+        const numE = 6;
+        for (let i = 0; i < numE; i++) {
+            let t = (electronPos * speed + i / numE) % 1;
+            if (!isConv) t = 1 - t;
+            let pos = t * (path.length - 1);
+            let idx = Math.floor(pos);
+            let frac = pos - idx;
+            if (idx >= path.length - 1) { idx = path.length - 2; frac = 1; }
+            let ax = path[idx].x, ay = path[idx].y;
+            let bx = path[idx + 1].x, by = path[idx + 1].y;
+            let ex = ax + (bx - ax) * frac, ey = ay + (by - ay) * frac;
+            ctx.beginPath();
+            ctx.arc(ex, ey, 7, 0, Math.PI * 2);
+            ctx.fillStyle = gColor;
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(ex, ey, 4, 0, Math.PI * 2);
+            ctx.fillStyle = pColor;
+            ctx.fill();
+        }
+    }
+    
+    if (cType === 'serie') {
+        let TL = { x: 80, y: 80 }, TR = { x: 420, y: 80 }, BR = { x: 420, y: 300 }, BL = { x: 80, y: 300 };
+        drawCable([TL, TR], '#EF4444');
+        drawCable([TR, BR], '#0F172A');
+        drawCable([BR, BL], '#0F172A');
+        drawCable([BL, { x: 80, y: 230 }], '#0F172A');
+        drawCable([{ x: 80, y: 150 }, TL], '#EF4444');
+        drawBattery(80, 190);
+        drawHRes(190, 80, 'R₁');
+        drawHRes(320, 80, 'R₂');
+        drawElectrons([TL, TR, BR, BL, TL], 1);
+    } else if (cType === 'paralelo') {
+        let TL = { x: 80, y: 80 }, TR = { x: 420, y: 80 }, BR = { x: 420, y: 300 }, BL = { x: 80, y: 300 };
+        let N1T = { x: 220, y: 80 }, N1B = { x: 220, y: 300 };
+        let N2T = { x: 360, y: 80 }, N2B = { x: 360, y: 300 };
+        drawCable([TL, N1T], '#EF4444');
+        drawCable([N1T, N2T], '#EF4444');
+        drawCable([N2T, TR], '#EF4444');
+        drawCable([TR, BR], '#0F172A');
+        drawCable([BR, N2B], '#0F172A');
+        drawCable([N2B, N1B], '#0F172A');
+        drawCable([N1B, BL], '#0F172A');
+        drawCable([BL, { x: 80, y: 230 }], '#0F172A');
+        drawCable([{ x: 80, y: 150 }, TL], '#EF4444');
+        drawCable([N1T, { x: N1T.x, y: 100 }], '#0F172A');
+        drawCable([{ x: N1B.x, y: 120 }, N1B], '#0F172A');
+        drawCable([N2T, { x: N2T.x, y: 100 }], '#0F172A');
+        drawCable([{ x: N2B.x, y: 120 }, N2B], '#0F172A');
+        drawVRes(N1T.x, N1T.y + 110, 'R₁');
+        drawVRes(N2T.x, N2T.y + 110, 'R₂');
+        drawBattery(80, 190);
+        drawElectrons([{ x: 80, y: 150 }, TL, N1T, { x: N1T.x, y: 100 }, { x: N1B.x, y: 120 }, N1B, BL, { x: 80, y: 230 }], 1);
+        drawElectrons([N1T, N2T, { x: N2T.x, y: 100 }, { x: N2B.x, y: 120 }, N2B, N1B], 0.6);
+    } else {
+        let TL = { x: 80, y: 80 }, TR = { x: 420, y: 80 }, BR = { x: 420, y: 300 }, BL = { x: 80, y: 300 };
+        let J1T = { x: 180, y: 80 }, J1B = { x: 180, y: 300 };
+        let J2T = { x: 300, y: 80 }, J2B = { x: 300, y: 300 };
+        drawCable([TL, J1T], '#EF4444');
+        drawCable([J1T, TR], '#EF4444');
+        drawCable([J1T, J2T], '#EF4444');
+        drawCable([J2T, TR], '#EF4444');
+        drawCable([TR, BR], '#0F172A');
+        drawCable([BR, J2B], '#0F172A');
+        drawCable([J2B, J1B], '#0F172A');
+        drawCable([J1B, BL], '#0F172A');
+        drawCable([BL, { x: 80, y: 230 }], '#0F172A');
+        drawCable([{ x: 80, y: 150 }, TL], '#EF4444');
+        drawCable([J1T, { x: J1T.x, y: 100 }], '#0F172A');
+        drawCable([{ x: J1B.x, y: 120 }, J1B], '#0F172A');
+        drawCable([J2T, { x: J2T.x, y: 100 }], '#0F172A');
+        drawCable([{ x: J2B.x, y: 120 }, J2B], '#0F172A');
+        drawHRes(130, 80, 'R₁');
+        drawVRes(J1T.x, J1T.y + 110, 'R₂');
+        drawVRes(J2T.x, J2T.y + 110, 'R₃');
+        drawBattery(80, 190);
+        drawElectrons([{ x: 80, y: 150 }, TL, J1T, { x: J1T.x, y: 100 }, { x: J1B.x, y: 120 }, J1B, BL, { x: 80, y: 230 }], 1);
+        drawElectrons([J1T, J2T, { x: J2T.x, y: 100 }, { x: J2B.x, y: 120 }, J2B, J1B], 0.6);
+    }
+    
+    ctx.fillStyle = isConv ? '#F59E0B' : '#3B82F6';
+    ctx.font = 'bold 12px Space Grotesk';
+    ctx.textAlign = 'center';
+    ctx.fillText(isConv ? 'I Convencional (+ → −)' : 'I Real (− → +)', cw / 2, ch - 15);
+    
+    electronPos += 0.002;
+    if (electronPos > 1) electronPos = 0;
+    animFrame = requestAnimationFrame(drawCircuitAnimation);
+}
+
+/* ============================================
+   SECCIÓN 11: SEÑALES/WAVEFORM (MANTENER EXISTENTE)
+   ============================================ */
+let wType = 'sine', wAmp = 5, wFreq = 2, wTime = 0;
+
+function setWaveType(t) {
+    wType = t;
+    
+    document.querySelectorAll('.wave-btn').forEach(b => {
+        b.className = 'wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300';
+    });
+    
+    const btn = document.getElementById(`btn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+    if (btn) btn.className = 'wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-electric-600 text-white';
+    
+    // Track badge wave rider
+    learningStats.wavesExplored.add(t);
+    saveLearningStats();
+    checkAndUnlockBadges();
+    
+    updateWaveParams();
+}
+
+function updateWaveParams() {
+    wAmp = parseFloat(document.getElementById('ampSlider').value);
+    wFreq = parseFloat(document.getElementById('freqSlider').value);
+    
+    document.getElementById('ampVal').textContent = wAmp.toFixed(1) + ' V';
+    document.getElementById('freqVal').textContent = wFreq.toFixed(1) + ' Hz';
+    
+    const T = 1 / wFreq;
+    let Vrms;
+    
+    if (wType === 'sine') Vrms = (wAmp / Math.sqrt(2)).toFixed(2);
+    else if (wType === 'square') Vrms = wAmp.toFixed(2);
+    else Vrms = (wAmp / Math.sqrt(3)).toFixed(2);
+    
+    document.getElementById('waveProps').innerHTML = `
+        <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400">Vp</span><span class="font-mono font-semibold text-slate-900 dark:text-white">${wAmp.toFixed(1)}V</span></div>
+        <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400">f</span><span class="font-mono font-semibold text-slate-900 dark:text-white">${wFreq.toFixed(1)}Hz</span></div>
+        <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400">T</span><span class="font-mono font-semibold text-slate-900 dark:text-white">${T.toFixed(3)}s</span></div>
+        <div class="flex justify-between"><span class="text-slate-500 dark:text-slate-400">Vrms</span><span class="font-mono font-semibold text-slate-900 dark:text-white">${Vrms}V</span></div>
+    `;
+}
+
+function initWaveform() {
+    const canvas = document.getElementById('waveCanvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    updateWaveParams();
+    
+    function draw() {
+        const cw = canvas.width, ch = canvas.height;
+        ctx.fillStyle = '#0C1A2E';
+        ctx.fillRect(0, 0, cw, ch);
+        
+        // Grid
+        ctx.strokeStyle = 'rgba(10,132,255,.1)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < cw; x += 40) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, ch);
+            ctx.stroke();
+        }
+        for (let y = 0; y < ch; y += 40) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(cw, y);
+            ctx.stroke();
+        }
+        
+        // Center lines
+        ctx.strokeStyle = 'rgba(10,132,255,.25)';
+        ctx.beginPath();
+        ctx.moveTo(0, ch / 4);
+        ctx.lineTo(cw, ch / 4);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, 3 * ch / 4);
+        ctx.lineTo(cw, 3 * ch / 4);
+        ctx.stroke();
+        
+        // Zero line
+        ctx.strokeStyle = 'rgba(255,165,0,0.9)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, ch / 2);
+        ctx.lineTo(cw, ch / 2);
+        ctx.stroke();
+        
+        // Labels
+        ctx.fillStyle = '#3399FF';
+        ctx.font = '10px JetBrains Mono';
+        ctx.fillText('0V', 5, ch / 2 - 4);
+        ctx.fillText(wAmp.toFixed(1) + 'V', 5, ch / 4 - 4);
+        ctx.fillText('-' + wAmp.toFixed(1) + 'V', 5, 3 * ch / 4 - 4);
+        ctx.fillText('t', cw - 5, ch / 2 - 4);
+        
+        // Waveform
+        ctx.beginPath();
+        ctx.strokeStyle = '#3399FF';
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = '#3399FF';
+        ctx.shadowBlur = 8;
+        
+        const midY = ch / 2, sY = (ch / 2 - 30) / 12;
+        
+        for (let x = 0; x < cw; x++) {
+            const t = (x / cw) * 3 + wTime;
+            let y;
+            const ph = 2 * Math.PI * wFreq * t;
+            
+            if (wType === 'sine') y = midY - wAmp * Math.sin(ph) * sY;
+            else if (wType === 'square') y = midY - wAmp * Math.sign(Math.sin(ph)) * sY;
+            else if (wType === 'triangle') y = midY - wAmp * (2 / Math.PI) * Math.asin(Math.sin(ph)) * sY;
+            else if (wType === 'sawtooth') {
+                const p = (wFreq * t) % 1;
+                y = midY - wAmp * (2 * p - 1) * sY;
+            } else if (wType === 'half') y = midY - Math.max(0, wAmp * Math.sin(ph)) * sY;
+            else y = midY - wAmp * sY;
+            
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        
+        wTime += 0.015;
+        requestAnimationFrame(draw);
+    }
+    
+    draw();
+}
+
+/* ============================================
+   SECCIÓN 12: QUIZ/PRÁCTICA (MANTENER EXISTENTE)
+   ============================================ */
+const QQ = [
+    { cat: 'Ohm', q: 'R=100Ω I=0.5A ¿V=?', o: ['25V', '50V', '100V', '200V'], c: 1, e: 'V=I×R=50V' },
+    { cat: 'Comp.', q: '¿1kΩ ±5%?', o: ['M-N-R-Oro', 'M-N-N-Oro', 'R-N-M-Oro', 'M-R-N-Oro'], c: 0, e: '1-0-×100=1kΩ' },
+    { cat: 'Circ.', q: 'Serie R₁=10 R₂=20 ¿RT?', o: ['6.67', '30', '200', '15'], c: 1, e: 'RT=30Ω' },
+    { cat: 'Circ.', q: 'Paralelo: ¿qué es igual?', o: ['Corriente', 'Resistencia', 'Voltaje', 'Potencia'], c: 2, e: 'Voltaje igual en ramas' },
+    { cat: 'Ohm', q: '¿Unidad resistencia?', o: ['Voltio', 'Amperio', 'Ohmio', 'Vatio'], c: 2, e: 'Ohmio' },
+    { cat: 'Comp.', q: '¿Qué almacena carga?', o: ['Resistencia', 'Inductor', 'Capacitor', 'Diodo'], c: 2, e: 'Capacitor' },
+    { cat: 'Señal', q: 'T=0.02s ¿f?', o: ['20Hz', '50Hz', '100Hz', '0.02Hz'], c: 1, e: 'f=50Hz' },
+    { cat: 'Ohm', q: 'V=12 R=4 ¿P?', o: ['3W', '16W', '36W', '48W'], c: 2, e: 'P=36W' }
+];
+
+let cQ = 0, sc = 0, qans = false;
+
+function initQuiz() {
+    showQ();
+}
+
+function showQ() {
+    if (cQ >= QQ.length) {
+        document.getElementById('quizCard').style.display = 'none';
+        document.getElementById('quizComplete').style.display = 'block';
+        document.getElementById('finalScore').textContent = sc + '/' + QQ.length;
+        
+        const p = sc / QQ.length;
+        document.getElementById('finalMsg').textContent = p >= .8 ? '¡Excelente!' : p >= .5 ? 'Buen trabajo' : 'Sigue practicando';
+        return;
+    }
+    
+    const q = QQ[cQ];
+    document.getElementById('qNum').textContent = cQ + 1;
+    document.getElementById('qTotal').textContent = QQ.length;
+    document.getElementById('qProgress').style.width = ((cQ + 1) / QQ.length * 100) + '%';
+    document.getElementById('quizCategory').textContent = q.cat;
+    document.getElementById('quizQuestion').textContent = q.q;
+    document.getElementById('quizFeedback').style.display = 'none';
+    document.getElementById('btnNext').style.display = 'none';
+    document.getElementById('btnSkip').style.display = 'inline-block';
+    qans = false;
+    
+    document.getElementById('quizOptions').innerHTML = q.o.map((o, i) => `
+        <button onclick="ansQ(${i})" class="quiz-option w-full text-left px-5 py-3.5 rounded-xl border-2 border-slate-200 dark:border-slate-600 text-sm font-medium text-slate-700 dark:text-slate-300 hover:border-electric-400 hover:bg-electric-50 dark:hover:bg-electric-900/20 transition-all flex items-center gap-3">
+            <span class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-500">${String.fromCharCode(65 + i)}</span>
+            ${o}
+        </button>
+    `).join('');
+}
+
+function ansQ(i) {
+    if (qans) return;
+    qans = true;
+    
+    const q = QQ[cQ];
+    
+    document.querySelectorAll('.quiz-option').forEach((o, j) => {
+        o.style.pointerEvents = 'none';
+        if (j === q.c) o.classList.add('correct');
+        if (i === j && j !== q.c) o.classList.add('incorrect');
+    });
+    
+    const fb = document.getElementById('quizFeedback');
+    fb.style.display = 'block';
+    
+    if (i === q.c) {
+        sc++;
+        document.getElementById('qScore').textContent = sc;
+        fb.className = 'mt-6 rounded-xl p-4 text-sm bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300';
+        fb.innerHTML = `✅ ${q.e}`;
+        playSound('correct');
+    } else {
+        fb.className = 'mt-6 rounded-xl p-4 text-sm bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300';
+        fb.innerHTML = `❌ ${q.e}`;
+        playSound('incorrect');
+    }
+    
+    document.getElementById('btnNext').style.display = 'inline-block';
+    document.getElementById('btnSkip').style.display = 'none';
+}
+
+function skipQuestion() {
+    cQ++;
+    showQ();
+}
+
+function nextQuestion() {
+    cQ++;
+    showQ();
+}
+
+function restartQuiz() {
+    cQ = 0;
+    sc = 0;
+    qans = false;
+    document.getElementById('qScore').textContent = '0';
+    document.getElementById('quizCard').style.display = 'block';
+    document.getElementById('quizComplete').style.display = 'none';
+    showQ();
+}
+
+/* ============================================
+   SECCIÓN 13: KATEX (MANTENER EXISTENTE)
+   ============================================ */
+function renderFormulas() {
+    const tryR = () => {
+        if (typeof katex === 'undefined') {
+            setTimeout(tryR, 200);
+            return;
+        }
+        
+        const fm = {
+            f1: 'V = I \\cdot R',
+            f2: 'I = \\dfrac{V}{R}',
+            f3: 'R = \\dfrac{V}{I}',
+            f4: 'P = V \\cdot I',
+            f5: 'P = I^2 \\cdot R',
+            f6: 'P = \\dfrac{V^2}{R}'
+        };
+        
+        Object.keys(fm).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) katex.render(fm[id], el, { throwOnError: false });
+        });
+        
+        const cf = {
+            fc_r: 'R = \\dfrac{V}{I}\\;(\\Omega)',
+            fc_c: 'Q = C \\cdot V\\;(F)',
+            fc_d: 'V_d \\approx 0.7\\;V'
+        };
+        
+        Object.keys(cf).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) katex.render(cf[id], el, { throwOnError: false });
+        });
+    };
+    
+    tryR();
+}
+
+/* ============================================
+   SECCIÓN 14: [NUEVO] VIDEO HERO (Feature A)
+   ============================================ */
+
+/**
+ * Reproducir video del hero
+ */
+function playVideo() {
+    const placeholder = document.getElementById('videoPlaceholder');
+    const iframe = document.getElementById('videoFrame');
+    const videoUrlInput = document.getElementById('videoUrl');
+    
+    if (!placeholder || !iframe || !videoUrlInput) return;
+    
+    // Ocultar placeholder
+    placeholder.style.display = 'none';
+    
+    // Mostrar iframe
+    iframe.classList.remove('hidden');
+    
+    // Setear URL con autoplay
+    const videoUrl = videoUrlInput.value;
+    iframe.src = videoUrl + '?autoplay=1';
+    
+    log('Video reproducido:', videoUrl);
+}
+
+/* ============================================
+   SECCIÓN 15: [NUEVO] MINI-JUEGO ENGINE (Feature B)
+   ============================================ */
+
+/**
+ * Banco de preguntas del mini-juego (30+ preguntas organizadas por dificultad)
+ */
+const GAME_QUESTIONS = {
+    easy: [
+        // Ley de Ohm básica
+        { cat: 'Ohm', q: 'Si V=12V y R=4Ω, ¿cuál es la corriente I?', options: ['3A', '48A', '0.33A', '8A'], correct: 0, explanation: 'I = V/R = 12/4 = 3A' },
+        { cat: 'Ohm', q: 'Si I=2A y R=10Ω, ¿cuál es el voltaje V?', options: ['20V', '5V', '0.2V', '12V'], correct: 0, explanation: 'V = I×R = 2×10 = 20V' },
+        { cat: 'Ohm', q: 'Si V=9V e I=3A, ¿cuál es la resistencia R?', options: ['3Ω', '27Ω', '0.33Ω', '12Ω'], correct: 0, explanation: 'R = V/I = 9/3 = 3Ω' },
+        { cat: 'Ohm', q: '¿Cuál es la unidad de voltaje?', options: ['Voltio (V)', 'Amperio (A)', 'Ohmio (Ω)', 'Vatio (W)'], correct: 0, explanation: 'El voltio (V) es la unidad de voltaje o tensión eléctrica' },
+        { cat: 'Ohm', q: '¿Cuál es la unidad de corriente?', options: ['Amperio (A)', 'Voltio (V)', 'Ohmio (Ω)', 'Henrio (H)'], correct: 0, explanation: 'El amperio (A) es la unidad de corriente eléctrica' },
+        { cat: 'Ohm', q: 'En un circuito, si duplicamos el voltaje y mantenemos R constante, la corriente:', options: ['Se duplica', 'Se reduce a la mitad', 'No cambia', 'Se cuadruplica'], correct: 0, explanation: 'I = V/R, si V×2 entonces I×2 (Ley de Ohm)' },
+        { cat: 'Ohm', q: 'Si V=5V y R=100Ω, ¿I?', options: ['0.05A (50mA)', '0.5A', '20A', '500mA'], correct: 0, explanation: 'I = V/R = 5/100 = 0.05A = 50mA' },
+        { cat: 'Ohm', q: '¿Qué dice la Ley de Ohm?', options: ['V = I × R', 'P = V × I', 'I = V × R', 'R = V × I'], correct: 0, explanation: 'La Ley de Ohm establece que V = I × R' },
+        { cat: 'Comp.', q: 'Un resistor de color Marrón-Negro-Rojo tiene un valor aproximado de:', options: ['1 kΩ', '100 Ω', '10 kΩ', '1 MΩ'], correct: 0, explanation: 'Marrón=1, Negro=0, Rojo=×100 → 10×100 = 1000Ω = 1kΩ' },
+        { cat: 'Comp.', q: '¿Qué componente almacena energía en un campo eléctrico?', options: ['Capacitor', 'Resistor', 'Inductor', 'Diodo'], correct: 0, explanation: 'El capacitor almacena energía en forma de campo eléctrico' }
+    ],
+    medium: [
+        // LED resistor calculation
+        { cat: 'Comp.', q: 'LED rojo con Vf=2V, If=20mA, fuente de 9V. ¿Resistencia limitadora?', options: ['350Ω', '450Ω', '150Ω', '250Ω'], correct: 0, explanation: 'R = (Vfuente - Vled) / I = (9-2)/0.02 = 350Ω' },
+        { cat: 'Comp.', q: 'Un capacitor de código "104" tiene una capacitancia de:', options: ['100 nF', '10 μF', '104 pF', '1 μF'], correct: 0, explanation: '104 → 10 × 10^4 pF = 100,000 pF = 100 nF = 0.1μF' },
+        // Serie/Paralelo simple
+        { cat: 'Circ.', q: 'Dos resistencias de 100Ω en serie dan como resultado:', options: ['200Ω', '100Ω', '50Ω', '10kΩ'], correct: 0, explanation: 'Rs = R1 + R2 = 100 + 100 = 200Ω' },
+        { cat: 'Circ.', q: 'Dos resistencias de 100Ω en paralelo dan como resultado:', options: ['50Ω', '200Ω', '100Ω', '25Ω'], correct: 0, explanation: 'Rp = (R1×R2)/(R1+R2) = 10000/200 = 50Ω' },
+        // Potencia
+        { cat: 'Ohm', q: 'Si V=10V e I=2A, ¿cuál es la potencia disipada?', options: ['20W', '5W', '100W', '200W'], correct: 0, explanation: 'P = V × I = 10 × 2 = 20W' },
+        { cat: 'Ohm', q: 'Un resistor de 100Ω con 0.1A disipa aproximadamente:', options: ['1W', '10W', '0.1W', '100W'], correct: 0, explanation: 'P = I²R = 0.01 × 100 = 1W' },
+        // Códigos de colores
+        { cat: 'Comp.', q: 'El código de colores Amarillo-Violeta-Naranja representa:', options: ['47 kΩ', '470 Ω', '4.7 MΩ', '470 kΩ'], correct: 0, explanation: 'Amarillo=4, Violeta=7, Naranja=×1000 → 47×1000 = 47kΩ' },
+        { cat: 'Comp.', q: '¿Qué tolerancia representa la banda dorada?', options: ['±5%', '±10%', '±1%', '±20%'], correct: 0, explanation: 'La banda dorada indica una tolerancia de ±5%' },
+        // Divisor de voltaje básico
+        { cat: 'Circ.', q: 'En un divisor con R1=R2=1kΩ y Vin=10V, Vout es aproximadamente:', options: ['5V', '10V', '2.5V', '0V'], correct: 0, explanation: 'Vout = Vin × (R2/(R1+R2)) = 10 × (1/2) = 5V' },
+        { cat: 'Señal', q: 'Una señal senoidal de 50Hz tiene un periodo de:', options: ['20 ms', '50 ms', '0.02 s', '2 s'], correct: 0, explanation: 'T = 1/f = 1/50 = 0.02s = 20ms' }
+    ],
+    hard: [
+        // Circuitos mixtos
+        { cat: 'Mixto', q: 'Divisor de voltaje: Vin=12V, R1=R2=1kΩ. ¿Vout en R2?', options: ['6V', '12V', '3V', '9V'], correct: 0, explanation: 'Vout = Vin × R2/(R1+R2) = 12 × 1/2 = 6V' },
+        { cat: 'Mixto', q: 'Circuito: R1=1kΩ en serie con (R2=2kΩ||R3=2kΩ). Si V=12V, ¿Itotal?', options: ['8 mA', '4 mA', '12 mA', '6 mA'], correct: 0, explanation: 'Rp = (2k×2k)/(2k+2k) = 1kΩ. Rt = 1k+1k = 2kΩ. I = 12/2k = 6mA' },
+        // Transistor NPN
+        { cat: 'Trans.', q: 'Transistor NPN con Ib=0.1mA y β=100. ¿Corriente de colector Ic?', options: ['10 mA', '1 mA', '100 mA', '0.01 mA'], correct: 0, explanation: 'Ic = β × Ib = 100 × 0.1mA = 10mA' },
+        { cat: 'Trans.', q: 'Si un transistor NPN está en saturación, Vce es aproximadamente:', options: ['0.2V', '0.7V', 'Vcc', '12V'], correct: 0, explanation: 'En saturación, Vce(sat) ≈ 0.2V (como interruptor cerrado)' },
+        // Diodo
+        { cat: 'Diodo', q: 'Diodo silicona polarizado directamente, caída de voltaje típica:', options: ['0.7V', '0.3V', '1.5V', '0V'], correct: 0, explanation: 'Los diodos de silicio tienen Vf ≈ 0.7V en conducción directa' },
+        { cat: 'Diodo', q: 'Fuente 5V, diodo (0.7V), resistor 220Ω. ¿Corriente I?', options: ['≈19.5 mA', '22.7 mA', '5 mA', '0.23 mA'], correct: 0, explanation: 'I = (5V - 0.7V) / 220Ω ≈ 19.5mA' },
+        // RMS
+        { cat: 'Señal', q: 'Valor RMS de una señal senoidal con Vp=10V:', options: ['≈7.07V', '10V', '14.14V', '5V'], correct: 0, explanation: 'Vrms = Vp/√2 = 10/1.414 ≈ 7.07V' },
+        { cat: 'Señal', q: 'Valor pico de una señal AC de 220V RMS (aprox):', options: ['≈311V', '220V', '156V', '440V'], correct: 0, explanation: 'Vp = Vrms × √2 = 220 × 1.414 ≈ 311V' },
+        // SMD
+        { cat: 'Comp.', q: 'Código SMD "472" representa:', options: ['4.7 kΩ', '47 Ω', '472 Ω', '4.72 MΩ'], correct: 0, explanation: '472 → 47 × 10² = 4700Ω = 4.7kΩ' },
+        { cat: 'Comp.', q: 'Código SMD "4R7" representa:', options: ['4.7 Ω', '470 Ω', '47 kΩ', '4.7 MΩ'], correct: 0, explanation: '4R7 significa 4.7 ohms (la R actúa como punto decimal)' }
+    ]
+};
+
+/**
+ * Abrir modal del mini-juego
+ */
+function openMiniGame() {
+    const modal = document.getElementById('miniGameModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        showGameStartScreen();
+        playSound('click');
+    }
+}
+
+/**
+ * Cerrar modal del mini-juego
+ */
+function closeMiniGame() {
+    const modal = document.getElementById('miniGameModal');
+    if (modal) {
+        modal.style.display = 'none';
+        stopGameTimer();
+        playSound('click');
+    }
+}
+
+/**
+ * Resetear estado del juego
+ */
+function resetGameState() {
+    gameStats = {
+        isActive: false,
+        timeLeft: 60,
+        score: 0,
+        combo: 0,
+        maxCombo: 0,
+        correctAnswers: 0,
+        totalScore: 0,
+        fastResponses: 0,
+        roundsCompleted: gameStats.roundsCompleted, // Mantener rondas previas
+        maxStreak: gameStats.maxStreak,             // Mantener máximo histórico
+        currentStreak: 0,
+        difficulty: 'easy',
+        questionStartTime: 0,
+        timerInterval: null,
+        currentQuestion: null
+    };
+}
+
+/**
+ * Mostrar pantalla de inicio del juego
+ */
+function showGameStartScreen() {
+    const startScreen = document.getElementById('gameStartScreen');
+    const playArea = document.getElementById('gamePlayArea');
+    const resultsArea = document.getElementById('gameResultsArea');
+    const feedbackArea = document.getElementById('gameFeedbackArea');
+    
+    if (startScreen) startScreen.style.display = 'block';
+    if (playArea) playArea.style.display = 'none';
+    if (resultsArea) resultsArea.style.display = 'none';
+    if (feedbackArea) feedbackArea.classList.add('hidden');
+    
+    updateGameUI();
+}
+
+/**
+ * Iniciar nueva ronda del juego
+ */
+function startMiniGameRound() {
+    resetGameState();
+    gameStats.isActive = true;
+    
+    const startScreen = document.getElementById('gameStartScreen');
+    const playArea = document.getElementById('gamePlayArea');
+    
+    if (startScreen) startScreen.style.display = 'none';
+    if (playArea) playArea.style.display = 'block';
+    
+    startGameTimer();
+    nextGameQuestion();
+    playSound('click');
+}
+
+/**
+ * Iniciar timer del juego
+ */
+function startGameTimer() {
+    stopGameTimer(); // Limpiar timer anterior si existe
+    
+    gameStats.timerInterval = setInterval(() => {
+        gameStats.timeLeft--;
+        updateGameUI();
+        
+        if (gameStats.timeLeft <= 0) {
+            endGameRound();
+        }
+    }, 1000);
+}
+
+/**
+ * Detener timer del juego
+ */
+function stopGameTimer() {
+    if (gameStats.timerInterval) {
+        clearInterval(gameStats.timerInterval);
+        gameStats.timerInterval = null;
+    }
+}
+
+/**
+ * Obtener siguiente pregunta aleatoria según dificultad
+ */
+function nextGameQuestion() {
+    if (!gameStats.isActive) return;
+    
+    const questions = GAME_QUESTIONS[gameStats.difficulty];
+    if (!questions || questions.length === 0) return;
+    
+    // Seleccionar pregunta aleatoria
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    gameStats.currentQuestion = questions[randomIndex];
+    gameStats.questionStartTime = Date.now();
+    
+    renderGameQuestion();
+}
+
+/**
+ * Renderizar pregunta actual en el DOM
+ */
+function renderGameQuestion() {
+    if (!gameStats.currentQuestion) return;
+    
+    const q = gameStats.currentQuestion;
+    
+    // Actualizar categoría
+    const catEl = document.getElementById('gameCategory');
+    if (catEl) catEl.textContent = q.cat;
+    
+    // Actualizar texto de pregunta
+    const questionTextEl = document.getElementById('gameQuestionText');
+    if (questionTextEl) questionTextEl.textContent = q.q;
+    
+    // Generar opciones mezcladas visualmente
+    const optionsContainer = document.getElementById('gameOptions');
+    if (optionsContainer) {
+        // Crear array de índices mezclados
+        const indices = [0, 1, 2, 3];
+        // Fisher-Yates shuffle simple
+        for (let i = indices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        
+        optionsContainer.innerHTML = indices.map((originalIndex, displayIndex) => `
+            <button onclick="answerGameQuestion(${originalIndex}, this)" 
+                    class="game-option-btn"
+                    data-index="${originalIndex}">
+                <span class="font-bold mr-2">${String.fromCharCode(65 + displayIndex)})</span>
+                ${q.options[originalIndex]}
+            </button>
+        `).join('');
+    }
+    
+    // Limpiar feedback
+    const feedbackArea = document.getElementById('gameFeedbackArea');
+    if (feedbackArea) {
+        feedbackArea.classList.add('hidden');
+        feedbackArea.innerHTML = '';
+    }
+}
+
+/**
+ * Procesar respuesta del usuario
+ */
+function answerGameQuestion(selectedIndex, btnElement) {
+    if (!gameStats.isActive || !gameStats.currentQuestion) return;
+    
+    // Deshabilitar todos los botones
+    const allButtons = document.querySelectorAll('#gameOptions .game-option-btn');
+    allButtons.forEach(btn => {
+        btn.disabled = true;
+    });
+    
+    const q = gameStats.currentQuestion;
+    const isCorrect = selectedIndex === q.correct;
+    
+    // Marcar botones
+    allButtons.forEach((btn, idx) => {
+        const originalIndex = parseInt(btn.dataset.index);
+        if (originalIndex === q.correct) {
+            btn.classList.add('selected-correct');
+        }
+        if (selectedIndex === originalIndex && !isCorrect) {
+            btn.classList.add('selected-incorrect');
+        }
+    });
+    
+    // Calcular tiempo de respuesta
+    const responseTime = (Date.now() - gameStats.questionStartTime) / 1000;
+    
+    // Calcular puntos
+    let pointsEarned = 0;
+    
+    if (isCorrect) {
+        // Base points
+        pointsEarned = CONFIG.game.basePoints;
+        
+        // Speed bonus
+        if (responseTime < CONFIG.game.speedBonus.fast.threshold) {
+            pointsEarned *= CONFIG.game.speedBonus.fast.multiplier;
+            gameStats.fastResponses++;
+        } else if (responseTime < CONFIG.game.speedBonus.medium.threshold) {
+            pointsEarned *= CONFIG.game.speedBonus.medium.multiplier;
+        } else if (responseTime < CONFIG.game.speedBonus.slow.threshold) {
+            pointsEarned *= CONFIG.game.speedBonus.slow.multiplier;
+        }
+        
+        // Combo multiplier (máximo x5)
+        gameStats.combo++;
+        const comboMultiplier = Math.min(gameStats.combo, CONFIG.game.maxCombo);
+        pointsEarned *= comboMultiplier;
+        
+        // Actualizar estadísticas
+        gameStats.score += pointsEarned;
+        gameStats.correctAnswers++;
+        gameStats.currentStreak++;
+        gameStats.maxStreak = Math.max(gameStats.maxStreak, gameStats.currentStreak);
+        gameStats.maxCombo = Math.max(gameStats.maxCombo, comboMultiplier);
+        
+        playSound('correct');
+        
+        // Verificar subida de dificultad
+        if (gameStats.currentStreak % CONFIG.game.difficultyThreshold === 0) {
+            upgradeDifficulty();
+        }
+    } else {
+        // Respuesta incorrecta
+        gameStats.combo = 0;
+        gameStats.currentStreak = 0;
+        playSound('incorrect');
+    }
+    
+    // Mostrar feedback
+    showGameFeedback(isCorrect, q.explanation, responseTime, pointsEarned);
+    
+    // Actualizar UI
+    updateGameUI();
+    
+    // Siguiente pregunta después de delay
+    setTimeout(() => {
+        if (gameStats.isActive) {
+            nextGameQuestion();
+        }
+    }, 1500);
+}
+
+/**
+ * Mostrar feedback de respuesta
+ */
+function showGameFeedback(isCorrect, explanation, time, points) {
+    const feedbackArea = document.getElementById('gameFeedbackArea');
+    if (!feedbackArea) return;
+    
+    feedbackArea.classList.remove('hidden');
+    
+    const icon = isCorrect ? '✅' : '❌';
+    const bgColor = isCorrect ? 'feedback-correct' : 'feedback-incorrect';
+    
+    feedbackArea.innerHTML = `
+        <div class="${bgColor}">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">${icon}</span>
+                <span class="font-bold">${isCorrect ? '¡Correcto!' : 'Incorrecto'}</span>
+            </div>
+            <p class="mb-1">${explanation}</p>
+            <div class="text-xs opacity-75 mt-2">
+                Tiempo: ${time.toFixed(1)}s | Puntos: +${points}
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Subir dificultad del juego
+ */
+function upgradeDifficulty() {
+    if (gameStats.difficulty === 'easy') {
+        gameStats.difficulty = 'medium';
+        showToast('🔥 Dificultad: MEDIO');
+    } else if (gameStats.difficulty === 'medium') {
+        gameStats.difficulty = 'hard';
+        showToast('🔥 Dificultad: DIFÍCIL');
+    }
+    
+    updateDifficultyBadge();
+}
+
+/**
+ * Finalizar ronda del juego
+ */
+function endGameRound() {
+    gameStats.isActive = false;
+    stopGameTimer();
+    
+    gameStats.totalScore += gameStats.score;
+    gameStats.roundsCompleted++;
+    
+    // Guardar estadísticas
+    saveGameStats();
+    
+    // Verificar badges
+    checkAndUnlockBadges();
+    
+    // Mostrar resultados
+    showGameResults();
+}
+
+/**
+ * Mostrar pantalla de resultados finales
+ */
+function showGameResults() {
+    const playArea = document.getElementById('gamePlayArea');
+    const resultsArea = document.getElementById('gameResultsArea');
+    
+    if (playArea) playArea.style.display = 'none';
+    if (resultsArea) resultsArea.style.display = 'block';
+    
+    // Actualizar valores de resultados
+    const finalScoreEl = document.getElementById('gameFinalScore');
+    const correctEl = document.getElementById('resultCorrect');
+    const comboEl = document.getElementById('resultMaxCombo');
+    const roundsEl = document.getElementById('resultRounds');
+    
+    if (finalScoreEl) finalScoreEl.textContent = gameStats.score + ' pts';
+    if (correctEl) correctEl.textContent = gameStats.correctAnswers;
+    if (comboEl) comboEl.textContent = 'x' + gameStats.maxCombo;
+    if (roundsEl) roundsEl.textContent = gameStats.roundsCompleted;
+}
+
+/**
+ * Actualizar UI del juego
+ */
+function updateGameUI() {
+    // Timer
+    const timerEl = document.getElementById('gameTimer');
+    if (timerEl) timerEl.textContent = gameStats.timeLeft;
+    
+    // Score
+    const scoreEl = document.getElementById('gameScore');
+    if (scoreEl) scoreEl.textContent = gameStats.score;
+    
+    // Combo
+    const comboEl = document.getElementById('gameCombo');
+    if (comboEl) comboEl.textContent = 'x' + Math.min(gameStats.combo + 1, 1); // Mostrar combo actual
+    
+    // Correct answers
+    const correctEl = document.getElementById('gameCorrect');
+    if (correctEl) correctEl.textContent = gameStats.correctAnswers;
+    
+    // Time bar
+    const timeBarEl = document.getElementById('gameTimeBar');
+    if (timeBarEl) {
+        const percentage = (gameStats.timeLeft / CONFIG.game.defaultTime) * 100;
+        timeBarEl.style.width = percentage + '%';
+    }
+    
+    // Difficulty badge
+    updateDifficultyBadge();
+}
+
+/**
+ * Actualizar badge de dificultad
+ */
+function updateDifficultyBadge() {
+    const badgeEl = document.getElementById('gameDifficultyBadge');
+    if (!badgeEl) return;
+    
+    const configs = {
+        easy: { text: 'FÁCIL', class: 'difficulty-easy' },
+        medium: { text: 'MEDIO', class: 'difficulty-medium' },
+        hard: { text: 'DIFÍCIL', class: 'difficulty-hard' }
+    };
+    
+    const config = configs[gameStats.difficulty];
+    badgeEl.textContent = config.text;
+    badgeEl.className = `px-3 py-1 text-xs font-bold rounded-full ${config.class}`;
+}
+
+/**
+ * Guardar estadísticas del juego en localStorage
+ */
+function saveGameStats() {
+    try {
+        const statsToSave = {
+            totalScore: gameStats.totalScore,
+            fastResponses: gameStats.fastResponses,
+            maxStreak: gameStats.maxStreak,
+            maxCombo: gameStats.maxCombo,
+            roundsCompleted: gameStats.roundsCompleted,
+            lastPlayed: new Date().toISOString()
+        };
+        
+        localStorage.setItem('electronilab_gamestats', JSON.stringify(statsToSave));
+        log('Estadísticas del juego guardadas', statsToSave);
+    } catch (error) {
+        logError('Error guardando estadísticas del juego', error);
+    }
+}
+
+/**
+ * Cargar estadísticas del juego desde localStorage
+ */
+function loadGameStats() {
+    try {
+        const saved = localStorage.getItem('electronilab_gamestats');
+        if (saved) {
+            const stats = JSON.parse(saved);
+            gameStats.totalScore = stats.totalScore || 0;
+            gameStats.fastResponses = stats.fastResponses || 0;
+            gameStats.maxStreak = stats.maxStreak || 0;
+            gameStats.maxCombo = stats.maxCombo || 0;
+            gameStats.roundsCompleted = stats.roundsCompleted || 0;
+            log('Estadísticas del juego cargadas', stats);
+        }
+    } catch (error) {
+        logError('Error cargando estadísticas del juego', error);
+    }
+}
+
+/* ============================================
+   SECCIÓN 16: [NUEVO] SISTEMA DE BADGES (Feature C)
+   ============================================ */
+
+/**
+ * Verificar y desbloquear badges según condiciones
+ */
+function checkAndUnlockBadges() {
+    const stats = {
+        game: {
+            fastResponses: gameStats.fastResponses,
+            maxStreak: gameStats.maxStreak,
+            totalScore: gameStats.totalScore,
+            maxCombo: gameStats.maxCombo,
+            roundsCompleted: gameStats.roundsCompleted
+        },
+        learning: {
+            sectionsVisited: learningStats.sectionsVisited,
+            circuitsSimulated: learningStats.circuitsSimulated,
+            componentsCalculated: learningStats.componentsCalculated,
+            wavesExplored: learningStats.wavesExplored,
+            conceptsRead: learningStats.conceptsRead
+        },
+        special: {
+            darkModeUses: specialStats.darkModeUses
+        }
+    };
+    
+    let newUnlocks = [];
+    
+    CONFIG.badges.forEach(badge => {
+        // Skip legendary - se verifica al final
+        if (badge.id === 'legendary') return;
+        
+        // Si ya está desbloqueado, saltar
+        if (unlockedBadges.includes(badge.id)) return;
+        
+        // Evaluar condición
+        if (evaluateBadgeCondition(badge, stats)) {
+            unlockedBadges.push(badge.id);
+            newUnlocks.push(badge);
+        }
+    });
+    
+    // Verificar badge LEGENDARY (todos los demás desbloqueados)
+    const legendaryBadge = CONFIG.badges.find(b => b.id === 'legendary');
+    if (legendaryBadge && !unlockedBadges.includes('legendary')) {
+        const otherBadges = CONFIG.badges.filter(b => b.id !== 'legendary');
+        const allOthersUnlocked = otherBadges.every(b => unlockedBadges.includes(b.id));
+        
+        if (allOthersUnlocked) {
+            unlockedBadges.push('legendary');
+            newUnlocks.push(legendaryBadge);
+        }
+    }
+    
+    // Guardar si hay nuevos desbloqueos
+    if (newUnlocks.length > 0) {
+        saveBadgesToStorage();
+        updateBadgeUI();
+        
+        // Mostrar celebración para cada nuevo badge
+        newUnlocks.forEach((badge, index) => {
+            setTimeout(() => {
+                showAchievementCelebration(badge);
+                playSound('achievement');
+            }, index * 500); // Delay entre celebraciones
+        });
+    }
+}
+
+/**
+ * Evaluar condición de un badge específico
+ */
+function evaluateBadgeCondition(badge, stats) {
+    switch (badge.id) {
+        case 'speed-demon':
+            return stats.game.fastResponses >= 5;
+        case 'perfect-10':
+            return stats.game.maxStreak >= 10;
+        case 'ohm-master':
+            return stats.game.totalScore >= 500;
+        case 'combo-king':
+            return stats.game.maxCombo >= 5;
+        case 'marathon':
+            return stats.game.roundsCompleted >= 5;
+        case 'explorer':
+            return stats.learning.sectionsVisited.size >= 6;
+        case 'circuit-builder':
+            return stats.learning.circuitsSimulated >= 10;
+        case 'component-wizard':
+            return stats.learning.componentsCalculated >= 50;
+        case 'wave-rider':
+            return stats.learning.wavesExplored.size >= 5;
+        case 'night-owl':
+            return stats.special.darkModeUses >= 5;
+        case 'curious':
+            return stats.learning.conceptsRead.size >= 8;
+        default:
+            return false;
+    }
+}
+
+/**
+ * Mostrar celebración de logro desbloqueado
+ */
+function showAchievementCelebration(badge) {
+    const celebrationEl = document.getElementById('achievementCelebration');
+    if (!celebrationEl || !badge) return;
+    
+    // Actualizar contenido
+    const iconEl = document.getElementById('celebrationIcon');
+    const nameEl = document.getElementById('celebrationName');
+    const descEl = document.getElementById('celebrationDesc');
+    
+    if (iconEl) iconEl.textContent = badge.icon;
+    if (nameEl) nameEl.textContent = badge.name;
+    if (descEl) descEl.textContent = badge.description;
+    
+    // Mostrar
+    celebrationEl.style.display = 'block';
+    
+    // Iniciar confeti
+    startConfetti();
+    
+    // Auto-ocultar después de 3 segundos
+    setTimeout(() => {
+        celebrationEl.style.display = 'none';
+        stopConfetti();
+    }, 3000);
+    
+    log('¡Logro desbloqueado!', badge.name);
+}
+
+/**
+ * Toggle panel de badges
+ */
+function toggleBadgesPanel() {
+    const modal = document.getElementById('badgesModal');
+    if (!modal) return;
+    
+    const isVisible = modal.style.display === 'flex';
+    
+    if (isVisible) {
+        modal.style.display = 'none';
+    } else {
+        modal.style.display = 'flex';
+        renderBadgesGrid('all');
+        playSound('click');
+    }
+}
+
+/**
+ * Renderizar grid de badges
+ */
+function renderBadgesGrid(filter = 'all') {
+    const gridContainer = document.getElementById('badgesGrid');
+    if (!gridContainer) return;
+    
+    let badgesToShow = CONFIG.badges;
+    
+    if (filter !== 'all') {
+        badgesToShow = CONFIG.badges.filter(b => b.category === filter);
+    }
+    
+    gridContainer.innerHTML = badgesToShow.map(badge => {
+        const isUnlocked = unlockedBadges.includes(badge.id);
+        
+        return `
+            <div class="badge-card ${isUnlocked ? 'unlocked' : 'locked'}">
+                ${!isUnlocked ? `
+                    <div class="badge-lock-overlay">
+                        <span>🔒</span>
+                    </div>
+                ` : ''}
+                <span class="badge-icon">${isUnlocked ? badge.icon : '❓'}</span>
+                <div class="badge-name">${isUnlocked ? badge.name : '???'}</div>
+                <div class="badge-desc">${isUnlocked ? badge.description : 'Completa los requisitos para desbloquear'}</div>
+            </div>
+        `;
+    }).join('');
+    
+    // Actualizar contador y barra de progreso
+    updateBadgesProgress();
+}
+
+/**
+ * Filtrar badges por categoría
+ */
+function filterBadges(category) {
+    // Actualizar botones activos
+    document.querySelectorAll('.filter-badge-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    event.target.classList.add('active');
+    
+    // Re-renderizar grid
+    renderBadgesGrid(category);
+}
+
+/**
+ * Actualizar barra de progreso y contador de badges
+ */
+function updateBadgesProgress() {
+    const totalBadges = CONFIG.badges.length;
+    const unlockedCount = unlockedBadges.length;
+    const percentage = (unlockedCount / totalBadges) * 100;
+    
+    // Contador
+    const countEl = document.getElementById('badgesUnlockedCount');
+    if (countEl) countEl.textContent = unlockedCount;
+    
+    // Barra de progreso
+    const progressBar = document.getElementById('badgesProgressBar');
+    if (progressBar) progressBar.style.width = percentage + '%';
+}
+
+/**
+ * Actualizar contadores de badges en header
+ */
+function updateBadgeUI() {
+    const count = unlockedBadges.length;
+    
+    // Hero badge count
+    const heroCount = document.getElementById('badgeCountHero');
+    if (heroCount) heroCount.textContent = count;
+    
+    // Nav badge count
+    const navCount = document.getElementById('badgeCountNav');
+    if (navCount) navCount.textContent = count;
+}
+
+/**
+ * Guardar badges en localStorage
+ */
+function saveBadgesToStorage() {
+    try {
+        localStorage.setItem('electronilab_badges', JSON.stringify(unlockedBadges));
+        log('Badges guardados', unlockedBadges);
+    } catch (error) {
+        logError('Error guardando badges', error);
+    }
+}
+
+/**
+ * Cargar badges desde localStorage
+ */
+function loadBadgesFromStorage() {
+    try {
+        const saved = localStorage.getItem('electronilab_badges');
+        if (saved) {
+            unlockedBadges = JSON.parse(saved);
+            log('Badges cargados', unlockedBadges);
+        }
+        
+        // También cargar estadísticas del juego
+        loadGameStats();
+        
+        // Cargar estadísticas de aprendizaje
+        loadLearningStats();
+        
+        // Cargar estadísticas especiales
+        loadSpecialStats();
+    } catch (error) {
+        logError('Error cargando badges', error);
+        unlockedBadges = [];
+    }
+}
+
+/* ============================================
+   SECCIÓN 17: [NUEVO] MODO OSCURO (Feature D)
+   ============================================ */
+
+/**
+ * Inicializar modo oscuro
+ */
+function initDarkMode() {
+    const savedTheme = localStorage.getItem('electronilab_theme');
+    
+    if (savedTheme) {
+        setTheme(savedTheme, false);
+    } else {
+        // Por defecto claro
+        setTheme('light', false);
+    }
+}
+
+/**
+ * Toggle modo oscuro/claro
+ */
+function toggleDarkMode() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    setTheme(newTheme, true);
+    
+    // Contar uso para badge night owl
+    if (newTheme === 'dark') {
+        specialStats.darkModeUses++;
+        saveSpecialStats();
+        checkAndUnlockBadges();
+    }
+    
+    showToast(newTheme === 'dark' ? '🌙 Modo oscuro activado' : '☀️ Modo claro activado');
+    playSound('click');
+}
+
+/**
+ * Aplicar tema
+ */
+function setTheme(theme, saveToStorage) {
+    document.documentElement.setAttribute('data-theme', theme);
+    appState.isDarkMode = theme === 'dark';
+    
+    if (saveToStorage) {
+        localStorage.setItem('electronilab_theme', theme);
+    }
+    
+    // Re-render Lucide icons después de cambiar tema
+    setTimeout(() => {
+        lucide.createIcons();
+    }, 100);
+    
+    log('Tema cambiado a:', theme);
+}
+
+/* ============================================
+   SECCIÓN 18: [NUEVO] AUDIO SYSTEM (Feature E)
+   ============================================ */
+
+/**
+ * Inicializar sistema de audio
+ */
+function initAudio() {
+    // Audio context se crea bajo demanda (lazy init)
+    audioContext = null;
+    appState.soundEnabled = true;
+    
+    // Actualizar UI del botón de sonido
+    updateSoundButtonUI();
+}
+
+/**
+ * Reproducir sonido usando Web Audio API
+ */
+function playSound(type) {
+    if (!appState.soundEnabled) return;
+    
+    try {
+        // Crear contexto bajo demanda
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        
+        // Reanudar si está suspendido (política de autoplay)
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        switch (type) {
+            case 'correct':
+                // Do (523.25Hz) - sonido alegre
+                oscillator.frequency.value = 523.25;
+                oscillator.type = 'sine';
+                gainNode.gain.value = 0.3;
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+                break;
+                
+            case 'incorrect':
+                // Sonido de error grave
+                oscillator.frequency.value = 200;
+                oscillator.type = 'sawtooth';
+                gainNode.gain.value = 0.2;
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+                break;
+                
+            case 'achievement':
+                // Fanfarria: Do-Mi-Sol-Do agudo
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, index) => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.value = freq;
+                    osc.type = 'sine';
+                    gain.gain.value = 0.2;
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15 + (index * 0.1));
+                    osc.start(audioContext.currentTime + (index * 0.1));
+                    osc.stop(audioContext.currentTime + 0.15 + (index * 0.1));
+                });
+                break;
+                
+            case 'click':
+                // Click suave
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                gainNode.gain.value = 0.1;
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.05);
+                break;
+        }
+    } catch (error) {
+        // Silenciar errores (navegador puede bloquear audio)
+        logError('Error reproduciendo sonido', error);
+    }
+}
+
+/**
+ * Toggle sonido on/off
+ */
+function toggleSound() {
+    appState.soundEnabled = !appState.soundEnabled;
+    updateSoundButtonUI();
+    
+    if (appState.soundEnabled) {
+        playSound('click'); // Probar sonido al activar
+    }
+}
+
+/**
+ * Actualizar UI del botón de sonido
+ */
+function updateSoundButtonUI() {
+    const soundText = document.getElementById('soundText');
+    const soundIcon = document.getElementById('soundIcon');
+    
+    if (soundText) {
+        soundText.textContent = appState.soundEnabled ? 'Sound ON' : 'Sound OFF';
+    }
+    
+    if (soundIcon) {
+        // Actualizar icono via lucide
+        soundIcon.setAttribute('data-lucide', appState.soundEnabled ? 'volume-2' : 'volume-x');
+        lucide.createIcons({
+            nodes: [soundIcon]
+        });
+    }
+}
+
+/* ============================================
+   SECCIÓN 19: [NUEVO] CONFETI ENGINE (Feature F)
+   ============================================ */
+
+/**
+ * Iniciar animación de confeti
+ */
+function startConfetti() {
+    const canvas = document.getElementById('confettiCanvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const colors = ['#0A84FF', '#EF4444', '#F59E0B', '#22C55E', '#8B5CF6', '#FFD700'];
+    const particles = [];
+    const particleCount = 150;
+    
+    // Crear partículas
+    for (let i = 0; i < particleCount; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            w: Math.random() * 10 + 5,
+            h: Math.random() * 6 + 3,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speed: Math.random() * 3 + 2,
+            angle: Math.random() * Math.PI * 2,
+            spin: (Math.random() - 0.5) * 0.2
+        });
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(p => {
+            ctx.save();
+            ctx.translate(p.x + p.w / 2, p.y + p.h / 2);
+            ctx.rotate(p.angle);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+            
+            // Actualizar posición
+            p.y += p.speed;
+            p.angle += p.spin;
+            
+            // Reset si sale de pantalla
+            if (p.y > canvas.height) {
+                p.y = -p.h;
+                p.x = Math.random() * canvas.width;
+            }
+        });
+        
+        confettiAnimationId = requestAnimationFrame(animate);
+    }
+    
+    // Cancelar animación anterior si existe
+    if (confettiAnimationId) {
+        cancelAnimationFrame(confettiAnimationId);
+    }
+    
+    animate();
+    log('Confeti iniciado');
+}
+
+/**
+ * Detener animación de confeti
+ */
+function stopConfetti() {
+    if (confettiAnimationId) {
+        cancelAnimationFrame(confettiAnimationId);
+        confettiAnimationId = null;
+    }
+    
+    const canvas = document.getElementById('confettiCanvas');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    log('Confeti detenido');
+}
+
+/* ============================================
+   SECCIÓN 20: TRACKING DE PROGRESO (PARA BADGES)
+   ============================================ */
+
+/**
+ * Registrar acción de progreso para badges
+ */
+function trackBadgeProgress(action, detail) {
+    switch (action) {
+        case 'section_visited':
+            learningStats.sectionsVisited.add(detail);
+            break;
+        case 'circuit_simulated':
+            learningStats.circuitsSimulated++;
+            break;
+        case 'component_calculated':
+            learningStats.componentsCalculated++;
+            break;
+        case 'wave_explored':
+            learningStats.wavesExplored.add(detail);
+            break;
+        case 'concept_read':
+            learningStats.conceptsRead.add(detail);
+            break;
+        default:
+            log('Acción de tracking desconocida:', action);
+    }
+    
+    saveLearningStats();
+}
+
+/**
+ * Guardar estadísticas de aprendizaje
+ */
+function saveLearningStats() {
+    try {
+        const data = {
+            sectionsVisited: Array.from(learningStats.sectionsVisited),
+            circuitsSimulated: learningStats.circuitsSimulated,
+            componentsCalculated: learningStats.componentsCalculated,
+            wavesExplored: Array.from(learningStats.wavesExplored),
+            conceptsRead: Array.from(learningStats.conceptsRead)
+        };
+        localStorage.setItem('electronilab_learning_stats', JSON.stringify(data));
+    } catch (error) {
+        logError('Error guardando estadísticas de aprendizaje', error);
+    }
+}
+
+/**
+ * Cargar estadísticas de aprendizaje
+ */
+function loadLearningStats() {
+    try {
+        const saved = localStorage.getItem('electronilab_learning_stats');
+        if (saved) {
+            const data = JSON.parse(saved);
+            learningStats.sectionsVisited = new Set(data.sectionsVisited || []);
+            learningStats.circuitsSimulated = data.circuitsSimulated || 0;
+            learningStats.componentsCalculated = data.componentsCalculated || 0;
+            learningStats.wavesExplored = new Set(data.wavesExplored || []);
+            learningStats.conceptsRead = new Set(data.conceptsRead || []);
+        }
+    } catch (error) {
+        logError('Error cargando estadísticas de aprendizaje', error);
+    }
+}
+
+/**
+ * Guardar estadísticas especiales
+ */
+function saveSpecialStats() {
+    try {
+        localStorage.setItem('electronilab_special_stats', JSON.stringify(specialStats));
+    } catch (error) {
+        logError('Error guardando estadísticas especiales', error);
+    }
+}
+
+/**
+ * Cargar estadísticas especiales
+ */
+function loadSpecialStats() {
+    try {
+        const saved = localStorage.getItem('electronilab_special_stats');
+        if (saved) {
+            specialStats = JSON.parse(saved);
+        }
+    } catch (error) {
+        logError('Error cargando estadísticas especiales', error);
+    }
+}
+
+/* ============================================
+   SECCIÓN 21: HERO CANVAS (MANTENER EXISTENTE)
+   ============================================ */
+
+/**
+ * Inicializar canvas de partículas del hero
+ */
+function initHeroCanvas() {
+    if (!heroAnimationActive) return;
+    
+    const canvas = document.getElementById('heroCanvas');
+    if (!canvas) return;
+    
+    let ctx = canvas.getContext('2d');
+    let w, h, nodes = [], traces = [], electrons = [];
+    
+    function resize() {
+        w = canvas.width = canvas.parentElement.offsetWidth;
+        h = canvas.height = canvas.parentElement.offsetHeight;
+        gen();
+    }
+    
+    function gen() {
+        nodes = [];
+        traces = [];
+        electrons = [];
+        
+        const cols = Math.floor(w / 70);
+        const rows = Math.floor(h / 70);
+        
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                if (Math.random() > 0.3) {
+                    nodes.push({ x: 50 + c * 70, y: 50 + r * 70 });
+                }
+            }
+        }
+        
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = Math.abs(nodes[i].x - nodes[j].x);
+                const dy = Math.abs(nodes[i].y - nodes[j].y);
+                
+                if ((dx === 70 && dy === 0) || (dx === 0 && dy === 70)) {
+                    if (Math.random() > 0.35) {
+                        traces.push({ from: i, to: j });
+                        electrons.push({
+                            trace: traces.length - 1,
+                            t: Math.random(),
+                            speed: 0.003 + Math.random() * 0.004
+                        });
+                    }
+                }
+            }
+        }
+    }
+    
+    function draw() {
+        if (!heroAnimationActive) return;
+        
+        ctx.clearRect(0, 0, w, h);
+        
+        // Dibujar trazos
+        traces.forEach(tr => {
+            const a = nodes[tr.from];
+            const b = nodes[tr.to];
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = 'rgba(10,132,255,.12)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        });
+        
+        // Dibujar nodos
+        nodes.forEach(n => {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, 3, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(10,132,255,.3)';
+            ctx.fill();
+        });
+        
+        // Dibujar electrones
+        electrons.forEach(e => {
+            e.t += e.speed;
+            if (e.t > 1) e.t = 0;
+            
+            const tr = traces[e.trace];
+            const a = nodes[tr.from];
+            const b = nodes[tr.to];
+            const x = a.x + (b.x - a.x) * e.t;
+            const y = a.y + (b.y - a.y) * e.t;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 2, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(100,180,255,.9)';
+            ctx.fill();
+        });
+        
+        heroReq = requestAnimationFrame(draw);
+    }
+    
+    window.addEventListener('resize', () => {
+        if (heroAnimationActive) {
+            resize();
+        }
+    });
+    
+    resize();
+    draw();
+}
+
+/* ============================================
+   FIN DEL ARCHIVO SCRIPT.JS
+   ElectroniLab 2.0 - Versión Gamificada Completa
+   ============================================ */
