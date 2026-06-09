@@ -1,62 +1,42 @@
 /* ============================================
-   ELECTRONILAB 2.0 - STYLESHEET COMPLETO
-   Versión Gamificada con Dark Mode
+   ELECTRONILAB 2.0 - STYLESHEET ESTABLE
+   Versión Corregida y Optimizada
    ============================================ */
 
 /* ============================================
-   1. CSS VARIABLES (Custom Properties)
-   ============================================ */
+   1. CSS VARIABLES (Temas Claro/Oscuro)
+============================================ */
 :root {
-    /* Tema Claro - Colores Primarios */
     --bg-primary: #F8FAFC;
     --bg-secondary: #FFFFFF;
     --bg-tertiary: #F1F5F9;
-    
-    /* Texto */
     --text-primary: #0F172A;
     --text-secondary: #475569;
     --text-muted: #94A3B8;
-    
-    /* Bordes y Sombras */
     --border-color: #E2E8F0;
     --shadow-color: rgba(0, 0, 0, 0.1);
-    
-    /* Eléctricos */
     --electric-primary: #0A84FF;
     --electric-hover: #0066CC;
-    
-    /* Transiciones */
-    --transition-base: all 0.3s ease;
 }
 
-/* Tema Oscuro */
 [data-theme="dark"] {
     --bg-primary: #0F172A;
     --bg-secondary: #1E293B;
     --bg-tertiary: #334155;
-    
     --text-primary: #F8FAFC;
     --text-secondary: #CBD5E1;
     --text-muted: #64748B;
-    
     --border-color: #334155;
     --shadow-color: rgba(0, 0, 0, 0.4);
-    
-    --electric-primary: #0A84FF;
-    --electric-hover: #3399FF;
 }
 
 /* ============================================
    2. RESET Y BASE
-   ============================================ */
+============================================ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
 }
 
 body {
@@ -68,23 +48,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Skip link para accesibilidad */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--electric-primary);
-    color: white;
-    padding: 8px 16px;
-    z-index: 1000;
-    transition: top 0.3s;
-}
-
-.skip-link:focus {
-    top: 0;
-}
-
-/* Focus visible para accesibilidad */
 :focus-visible {
     outline: 3px solid var(--electric-primary);
     outline-offset: 2px;
@@ -92,24 +55,20 @@ body {
 
 /* ============================================
    3. TIPOGRAFÍA
-   ============================================ */
+============================================ */
 h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     line-height: 1.2;
     color: var(--text-primary);
 }
 
-p {
-    color: var(--text-secondary);
-}
-
 .font-mono {
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 /* ============================================
-   4. UTILIDADES FONDO (Graph Paper)
-   ============================================ */
+   4. FONDO GRAPH PAPER
+============================================ */
 .graph-paper {
     background-color: var(--bg-primary);
     background-image: 
@@ -118,15 +77,9 @@ p {
     background-size: 24px 24px;
 }
 
-[data-theme="dark"] .graph-paper {
-    background-image: 
-        linear-gradient(rgba(10, 132, 255, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(10, 132, 255, 0.06) 1px, transparent 1px);
-}
-
 /* ============================================
    5. LAYOUT VISTAS
-   ============================================ */
+============================================ */
 .view {
     display: none;
     min-height: 100vh;
@@ -146,21 +99,15 @@ p {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ============================================
    6. NAVEGACIÓN
-   ============================================ */
+============================================ */
 .nav-tab {
-    transition: var(--transition-base);
+    transition: all 0.2s;
     cursor: pointer;
     position: relative;
     color: var(--text-secondary);
@@ -186,30 +133,20 @@ p {
     border-radius: 3px 3px 0 0;
 }
 
-.sub-tab {
-    transition: var(--transition-base);
+.sub-tab, .comp-tab {
+    transition: all 0.2s;
     cursor: pointer;
 }
 
-.sub-tab.active {
+.sub-tab.active, .comp-tab.active {
     background: var(--electric-primary) !important;
     color: white !important;
     box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3);
 }
 
-.comp-tab {
-    transition: var(--transition-base);
-    cursor: pointer;
-}
-
-.comp-tab.active {
-    background: var(--electric-primary) !important;
-    color: white !important;
-}
-
 /* ============================================
    7. HERO SECTION
-   ============================================ */
+============================================ */
 #heroCanvas {
     position: absolute;
     top: 0;
@@ -217,10 +154,6 @@ p {
     width: 100%;
     height: 100%;
     z-index: 0;
-}
-
-.hero-title-glow {
-    text-shadow: 0 0 30px rgba(10, 132, 255, 0.5);
 }
 
 .shield-img {
@@ -240,39 +173,21 @@ p {
     animation: float-shape 6s ease-in-out infinite;
 }
 
-/* Botón principal con efecto shine */
 .btn-experimenta {
     position: relative;
     overflow: hidden;
+    cursor: pointer !important;
 }
 
-.btn-experimenta::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        to right,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-    );
-    transform: rotate(45deg);
-    animation: shine 3s infinite;
-}
-
-@keyframes shine {
-    0% { transform: translateX(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) rotate(45deg); }
+.btn-experimenta:hover {
+    transform: scale(1.05) !important;
 }
 
 /* ============================================
    8. TARJETAS
-   ============================================ */
+============================================ */
 .area-card {
-    transition: var(--transition-base);
+    transition: all 0.3s;
     cursor: pointer;
 }
 
@@ -287,12 +202,11 @@ p {
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    transition: var(--transition-base);
+    transition: all 0.3s;
 }
 
 .formula-card:hover {
     border-color: var(--electric-primary);
-    box-shadow: 0 4px 20px rgba(10, 132, 255, 0.12);
     transform: translateY(-2px);
 }
 
@@ -301,17 +215,16 @@ p {
     border-radius: 12px;
     padding: 16px;
     background: var(--bg-secondary);
-    transition: var(--transition-base);
+    transition: all 0.3s;
 }
 
 .practice-card:hover {
     border-color: var(--electric-primary);
-    box-shadow: 0 2px 12px rgba(10, 132, 255, 0.1);
 }
 
 /* ============================================
    9. COMPONENTES ESPECÍFICOS
-   ============================================ */
+============================================ */
 .resistor-body {
     display: flex;
     align-items: center;
@@ -346,11 +259,9 @@ p {
     transition: all 0.2s;
 }
 
-.color-swatch:hover,
-.color-swatch.active {
+.color-swatch:hover, .color-swatch.active {
     border-color: var(--electric-primary);
     transform: scale(1.15);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .quiz-option.correct {
@@ -365,7 +276,6 @@ p {
     color: #991B1B !important;
 }
 
-/* Inputs range personalizados */
 input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
@@ -373,10 +283,6 @@ input[type="range"] {
     border-radius: 4px;
     background: #E2E8F0;
     outline: none;
-}
-
-[data-theme="dark"] input[type="range"] {
-    background: #475569;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -387,17 +293,6 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 50%;
     background: var(--electric-primary);
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(10, 132, 255, 0.4);
-}
-
-input[type="range"]::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--electric-primary);
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(10, 132, 255, 0.4);
-    border: none;
 }
 
 .form-input-easy {
@@ -412,7 +307,6 @@ input[type="range"]::-moz-range-thumb {
 
 .form-input-easy:focus {
     border-color: var(--electric-primary);
-    background: var(--bg-primary);
     box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.1);
     outline: none;
 }
@@ -427,31 +321,13 @@ input[type="range"]::-moz-range-thumb {
     margin-bottom: 12px;
 }
 
-/* Canvas */
-canvas {
-    display: block;
-}
-
-/* Polyfill roundRect si no existe */
 canvas {
     display: block;
 }
 
 /* ============================================
-   10. QUIZ/PRÁCTICA ESTILOS
-   ============================================ */
-.quiz-option {
-    transition: all 0.2s;
-}
-
-.quiz-option:disabled {
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-/* ============================================
-   11. [NUEVO] MINI-JUEGO ESTILOS
-   ============================================ */
+   10. MINI-JUEGO ESTILOS
+============================================ */
 #miniGameModal {
     backdrop-filter: blur(8px);
 }
@@ -496,65 +372,23 @@ canvas {
     animation: shake 0.5s ease;
 }
 
-.feedback-correct {
-    background: linear-gradient(135deg, #DCFCE7, #D1FAE5);
-    border: 2px solid #22C55E;
-    border-radius: 12px;
-    padding: 16px;
-    color: #166534;
-    font-size: 14px;
-}
-
-.feedback-incorrect {
-    background: linear-gradient(135deg, #FEE2E2, #FECACA);
-    border: 2px solid #EF4444;
-    border-radius: 12px;
-    padding: 16px;
-    color: #991B1B;
-    font-size: 14px;
-}
-
-/* Game stats cards con gradientes */
-.game-stat-card {
-    border-radius: 12px;
-    padding: 12px;
-    text-align: center;
-    color: white;
-}
-
-.game-stat-time {
-    background: linear-gradient(135deg, #EF4444, #DC2626);
-}
-
-.game-stat-score {
-    background: linear-gradient(135deg, #0A84FF, #0066CC);
-}
-
-.game-stat-combo {
-    background: linear-gradient(135deg, #F59E0B, #D97706);
-}
-
-.game-stat-correct {
-    background: linear-gradient(135deg, #22C55E, #16A34A);
-}
-
-/* Animación pulso glow para botón de inicio */
 @keyframes pulse-glow {
-    0%, 100% {
-        box-shadow: 0 0 20px rgba(10, 132, 255, 0.4);
-    }
-    50% {
-        box-shadow: 0 0 40px rgba(10, 132, 255, 0.8);
-    }
+    0%, 100% { box-shadow: 0 0 20px rgba(10, 132, 255, 0.4); }
+    50% { box-shadow: 0 0 40px rgba(10, 132, 255, 0.8); }
 }
 
 .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
 }
 
+/* Dificultad badges */
+.difficulty-easy { background: linear-gradient(135deg, #DCFCE7, #BBF7D0); color: #166534; }
+.difficulty-medium { background: linear-gradient(135deg, #FEF3C7, #FDE68A); color: #92400E; }
+.difficulty-hard { background: linear-gradient(135deg, #FEE2E2, #FECACA); color: #991B1B; }
+
 /* ============================================
-   12. [NUEVO] BADGES ESTILOS
-   ============================================ */
+   11. BADGES ESTILOS
+============================================ */
 .badge-card {
     background: var(--bg-secondary);
     border: 2px solid var(--border-color);
@@ -562,8 +396,6 @@ canvas {
     padding: 20px;
     text-center;
     transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
 }
 
 .badge-card.unlocked {
@@ -576,130 +408,17 @@ canvas {
     filter: grayscale(100%);
 }
 
-.badge-icon {
-    font-size: 48px;
-    margin-bottom: 8px;
-    display: block;
-}
-
-.badge-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-}
-
-.badge-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.4;
-}
-
-.badge-lock-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 14px;
-}
-
-.badge-lock-overlay span {
-    font-size: 32px;
-}
-
-/* Filtros de badges */
-.filter-badge-btn {
-    transition: all 0.2s;
-}
-
 .filter-badge-btn.active {
     background: var(--electric-primary) !important;
     color: white !important;
 }
 
-.filter-badge-btn:not(.active):hover {
-    background: var(--bg-tertiary) !important;
-}
-
 /* ============================================
-   13. [NUEVO] CELEBRACIÓN ESTILOS
-   ============================================ */
-#achievementCelebration {
-    backdrop-filter: blur(4px);
-}
-
-@keyframes bounce-in {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.3);
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.05);
-    }
-    70% {
-        transform: translate(-50%, -50%) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-}
-
-.animate-bounce-in {
-    animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* ============================================
-   14. ANIMACIONES KEYFRAMES
-   ============================================ */
+   12. ANIMACIONES KEYFRAMES
+============================================ */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slide-in-right {
-    from {
-        opacity: 0;
-        transform: translateX(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes bounce-in {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.3);
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.05);
-    }
-    70% {
-        transform: translate(-50%, -50%) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-}
-
-@keyframes pulse-glow {
-    0%, 100% {
-        box-shadow: 0 0 20px rgba(10, 132, 255, 0.4);
-    }
-    50% {
-        box-shadow: 0 0 40px rgba(10, 132, 255, 0.8);
-    }
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shake {
@@ -709,93 +428,33 @@ canvas {
 }
 
 @keyframes float-shape {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-20px) rotate(5deg);
-    }
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
 }
 
 @keyframes pulse-ring {
-    0% {
-        transform: scale(0.8);
-        opacity: 0.6;
-    }
-    50% {
-        transform: scale(1.2);
-        opacity: 0.2;
-    }
-    100% {
-        transform: scale(0.8);
-        opacity: 0.6;
-    }
+    0% { transform: scale(0.8); opacity: 0.6; }
+    50% { transform: scale(1.2); opacity: 0.2; }
+    100% { transform: scale(0.8); opacity: 0.6; }
 }
 
 /* ============================================
-   15. SCROLLBAR CUSTOM
-   ============================================ */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--bg-tertiary);
-}
-
-::-webkit-scrollbar-thumb {
-    background: #94A3B8;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #64748B;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-track {
-    background: #1E293B;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb {
-    background: #475569;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-    background: #64748B;
-}
-
-/* Firefox scrollbar */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: #94A3B8 var(--bg-tertiary);
-}
-
-[data-theme="dark"] * {
-    scrollbar-color: #475569 #1E293B;
-}
+   13. SCROLLBAR CUSTOM
+============================================ */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-tertiary); }
+::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #64748B; }
 
 /* ============================================
-   16. RESPONSIVE DESIGN
-   ============================================ */
-
-/* Mobile (< 480px) */
+   14. RESPONSIVE DESIGN
+============================================ */
 @media (max-width: 480px) {
-    .hero-shape {
-        display: none;
-    }
+    .hero-shape, .float-geo { display: none; }
     
-    .float-geo {
-        display: none;
-    }
+    h1 { font-size: 2rem !important; }
     
-    h1 {
-        font-size: 2rem !important;
-    }
-    
-    .area-card {
-        padding: 24px 16px;
-    }
+    .area-card { padding: 24px 16px; }
     
     .game-option-btn {
         padding: 12px 16px;
@@ -806,183 +465,47 @@ canvas {
     #miniGameModal .grid-cols-4 {
         grid-template-columns: repeat(2, 1fr);
     }
-    
-    .badge-card {
-        padding: 16px;
-    }
-    
-    .badge-icon {
-        font-size: 36px;
-    }
-    
+}
+
+@media (max-width: 768px) {
     #badgesGrid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
-    /* Ocultar botones secundarios en mobile */
-    #btnFlowType {
-        display: none;
-    }
 }
 
-/* Tablet (481px - 768px) */
-@media (min-width: 481px) and (max-width: 768px) {
-    #badgesGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .game-options-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Desktop (> 768px) */
 @media (min-width: 769px) {
     #badgesGrid {
         grid-template-columns: repeat(4, 1fr);
     }
 }
 
-/* Large desktop (> 1024px) */
-@media (min-width: 1024px) {
-    #badgesGrid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
 /* ============================================
-   17. PRINT STYLES
-   ============================================ */
-@media print {
-    nav, footer, #toast, #miniGameModal, #badgesModal, 
-    #achievementCelebration, #authModal, #practiceFormModal {
-        display: none !important;
-    }
-    
-    body {
-        background: white !important;
-        color: black !important;
-    }
-    
-    .content-page {
-        display: block !important;
-    }
-    
-    .view {
-        display: none !important;
-    }
-    
-    #app-shell {
-        display: block !important;
-    }
-}
-
-/* ============================================
-   18. ACCESIBILIDAD
-   ============================================ */
-
-/* Reducir movimiento para usuarios sensibles */
+   15. ACCESIBILIDAD
+============================================ */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
     }
     
-    .hero-shape,
-    .float-geo {
-        animation: none !important;
-    }
-    
-    .btn-experimenta::after {
+    .hero-shape, .float-geo {
         animation: none !important;
     }
 }
 
-/* Alto contraste */
-@media (prefers-contrast: high) {
-    :root {
-        --border-color: #000000;
-        --shadow-color: rgba(0, 0, 0, 0.5);
-    }
-    
-    .badge-card {
-        border-width: 3px;
-    }
-    
-    .game-option-btn {
-        border-width: 3px;
-    }
-}
-
-/* ============================================
-   19. UTILIDADES ADICIONALES
-   ============================================ */
-
-/* Sombra suave universal */
-.shadow-soft {
-    box-shadow: 0 4px 20px var(--shadow-color);
-}
-
-/* Texto truncado */
-.text-truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* Centrado absoluto */
-.absolute-center {
+/* Skip link para screen readers */
+.skip-link {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: -40px;
+    left: 0;
+    background: var(--electric-primary);
+    color: white;
+    padding: 8px 16px;
+    z-index: 1000;
+    transition: top 0.3s;
 }
 
-/* Efecto glassmorphism */
-.glass {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-[data-theme="dark"] .glass {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Gradientes útiles */
-.gradient-electric {
-    background: linear-gradient(135deg, #0A84FF, #0066CC);
-}
-
-.gradient-success {
-    background: linear-gradient(135deg, #22C55E, #16A34A);
-}
-
-.gradient-warning {
-    background: linear-gradient(135deg, #F59E0B, #D97706);
-}
-
-.gradient-danger {
-    background: linear-gradient(135deg, #EF4444, #DC2626);
-}
-
-/* Badge de dificultad */
-.difficulty-easy {
-    background: linear-gradient(135deg, #DCFCE7, #BBF7D0);
-    color: #166534;
-}
-
-.difficulty-medium {
-    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
-    color: #92400E;
-}
-
-.difficulty-hard {
-    background: linear-gradient(135deg, #FEE2E2, #FECACA);
-    color: #991B1B;
+.skip-link:focus {
+    top: 0;
 }
