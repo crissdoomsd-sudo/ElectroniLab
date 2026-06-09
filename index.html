@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElectroniLab 2.0 — Electrónica Básica Interactiva</title>
+    <title>ElectroniLab 2.0 — Electrónica Básica Interactiva Gamificada</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- KaTeX para fórmulas matemáticas -->
+    <!-- KaTeX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -19,28 +19,21 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Firebase -->
+    <!-- Firebase v10.12.2 -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     
-    <!-- Configuración Tailwind personalizada -->
+    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         electric: {
-                            50: '#EBF5FF',
-                            100: '#D6EBFF',
-                            200: '#ADD6FF',
-                            300: '#85C2FF',
-                            400: '#5CADFF',
-                            500: '#3399FF',
-                            600: '#0A84FF',
-                            700: '#0066CC',
-                            800: '#004D99',
-                            900: '#003366'
+                            50: '#EBF5FF', 100: '#D6EBFF', 200: '#ADD6FF', 300: '#85C2FF',
+                            400: '#5CADFF', 500: '#3399FF', 600: '#0A84FF', 700: '#0066CC',
+                            800: '#004D99', 900: '#003366'
                         },
                         volt: '#EF4444',
                         amps: '#F59E0B',
@@ -56,32 +49,31 @@
         }
     </script>
     
-    <!-- Estilos principales -->
+    <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="graph-paper text-slate-800 transition-colors duration-300">
 
-<!-- ============================================ -->
-<!-- VIEW: INICIO / HERO SECTION MEJORADO         -->
-<!-- ============================================ -->
+<!-- ============================================
+     VIEW INICIO (HERO SECTION)
+============================================ -->
 <div id="view-inicio" class="view active">
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        
-        <!-- Canvas de partículas eléctricas mejorado -->
+        <!-- Canvas de partículas animadas -->
         <canvas id="heroCanvas"></canvas>
         
         <!-- Overlay gradiente -->
-        <div class="absolute inset-0 bg-gradient-to-b from-electric-900/90 via-electric-900/70 to-electric-900/95 z-[1]"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-electric-900/80 via-electric-900/60 to-electric-900/90 z-[1]"></div>
         
-        <!-- Formas geométricas flotantes decorativas -->
+        <!-- Shapes decorativas flotantes -->
         <div class="hero-shape w-40 h-40 top-[10%] left-[5%] z-[2]" style="animation-delay:0s"></div>
         <div class="hero-shape w-24 h-24 top-[60%] right-[8%] z-[2]" style="animation-delay:1.5s"></div>
         <div class="hero-shape w-56 h-56 bottom-[15%] left-[15%] z-[2]" style="animation-delay:3s"></div>
         <div class="hero-shape w-16 h-16 top-[25%] right-[25%] z-[2]" style="animation-delay:2s"></div>
         <div class="hero-shape w-32 h-32 bottom-[30%] right-[20%] z-[2]" style="animation-delay:.5s"></div>
         
-        <!-- SVG flotantes -->
+        <!-- SVGs geométricos flotantes -->
         <svg class="float-geo w-48 h-48 top-[8%] right-[12%] z-[2]" style="animation-delay:1s" viewBox="0 0 100 100">
             <polygon points="50,5 95,75 5,75" fill="none" stroke="#3399FF" stroke-width="1"/>
         </svg>
@@ -94,122 +86,101 @@
         
         <!-- Contenido Principal del Hero -->
         <div class="relative z-10 text-center px-6 max-w-5xl">
-            
             <!-- Badge institucional superior -->
             <p class="text-sm text-slate-300/80 tracking-widest uppercase mb-6 font-semibold">
-                ESCUELA SUPERIOR DE FORMACIÓN DE MAESTROS MARISCAL SUCRE<br>
-                <span class="text-electric-300">⚡ Electricidad y Electrónica</span>
+                ESCUELA SUPERIOR DE FORMACIÓN DE MAESTROS MARISCAL SUCRE - ELECTRICIDAD Y ELECTRÓNICA
             </p>
             
-            <!-- Logos institucionales -->
+            <!-- Logos ESFM + Especialidad -->
             <div class="flex items-center justify-center gap-6 mb-8">
                 <img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" 
-                     alt="ESFM" 
-                     class="shield-img h-24 md:h-28 object-contain hover:scale-110 transition-transform">
+                     alt="ESFM" class="shield-img h-24 md:h-28 object-contain">
                 <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" 
-                     alt="Especialidad" 
-                     class="shield-img h-24 md:h-28 object-contain hover:scale-110 transition-transform">
+                     alt="Especialidad" class="shield-img h-24 md:h-28 object-contain">
             </div>
             
-            <!-- Estado en vivo -->
+            <!-- Status IEPC -->
             <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-5 py-2 mb-6">
                 <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span class="text-white/80 text-sm font-medium">IEPC - PEC · U.E. Max Fernandez Rojas</span>
+                <span class="text-white/80 text-sm font-medium">IEPC - PEC · Unidad Educativa Max Fernandez Rojas</span>
             </div>
             
-            <!-- Título principal con efecto glow -->
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight hero-title-glow">
+            <!-- Título Principal -->
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight">
                 Electroni<span class="text-electric-400">Lab</span> 
-                <span class="text-2xl md:text-3xl font-light text-electric-200 align-super">2.0</span>
+                <span class="text-2xl md:text-3xl font-light text-electric-300 align-middle ml-2">2.0</span>
             </h1>
             
             <p class="text-xl md:text-2xl text-electric-200 font-light mb-2">
-                Electrónica Básica Interactiva
+                Electrónica Básica Interactiva Gamificada
             </p>
             
-            <p class="text-lg text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">
-                Adéntrate en el fascinante mundo de la electrónica. Comprende cómo fluye la corriente, 
-                domina las leyes fundamentales y conviértete en un experto construyendo circuitos reales. 
-                <strong class="text-electric-300">Una experiencia diseñada para aprender haciendo.</strong>
+            <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Adéntrate en el fascinante mundo de la electrónica. Comprende cómo fluye la corriente 
+                a través de los circuitos, descubre la función de cada componente y domina las leyes 
+                fundamentales. ¡Desafía tus conocimientos y desbloquea logros!
             </p>
             
-            <!-- ============================================ -->
-            <!-- VIDEO HERO SECTION (NUEVO)                  -->
-            <!-- ============================================ -->
-            <div id="videoHeroContainer" class="mb-8 max-w-3xl mx-auto">
-                <div class="relative rounded-2xl overflow-hidden shadow-2xl shadow-electric-600/30 border-2 border-electric-500/30">
-                    <!-- Placeholder/Carga -->
-                    <div id="videoPlaceholder" class="aspect-video bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center cursor-pointer group" onclick="playVideo()">
-                        <div class="text-center">
-                            <div class="w-20 h-20 bg-electric-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-electric-500 group-hover:scale-110 transition-all shadow-lg shadow-electric-600/50">
-                                <i data-lucide="play" class="w-10 h-10 text-white ml-1"></i>
-                            </div>
-                            <p class="text-white font-semibold text-lg">▶️ Ver Introducción a ElectroniLab</p>
-                            <p class="text-slate-400 text-sm mt-2">Haz clic para reproducir</p>
+            <!-- [FEATURE A] VIDEO HERO SECTION -->
+            <div id="videoHeroContainer" class="max-w-3xl mx-auto mb-8">
+                <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-video bg-gradient-to-br from-slate-800 to-slate-900">
+                    <!-- Placeholder inicial -->
+                    <div id="videoPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group"
+                         onclick="playVideo()">
+                        <div class="w-20 h-20 bg-electric-600 rounded-full flex items-center justify-center mb-4 group-hover:bg-electric-700 transition-all duration-300 group-hover:scale-110 shadow-lg shadow-electric-600/50">
+                            <i data-lucide="play" class="w-10 h-10 text-white ml-1"></i>
                         </div>
+                        <p class="text-white font-semibold text-lg mb-2">▶️ Ver Introducción a ElectroniLab</p>
+                        <p class="text-slate-400 text-sm">Haz clic para reproducir</p>
                     </div>
                     
-                    <!-- Iframe de video (oculto inicialmente) -->
+                    <!-- Iframe oculto inicialmente -->
                     <iframe id="videoFrame" 
-                            class="w-full aspect-video hidden" 
-                            src="" 
-                            title="Video introductorio ElectroniLab"
+                            class="w-full h-full hidden"
                             frameborder="0" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                             allowfullscreen>
                     </iframe>
                     
-                    <!-- Configuración de URL de video (EDITABLE) -->
-                    <input type="hidden" id="videoUrl" value="https://youtu.be/QcbiBAgAxgE?si=XCNefvSztnlai5Mi">
+                    <!-- Input hidden con URL del video (editable) -->
+                    <input type="hidden" id="videoUrl" value="https://www.youtube.com/embed/dQw4w9WgXcQ">
                 </div>
-                
-                <!-- Nota sobre video -->
-                <p class="text-xs text-slate-400 mt-3 text-center">
-                    💡 <strong>Tip:</strong> Cambia la URL del video editando el campo oculto arriba (línea con id="videoUrl")
-                </p>
             </div>
             
-            <!-- ============================================ -->
-            <!-- BOTÓN PRINCIPAL "EXPERIMENTA YA" (MEJORADO) -->
-            <!-- ============================================ -->
+            <!-- Botón Principal EXPERIMENTA YA -->
             <button onclick="navigateTo('areas')" 
-                    class="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-electric-600 to-blue-600 hover:from-electric-500 hover:to-blue-500 text-white font-bold py-5 px-14 rounded-2xl transition-all duration-300 shadow-2xl shadow-electric-600/40 text-xl hover:scale-105 hover:shadow-electric-600/60 overflow-hidden btn-experimenta">
-                
-                <!-- Efecto de brillo en hover -->
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                
-                <i data-lucide="zap" class="w-7 h-7 relative z-10 animate-pulse"></i> 
-                <span class="relative z-10 tracking-wide">⚡ EXPERIMENTA YA</span>
-                <i data-lucide="arrow-right" class="w-6 h-6 relative z-10 group-hover:translate-x-1 transition-transform"></i>
+                    class="inline-flex items-center justify-center gap-2 bg-electric-600 hover:bg-electric-700 text-white font-semibold py-4 px-10 rounded-xl transition-all duration-300 shadow-lg shadow-electric-600/30 text-lg hover:scale-105 btn-experimenta">
+                <i data-lucide="layout-grid" class="w-5 h-5"></i> 
+                EXPERIMENTA YA
             </button>
             
-            <!-- Sub-botones rápidos -->
+            <!-- Sub-botones: Mini-Juego + Mis Logros -->
             <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
                 <button onclick="openMiniGame()" 
-                        class="flex items-center gap-2 bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 text-white px-6 py-3 rounded-xl transition-all hover:scale-105 text-sm font-medium">
-                    <i data-lucide="gamepad-2" class="w-5 h-5"></i>
-                    🎮 Mini-Juego Rápido
+                        class="inline-flex items-center gap-2 bg-gradient-to-r from-volt to-red-500 hover:from-volt/90 hover:to-red-500/90 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:scale-105">
+                    <i data-lucide="gamepad-2" class="w-5 h-5"></i> 
+                    ⚡ Mini-Juego
                 </button>
                 
                 <button onclick="toggleBadgesPanel()" 
-                        class="flex items-center gap-2 bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 text-white px-6 py-3 rounded-xl transition-all hover:scale-105 text-sm font-medium relative">
-                    <i data-lucide="trophy" class="w-5 h-5"></i>
+                        class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-500/90 hover:to-amber-600/90 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:scale-105 relative">
+                    <i data-lucide="trophy" class="w-5 h-5"></i> 
                     🏆 Mis Logros
-                    <span id="badgeCountHero" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center hidden">0</span>
+                    <span id="badgeCountHero" class="absolute -top-2 -right-2 bg-electric-600 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">0</span>
                 </button>
             </div>
             
             <!-- Autores -->
-            <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center hover:bg-white/10 transition-colors">
+            <div class="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center">
                     <p class="text-white font-semibold text-sm">Cristian Medina Torres</p>
                     <p class="text-electric-300 text-xs">Maestro en Formación</p>
                 </div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center hover:bg-white/10 transition-colors">
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center">
                     <p class="text-white font-semibold text-sm">Wilder R. Panique Chama</p>
                     <p class="text-electric-300 text-xs">Maestro en Formación</p>
                 </div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center hover:bg-white/10 transition-colors">
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-center">
                     <p class="text-white font-semibold text-sm">Jhonny S. Taboada Padilla</p>
                     <p class="text-electric-300 text-xs">Maestro en Formación</p>
                 </div>
@@ -218,84 +189,81 @@
     </section>
 </div>
 
-<!-- ============================================ -->
-<!-- APP SHELL (Navegación Principal)             -->
-<!-- ============================================ -->
+<!-- ============================================
+     APP SHELL (Navegación + Contenido)
+============================================ -->
 <div id="app-shell" style="display:none">
     
-    <!-- Barra superior sticky -->
+    <!-- NAV STICKY -->
     <nav class="sticky top-0 z-50">
         <!-- Banner institucional -->
         <div class="py-1.5 px-6 bg-gradient-to-r from-electric-700 via-electric-600 to-electric-700 text-white text-center text-xs shadow-sm">
-            <span class="opacity-90 font-medium tracking-wide">IEPC - PEC · ESFM Mariscal Sucre</span>
+            <span class="opacity-90 font-medium tracking-wide">IEPC - PEC · ESFM Mariscal Sucre · ElectroniLab 2.0</span>
         </div>
         
         <!-- Navegación principal -->
-        <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
+        <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex items-center gap-1 overflow-x-auto py-0">
-                    
-                    <!-- Logo -->
+                    <!-- Logo + Título -->
                     <div class="flex items-center gap-2 mr-4 flex-shrink-0 py-3">
                         <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" 
-                             alt="" 
-                             class="h-7 w-7 object-contain">
+                             alt="" class="h-7 w-7 object-contain">
                         <span class="font-bold text-lg text-electric-700 dark:text-electric-400">ElectroniLab</span>
-                        <span class="text-xs bg-electric-600 text-white px-2 py-0.5 rounded-full font-bold">2.0</span>
+                        <span class="text-xs bg-electric-600 text-white px-2 py-0.5 rounded-full font-semibold">2.0</span>
                     </div>
                     
                     <!-- Tabs de navegación -->
-                    <button onclick="navigateTo('inicio')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="inicio">
+                    <button onclick="navigateTo('inicio')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="inicio">
                         <i data-lucide="home" class="w-4 h-4"></i> Inicio
                     </button>
-                    <button onclick="navigateTo('areas')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="areas">
+                    <button onclick="navigateTo('areas')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="areas">
                         <i data-lucide="layout-grid" class="w-4 h-4"></i> Áreas
                     </button>
-                    <button onclick="navigateTo('ohm')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="ohm">
+                    <button onclick="navigateTo('ohm')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="ohm">
                         <i data-lucide="zap" class="w-4 h-4"></i> Ley de Ohm
                     </button>
-                    <button onclick="navigateTo('componentes')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="componentes">
+                    <button onclick="navigateTo('componentes')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="componentes">
                         <i data-lucide="cpu" class="w-4 h-4"></i> Componentes
                     </button>
-                    <button onclick="navigateTo('circuitos')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="circuitos">
+                    <button onclick="navigateTo('circuitos')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="circuitos">
                         <i data-lucide="git-branch" class="w-4 h-4"></i> Circuitos
                     </button>
-                    <button onclick="navigateTo('senales')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="senales">
+                    <button onclick="navigateTo('senales')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="senales">
                         <i data-lucide="activity" class="w-4 h-4"></i> Señales
                     </button>
-                    <button onclick="navigateTo('practica')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 dark:text-slate-400 whitespace-nowrap" data-nav="practica">
+                    <button onclick="navigateTo('practica')" class="nav-tab flex items-center gap-1.5 px-3 py-3 text-sm font-semibold rounded-t-lg text-slate-500 whitespace-nowrap" data-nav="practica">
                         <i data-lucide="brain" class="w-4 h-4"></i> Práctica
                     </button>
                     
-                    <!-- Controles adicionales (derecha) -->
+                    <!-- Controles derecha -->
                     <div class="ml-auto flex items-center gap-3 flex-shrink-0 pl-4 border-l border-slate-200 dark:border-slate-700 py-3">
-                        
                         <!-- Reloj -->
                         <span id="liveClock" class="font-mono text-xs text-slate-500 dark:text-slate-400 font-semibold"></span>
                         
-                        <!-- Toggle Modo Oscuro -->
+                        <!-- [FEATURE D] Toggle Dark Mode -->
                         <button onclick="toggleDarkMode()" 
-                                class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" 
-                                title="Cambiar tema claro/oscuro"
-                                aria-label="Alternar modo oscuro">
-                            <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-yellow-400"></i>
-                            <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-600"></i>
+                                id="darkModeToggle"
+                                class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                                aria-label="Cambiar modo oscuro/claro"
+                                title="Cambiar tema">
+                            <i data-lucide="sun" class="w-5 h-5 text-amber-500 dark:hidden" id="iconSun"></i>
+                            <i data-lucide="moon" class="w-5 h-5 text-blue-400 hidden dark:block" id="iconMoon"></i>
                         </button>
                         
-                        <!-- Botón Badges -->
+                        <!-- Badge button -->
                         <button onclick="toggleBadgesPanel()" 
                                 class="relative p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                                title="Ver mis logros"
-                                aria-label="Ver logros desbloqueados">
+                                aria-label="Ver logros"
+                                title="Mis logros">
                             <i data-lucide="trophy" class="w-5 h-5 text-amber-500"></i>
-                            <span id="badgeCountNav" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                            <span id="badgeCountNav" class="absolute -top-1 -right-1 bg-electric-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
                         </button>
                         
-                        <!-- Botón Mini-Juego -->
+                        <!-- Mini-Juego button -->
                         <button onclick="openMiniGame()" 
-                                class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white text-xs font-bold rounded-lg transition-all hover:scale-105 shadow-md">
-                            <i data-lucide="gamepad-2" class="w-4 h-4"></i>
-                            ¡JUGAR!
+                                class="px-3 py-1.5 bg-gradient-to-r from-volt to-red-500 text-white text-xs font-bold rounded-lg hover:shadow-lg transition-all flex items-center gap-1">
+                            <i data-lucide="gamepad-2" class="w-4 h-4"></i> Jugar
                         </button>
                     </div>
                 </div>
@@ -303,125 +271,75 @@
         </div>
     </nav>
 
-    <!-- ============================================ -->
-    <!-- CONTENIDO DE PÁGINAS                        -->
-    <!-- ============================================ -->
-
-    <!-- PAGE: ÁREAS DE APRENDIZAJE -->
+    <!-- PAGE: AREAS -->
     <div id="page-areas" class="content-page active">
         <div class="max-w-7xl mx-auto px-6 py-16">
             <div class="text-center mb-14">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4 justify-items-center">
                     Áreas de Aprendizaje
                 </h2>
-                <p class="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-                    Selecciona un área para comenzar tu viaje por el mundo de la electrónica
-                </p>
             </div>
-            
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                
-                <!-- Tarjeta: Ley de Ohm -->
-                <div onclick="navigateTo('ohm'); trackBadgeProgress('explorer')" 
-                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-volt cursor-pointer transition-all duration-300">
+                <div onclick="navigateTo('ohm')" class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-volt cursor-pointer">
                     <div class="w-14 h-14 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-red-100 dark:group-hover:bg-red-900/30 transition-colors">
                         <i data-lucide="zap" class="w-7 h-7 text-volt"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Ley de Ohm</h3>
                     <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Relación entre voltaje, corriente y resistencia.</p>
-                    <div class="flex items-center text-xs text-electric-600 font-semibold">
-                        <i data-lucide="arrow-right" class="w-4 h-4 mr-1 group-hover:translate-x-1 transition-transform"></i>
-                        Comenzar ahora
-                    </div>
                 </div>
-
-                <!-- Tarjeta: Componentes -->
-                <div onclick="navigateTo('componentes'); trackBadgeProgress('explorer')" 
-                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-ohms cursor-pointer transition-all duration-300">
+                
+                <div onclick="navigateTo('componentes')" class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-ohms cursor-pointer">
                     <div class="w-14 h-14 bg-green-50 dark:bg-green-900/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-100 dark:group-hover:bg-green-900/30 transition-colors">
                         <i data-lucide="cpu" class="w-7 h-7 text-ohms"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Componentes</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Resistencias, capacitores, LEDs, transistores.</p>
-                    <div class="flex items-center text-xs text-electric-600 font-semibold">
-                        <i data-lucide="arrow-right" class="w-4 h-4 mr-1 group-hover:translate-x-1 transition-transform"></i>
-                        Explorar componentes
-                    </div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Resistencias, capacitores, LEDs.</p>
                 </div>
-
-                <!-- Tarjeta: Circuitos -->
-                <div onclick="navigateTo('circuitos'); trackBadgeProgress('explorer')" 
-                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-amps cursor-pointer transition-all duration-300">
+                
+                <div onclick="navigateTo('circuitos')" class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-amps cursor-pointer">
                     <div class="w-14 h-14 bg-amber-50 dark:bg-amber-900/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-amber-100 dark:group-hover:bg-amber-900/30 transition-colors">
                         <i data-lucide="git-branch" class="w-7 h-7 text-amps"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Circuitos</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Configuraciones serie, paralelo y mixto.</p>
-                    <div class="flex items-center text-xs text-electric-600 font-semibold">
-                        <i data-lucide="arrow-right" class="w-4 h-4 mr-1 group-hover:translate-x-1 transition-transform"></i>
-                        Simular circuitos
-                    </div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Serie, paralelo y mixto.</p>
                 </div>
-
-                <!-- Tarjeta: Señales -->
-                <div onclick="navigateTo('senales'); trackBadgeProgress('explorer')" 
-                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-watts cursor-pointer transition-all duration-300">
+                
+                <div onclick="navigateTo('senales')" class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-watts cursor-pointer">
                     <div class="w-14 h-14 bg-purple-50 dark:bg-purple-900/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-100 dark:group-hover:bg-purple-900/30 transition-colors">
                         <i data-lucide="activity" class="w-7 h-7 text-watts"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Señales</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Ondas senoidales, cuadradas, osciloscopio virtual.</p>
-                    <div class="flex items-center text-xs text-electric-600 font-semibold">
-                        <i data-lucide="arrow-right" class="w-4 h-4 mr-1 group-hover:translate-x-1 transition-transform"></i>
-                        Visualizar ondas
-                    </div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Ondas senoidales, cuadradas, osciloscopio.</p>
                 </div>
-
-                <!-- Tarjeta: Práctica -->
-                <div onclick="navigateTo('practica'); trackBadgeProgress('explorer')" 
-                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-electric-400 cursor-pointer transition-all duration-300">
+                
+                <div onclick="navigateTo('practica')" class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-electric-400 cursor-pointer">
                     <div class="w-14 h-14 bg-electric-50 dark:bg-electric-900/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-electric-100 dark:group-hover:bg-electric-900/30 transition-colors">
                         <i data-lucide="brain" class="w-7 h-7 text-electric-600"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Práctica</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Cuestionarios, laboratorios y desafíos.</p>
-                    <div class="flex items-center text-xs text-electric-600 font-semibold">
-                        <i data-lucide="arrow-right" class="w-4 h-4 mr-1 group-hover:translate-x-1 transition-transform"></i>
-                        Evaluar conocimiento
-                    </div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Cuestionarios y laboratorio.</p>
                 </div>
-
-                <!-- Tarjeta: Inicio -->
-                <div onclick="navigateTo('inicio')" 
-                     class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-slate-400 cursor-pointer transition-all duration-300">
-                    <div class="w-14 h-14 bg-slate-50 dark:bg-slate-700 rounded-xl flex items-center justify-center mb-5">
-                        <i data-lucide="home" class="w-7 h-7 text-slate-500"></i>
+                
+                <div onclick="openMiniGame()" class="area-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 hover:border-volt cursor-pointer">
+                    <div class="w-14 h-14 bg-gradient-to-br from-volt to-amber-500 rounded-xl flex items-center justify-center mb-5 group-hover:shadow-lg transition-all">
+                        <i data-lucide="gamepad-2" class="w-7 h-7 text-white"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Inicio</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Volver a la página principal.</p>
-                    <div class="flex items-center text-xs text-slate-500 font-semibold">
-                        <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i>
-                        Volver atrás
-                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">⚡ Desafío Rápido</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">¡Pon a prueba tus conocimientos!</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- PAGE: LEY DE OHM (MANTENIDO CON MEJORAS VISUALES) -->
+    <!-- PAGE: OHM (manteniendo funcionalidad existente) -->
     <div id="page-ohm" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-10">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Ley de Ohm</h2>
             </div>
-            
             <div class="grid lg:grid-cols-2 gap-10">
-                
-                <!-- Calculadora Interactiva -->
-                <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
                     <h3 class="text-lg font-semibold mb-6 text-slate-900 dark:text-white">Calculadora Interactiva</h3>
-                    
-                    <!-- Triángulo de Ohm SVG -->
                     <div class="flex justify-center mb-8">
                         <svg width="220" height="180" viewBox="0 0 220 180">
                             <polygon points="110,10 10,170 210,170" fill="none" stroke="#0A84FF" stroke-width="2.5"/>
@@ -433,68 +351,60 @@
                             <text x="160" y="145" text-anchor="middle" fill="#22C55E" font-size="28" font-weight="bold" font-family="Space Grotesk">R</text>
                         </svg>
                     </div>
-                    
-                    <!-- Botones de selección -->
                     <div class="flex justify-center gap-2 mb-6">
                         <button onclick="setSolveFor('V')" id="solveV" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-volt text-volt bg-red-50 dark:bg-red-900/20">V</button>
-                        <button onclick="setSolveFor('I')" id="solveI" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800">I</button>
-                        <button onclick="setSolveFor('R')" id="solveR" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800">R</button>
+                        <button onclick="setSolveFor('I')" id="solveI" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 dark:border-slate-600 text-slate-500 bg-white dark:bg-slate-700">I</button>
+                        <button onclick="setSolveFor('R')" id="solveR" class="solve-btn px-4 py-2 text-sm font-semibold rounded-lg border-2 border-slate-300 dark:border-slate-600 text-slate-500 bg-white dark:bg-slate-700">R</button>
                     </div>
-                    
-                    <!-- Sliders -->
                     <div class="space-y-5">
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-sm font-semibold text-volt">⚡ Voltaje (Tensión)</label>
-                                <span id="valV" class="font-mono text-sm bg-white dark:bg-slate-700 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white">12.0 V</span>
+                                <span id="valV" class="font-mono text-sm bg-white dark:bg-slate-700 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-600">12.0 V</span>
                             </div>
                             <input type="range" id="rangeV" min="0" max="50" step="0.1" value="12" class="w-full" oninput="updateOhm()">
                         </div>
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-sm font-semibold text-amps">💡 Corriente</label>
-                                <span id="valI" class="font-mono text-sm bg-white dark:bg-slate-700 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white">2.0 A</span>
+                                <span id="valI" class="font-mono text-sm bg-white dark:bg-slate-700 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-600">2.0 A</span>
                             </div>
                             <input type="range" id="rangeI" min="0.01" max="10" step="0.01" value="2" class="w-full" oninput="updateOhm()">
                         </div>
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-sm font-semibold text-ohms">🔧 Resistencia</label>
-                                <span id="valR" class="font-mono text-sm bg-white dark:bg-slate-700 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white">6.0 Ω</span>
+                                <span id="valR" class="font-mono text-sm bg-white dark:bg-slate-700 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-600">6.0 Ω</span>
                             </div>
                             <input type="range" id="rangeR" min="0.1" max="100" step="0.1" value="6" class="w-full" oninput="updateOhm()">
                         </div>
                     </div>
-                    
-                    <!-- Resultado -->
-                    <div id="ohmResult" class="mt-6 bg-gradient-to-r from-electric-600 to-blue-600 text-white rounded-xl p-5 text-center shadow-lg">
+                    <div id="ohmResult" class="mt-6 bg-electric-600 text-white rounded-xl p-5 text-center">
                         <div class="text-sm opacity-80 mb-1">Resultado</div>
                         <div class="font-mono text-2xl font-bold">V = I × R = 12.0 V</div>
                         <div class="text-sm mt-2 opacity-80">P = 24.0 W</div>
                     </div>
                 </div>
                 
-                <!-- Fórmulas y Conceptos -->
                 <div class="space-y-6">
-                    <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                    <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
                         <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Fórmulas</h3>
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">Ohm</div><div id="f1"></div></div>
-                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">Corriente</div><div id="f2"></div></div>
-                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">Resistencia</div><div id="f3"></div></div>
-                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">Potencia</div><div id="f4"></div></div>
-                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f5"></div></div>
-                            <div class="formula-card bg-white dark:bg-slate-700"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f6"></div></div>
+                            <div class="formula-card"><div class="text-xs text-slate-400 mb-2">Ohm</div><div id="f1"></div></div>
+                            <div class="formula-card"><div class="text-xs text-slate-400 mb-2">Corriente</div><div id="f2"></div></div>
+                            <div class="formula-card"><div class="text-xs text-slate-400 mb-2">Resistencia</div><div id="f3"></div></div>
+                            <div class="formula-card"><div class="text-xs text-slate-400 mb-2">Potencia</div><div id="f4"></div></div>
+                            <div class="formula-card"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f5"></div></div>
+                            <div class="formula-card"><div class="text-xs text-slate-400 mb-2">P alt.</div><div id="f6"></div></div>
                         </div>
                     </div>
-                    
-                    <div class="bg-gradient-to-br from-electric-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl border border-electric-200 dark:border-slate-600 p-8">
+                    <div class="bg-gradient-to-br from-electric-50 to-blue-50 dark:from-electric-900/20 dark:to-blue-900/20 rounded-2xl border border-electric-200 dark:border-electric-800 p-8">
                         <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Concepto Clave</h3>
                         <div class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
                             <p><strong class="text-volt">Voltaje (Tensión)</strong> — Diferencia de potencial eléctrico entre dos puntos (V).</p>
                             <p><strong class="text-amps">Corriente</strong> — Flujo de electrones a través de un conductor (A).</p>
                             <p><strong class="text-ohms">Resistencia</strong> — Oposición al flujo de la corriente eléctrica (Ω).</p>
-                            <div class="bg-white/60 dark:bg-slate-600/60 rounded-lg p-4 border border-electric-200 dark:border-slate-500 mt-3">
+                            <div class="bg-white/60 dark:bg-slate-700/60 rounded-lg p-4 border border-electric-200 dark:border-electric-800 mt-3">
                                 <p class="font-medium text-electric-800 dark:text-electric-300">📌 Ley de Ohm: La corriente es directamente proporcional al voltaje e inversamente proporcional a la resistencia.</p>
                             </div>
                         </div>
@@ -504,250 +414,584 @@
         </div>
     </div>
 
-    <!-- PAGE: COMPONENTES (MANTENIDO) -->
+    <!-- PAGE: COMPONENTES (manteniendo funcionalidad existente) -->
     <div id="page-componentes" class="content-page">
-        <!-- [CONTENIDO IDÉNTICO AL ORIGINAL - VER ARCHIVO COMPLETO EN REPOSITORIO] -->
         <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Componentes Electrónicos</h2></div>
-            <!-- ... resto del contenido de componentes ... -->
+            <div class="mb-10">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Componentes Electrónicos</h2>
+            </div>
+            <div class="flex gap-2 mb-8 flex-wrap">
+                <button onclick="switchCompTab('resistencias')" id="compTabRes" class="comp-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Resistencias</button>
+                <button onclick="switchCompTab('capacitores')" id="compTabCap" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Capacitores</button>
+                <button onclick="switchCompTab('transistores')" id="compTabTrans" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Transistores</button>
+                <button onclick="switchCompTab('diodos')" id="compTabDiod" class="comp-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Diodos</button>
+            </div>
+            
+            <!-- Panel Resistencias -->
+            <div id="comp-resistencias" class="comp-panel">
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Decodificador de Resistencias</h3>
+                            <select id="resType" onchange="resetResistorBandsAndUpdateUI()" class="text-sm border border-slate-200 dark:border-slate-600 rounded-lg p-1 bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                                <option value="4">4 Bandas</option>
+                                <option value="5">5 Bandas</option>
+                                <option value="smd">SMD</option>
+                            </select>
+                        </div>
+                        <div id="resVisual" class="flex justify-center mb-6">
+                            <div class="flex items-center">
+                                <div class="resistor-lead"></div>
+                                <div class="resistor-body" id="resBody"></div>
+                                <div class="resistor-lead"></div>
+                            </div>
+                        </div>
+                        <div id="resInputs" class="space-y-3"></div>
+                        <div id="resistorResult" class="mt-6 bg-ohms/10 border border-ohms/30 rounded-xl p-5 text-center">
+                            <div class="text-sm text-ohms font-medium mb-1">Valor</div>
+                            <div class="font-mono text-2xl font-bold text-slate-900 dark:text-white">1.0 kΩ ± 5%</div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Tipos y Usos</h3>
+                        <div id="fc_r" class="text-sm text-slate-600 dark:text-slate-300"></div>
+                        <p class="mt-4 text-sm text-slate-600 dark:text-slate-300">Las resistencias limitan el flujo de corriente. Se usan en divisores de voltaje, limitación de corriente para LEDs, y polarización de transistores.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Panel Capacitores -->
+            <div id="comp-capacitores" class="comp-panel" style="display:none">
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Decodificador de Capacitores (Código 3 Dígitos)</h3>
+                        <input type="text" id="capCode" placeholder="Ej: 104" maxlength="3" class="form-input-easy w-full mb-4" oninput="updateCap()">
+                        <div id="capResult" class="mt-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-5 text-center">
+                            <div class="text-sm text-blue-600 dark:text-blue-400 font-medium mb-1">Capacitancia</div>
+                            <div class="font-mono text-2xl font-bold text-slate-900 dark:text-white">100 nF</div>
+                        </div>
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-sm mb-2 text-slate-900 dark:text-white">Calculadora Q=CV</h4>
+                            <input type="number" id="capV" placeholder="Voltaje (V)" class="form-input-easy w-full mb-2" oninput="updateCapQ()">
+                            <input type="number" id="capF" placeholder="Capacitancia (F)" class="form-input-easy w-full mb-2" oninput="updateCapQ()">
+                            <div id="capQResult" class="text-sm font-mono mt-2 text-slate-600 dark:text-slate-300">Q = 0 C</div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Tipos y Usos</h3>
+                        <div id="fc_c" class="text-sm text-slate-600 dark:text-slate-300"></div>
+                        <p class="mt-4 text-sm text-slate-600 dark:text-slate-300">Almacenan energía en un campo eléctrico. Usados en filtrado de fuentes de poder, acoplamiento AC y temporizadores.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Panel Transistores -->
+            <div id="comp-transistores" class="comp-panel" style="display:none">
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Calculadora de Transistor NPN (Región Activa)</h3>
+                        <input type="number" id="transIb" placeholder="Corriente Base Ib (mA)" class="form-input-easy w-full mb-2" oninput="updateTrans()">
+                        <input type="number" id="transHfe" placeholder="Ganancia hFE (Beta)" class="form-input-easy w-full mb-2" oninput="updateTrans()">
+                        <input type="number" id="transVcc" placeholder="Vcc (V)" class="form-input-easy w-full mb-2" oninput="updateTrans()">
+                        <input type="number" id="transRc" placeholder="Resistencia Colector (Ω)" class="form-input-easy w-full mb-2" oninput="updateTrans()">
+                        <div id="transResult" class="mt-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-5 text-center text-sm font-mono text-slate-700 dark:text-slate-300"></div>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Tipos y Usos</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Amplifican señales o actúan como interruptores. NPN y PNP. Usados en lógica digital, audio y control de potencia.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Panel Diodos -->
+            <div id="comp-diodos" class="comp-panel" style="display:none">
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Calculadora de Diodo (Polarización Directa)</h3>
+                        <input type="number" id="diodVi" placeholder="Voltaje Fuente (V)" class="form-input-easy w-full mb-2" oninput="updateDiod()">
+                        <input type="number" id="diodVd" value="0.7" placeholder="Caída Diodo (V) - Ej: 0.7" class="form-input-easy w-full mb-2" oninput="updateDiod()">
+                        <input type="number" id="diodR" placeholder="Resistencia en serie (Ω)" class="form-input-easy w-full mb-2" oninput="updateDiod()">
+                        <div id="diodResult" class="mt-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-5 text-center text-sm font-mono text-slate-700 dark:text-slate-300"></div>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Tipos y Usos</h3>
+                        <div id="fc_d" class="text-sm text-slate-600 dark:text-slate-300"></div>
+                        <p class="mt-4 text-sm text-slate-600 dark:text-slate-300">Permiten flujo en una sola dirección. Usados en rectificación, protección contra polaridad invertida y LEDs.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- PAGE: CIRCUITOS (MANTENIDO) -->
+    <!-- PAGE: CIRCUITOS (manteniendo funcionalidad existente) -->
     <div id="page-circuitos" class="content-page">
-        <!-- [CONTENIDO IDÉNTICO AL ORIGINAL] -->
         <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Circuitos Eléctricos</h2></div>
-            <!-- ... resto del contenido de circuitos ... -->
+            <div class="mb-10">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Circuitos Eléctricos</h2>
+            </div>
+            <div class="flex justify-center mb-10 gap-3 flex-wrap">
+                <div class="bg-slate-100 dark:bg-slate-700 rounded-xl p-1 flex gap-1">
+                    <button onclick="setCircuitType('serie')" id="btnSerie" class="px-4 py-2.5 rounded-lg text-sm font-semibold bg-electric-600 text-white shadow-md">Serie</button>
+                    <button onclick="setCircuitType('paralelo')" id="btnParalelo" class="px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500 dark:text-slate-300">Paralelo</button>
+                    <button onclick="setCircuitType('mixto')" id="btnMixto" class="px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500 dark:text-slate-300">Mixto</button>
+                </div>
+                <button onclick="toggleFlowType()" id="btnFlowType" class="px-5 py-2.5 rounded-lg text-sm font-semibold border-2 border-electric-600 text-electric-600 bg-white dark:bg-slate-800 hover:bg-electric-50 dark:hover:bg-slate-700 flex items-center gap-2">
+                    <i data-lucide="shuffle" class="w-4 h-4"></i> 
+                    <span id="flowLabel">Convencional</span>
+                </button>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-10">
+                <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                    <canvas id="circuitCanvas" width="500" height="380" class="w-full rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"></canvas>
+                    <div id="circInputs" class="mt-4 grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="text-xs font-semibold text-volt block mb-1">V</label>
+                            <input type="number" id="circV" value="12" class="w-full px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-mono bg-white dark:bg-slate-700 text-slate-900 dark:text-white" onchange="updateCircuitStatic()">
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-ohms block mb-1">R₁</label>
+                            <input type="number" id="circR1" value="100" class="w-full px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-mono bg-white dark:bg-slate-700 text-slate-900 dark:text-white" onchange="updateCircuitStatic()">
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-ohms block mb-1">R₂</label>
+                            <input type="number" id="circR2" value="200" class="w-full px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-mono bg-white dark:bg-slate-700 text-slate-900 dark:text-white" onchange="updateCircuitStatic()">
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-br from-electric-50 to-blue-50 dark:from-electric-900/20 dark:to-blue-900/20 rounded-2xl border border-electric-200 dark:border-electric-800 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Resultados</h3>
+                        <div id="circuitResults"></div>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Reglas</h3>
+                        <div id="circuitRules" class="space-y-2 text-sm text-slate-600 dark:text-slate-300"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- PAGE: SEÑALES (MANTENIDO) -->
+    <!-- PAGE: SEÑALES (manteniendo funcionalidad existente) -->
     <div id="page-senales" class="content-page">
-        <!-- [CONTENIDO IDÉNTICO AL ORIGINAL] -->
         <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Señales Eléctricas</h2></div>
-            <!-- ... resto del contenido de señales ... -->
+            <div class="mb-10">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Señales Eléctricas</h2>
+            </div>
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                    <canvas id="waveCanvas" width="700" height="350" class="w-full rounded-xl bg-[#0C1A2E]"></canvas>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <button onclick="setWaveType('sine')" id="btnSine" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-electric-600 text-white">Senoidal</button>
+                        <button onclick="setWaveType('square')" id="btnSquare" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Cuadrada</button>
+                        <button onclick="setWaveType('triangle')" id="btnTriangle" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Triangular</button>
+                        <button onclick="setWaveType('sawtooth')" id="btnSawtooth" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Sierra</button>
+                        <button onclick="setWaveType('half')" id="btnHalf" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Media Onda</button>
+                        <button onclick="setWaveType('dc')" id="btnDC" class="wave-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">DC</button>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                        <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-4">Parámetros</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <label class="text-xs font-semibold text-volt">Amplitud</label>
+                                    <span id="ampVal" class="font-mono text-xs text-slate-900 dark:text-white">5.0 V</span>
+                                </div>
+                                <input type="range" id="ampSlider" min="0.5" max="10" step="0.1" value="5" class="w-full" oninput="updateWaveParams()">
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <label class="text-xs font-semibold text-amps">Frecuencia</label>
+                                    <span id="freqVal" class="font-mono text-xs text-slate-900 dark:text-white">2.0 Hz</span>
+                                </div>
+                                <input type="range" id="freqSlider" min="0.5" max="60" step="0.1" value="2" class="w-full" oninput="updateWaveParams()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                        <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-3">Propiedades</h3>
+                        <div id="waveProps" class="space-y-2 text-sm text-slate-600 dark:text-slate-300"></div>
+                    </div>
+                    <div class="bg-gradient-to-br from-electric-50 to-blue-50 dark:from-electric-900/20 dark:to-blue-900/20 rounded-2xl border border-electric-200 dark:border-electric-800 p-6">
+                        <h3 class="text-sm font-semibold text-electric-700 dark:text-electric-400 mb-3">💡 Dato</h3>
+                        <p id="waveFact" class="text-sm text-slate-600 dark:text-slate-300">La señal de media onda es el resultado de rectificar una señal senoidal, bloqueando el semiciclo negativo.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- PAGE: PRÁCTICA (MANTENIDO CON MEJORAS) -->
+    <!-- PAGE: PRÁCTICA (manteniendo funcionalidad existente) -->
     <div id="page-practica" class="content-page">
         <div class="max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-10"><h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Módulo de Práctica</h2></div>
-            
-            <!-- Status Firebase -->
+            <div class="mb-10">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">Módulo de Práctica</h2>
+            </div>
             <div id="fbStatus" class="mb-4 px-4 py-2 rounded-lg text-xs font-mono flex items-center gap-2 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
                 <span class="w-2 h-2 rounded-full bg-yellow-400" id="fbDot"></span>
                 <span id="fbText">Conectando...</span>
             </div>
-            
-            <!-- Tabs de práctica -->
             <div class="flex gap-2 mb-8 flex-wrap">
                 <button onclick="switchSubTab('quiz')" id="subQuiz" class="sub-tab active px-5 py-2.5 rounded-xl text-sm font-semibold bg-electric-600 text-white shadow-md">Cuestionario</button>
                 <button onclick="switchSubTab('tarea')" id="subTarea" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Prácticas de Tarea</button>
                 <button onclick="accessEditor()" id="subEditor" class="sub-tab px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Editor de Prácticas</button>
-                <button onclick="refreshAllPractices()" class="ml-auto px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 flex items-center gap-1">
+                <button onclick="refreshAllPractices()" class="ml-auto px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 flex items-center gap-1">
                     <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refrescar
                 </button>
             </div>
             
-            <!-- Paneles de práctica (quiz, tarea, editor) -->
-            <!-- [CONTENIDO MANTENIDO DEL ORIGINAL] -->
+            <!-- Panel Quiz -->
             <div id="panel-quiz" class="sub-panel" style="display:block">
-                <!-- Quiz content -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="mb-8">
+                        <div class="flex justify-between text-sm text-slate-500 dark:text-slate-400 mb-2">
+                            <span>Pregunta <span id="qNum">1</span> de <span id="qTotal">8</span></span>
+                            <span>Puntuación: <span id="qScore" class="font-bold text-electric-600">0</span></span>
+                        </div>
+                        <div class="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div id="qProgress" class="h-full bg-electric-600 rounded-full transition-all duration-500" style="width:12.5%"></div>
+                        </div>
+                    </div>
+                    <div id="quizCard" class="bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+                        <div id="quizCategory" class="inline-block bg-electric-100 dark:bg-electric-900/30 text-electric-700 dark:text-electric-400 text-xs font-semibold px-3 py-1 rounded-full mb-4"></div>
+                        <h3 id="quizQuestion" class="text-xl font-semibold text-slate-900 dark:text-white mb-6"></h3>
+                        <div id="quizOptions" class="space-y-3"></div>
+                        <div id="quizFeedback" style="display:none" class="mt-6 rounded-xl p-4 text-sm"></div>
+                        <div class="flex justify-between mt-6">
+                            <button id="btnSkip" onclick="skipQuestion()" class="px-5 py-2.5 text-sm font-semibold text-slate-500 dark:text-slate-400">Saltar →</button>
+                            <button id="btnNext" onclick="nextQuestion()" style="display:none" class="px-6 py-2.5 text-sm font-semibold bg-electric-600 text-white rounded-xl shadow-md">Siguiente →</button>
+                        </div>
+                    </div>
+                    <div id="quizComplete" style="display:none" class="text-center py-12">
+                        <div class="text-5xl font-bold text-electric-600 mb-2" id="finalScore">0/8</div>
+                        <p id="finalMsg" class="text-slate-500 dark:text-slate-400 mb-8"></p>
+                        <button onclick="restartQuiz()" class="px-8 py-3 bg-electric-600 text-white font-semibold rounded-xl shadow-md">Reintentar</button>
+                    </div>
+                </div>
             </div>
+            
+            <!-- Panel Tarea -->
             <div id="panel-tarea" class="sub-panel" style="display:none">
-                <!-- Tareas content -->
+                <div class="max-w-5xl mx-auto">
+                    <div id="tareaList" class="space-y-4">
+                        <div class="text-center py-12 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600">
+                            <p class="text-slate-400">Cargando...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
+            <!-- Panel Editor -->
             <div id="panel-editor" class="sub-panel" style="display:none">
-                <!-- Editor content -->
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Editor de Prácticas</h3>
+                        <div class="flex gap-2">
+                            <button onclick="showAuthModal('openForm')" id="btnAddPractice" class="bg-electric-600 hover:bg-electric-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Añadir
+                            </button>
+                            <button onclick="logoutEditor()" id="btnLogout" style="display:none" class="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1">
+                                <i data-lucide="log-out" class="w-4 h-4"></i> Salir
+                            </button>
+                        </div>
+                    </div>
+                    <div id="editorList" class="space-y-4">
+                        <div class="text-center py-12 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600">
+                            <p class="text-slate-400">Inicia sesión para ver y editar prácticas</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- MODAL: MINI-JUEGO "DESAFÍO ELÉCTRICO" (NUEVO)-->
-<!-- ============================================ -->
-<div id="miniGameModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center;backdrop-blur-sm;">
-    <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 max-w-2xl w-full mx-4 shadow-2xl border border-slate-200 dark:border-slate-700 relative overflow-hidden">
-        
-        <!-- Header del juego -->
-        <div class="flex justify-between items-start mb-6">
-            <div>
-                <h3 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                    <span class="text-3xl">⚡</span> Desafío Eléctrico Rápido
-                </h3>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">¡Responde antes de que se acabe el tiempo!</p>
+<!-- ============================================
+     [FEATURE B] MODAL MINI-JUEGO
+============================================ -->
+<div id="miniGameModal" style="display:none;" class="fixed inset-0 z-[300] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+        <!-- Header -->
+        <div class="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 rounded-t-3xl z-10">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        ⚡ Desafío Eléctrico Rápido
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Responde correctamente y acumula puntos</p>
+                </div>
+                <button onclick="closeMiniGame()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" aria-label="Cerrar juego">
+                    <i data-lucide="x" class="w-6 h-6 text-slate-500"></i>
+                </button>
             </div>
-            <button onclick="closeMiniGame()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" aria-label="Cerrar juego">
-                <i data-lucide="x" class="w-6 h-6 text-slate-500"></i>
-            </button>
         </div>
         
-        <!-- Stats del juego en vivo -->
-        <div class="grid grid-cols-4 gap-3 mb-6">
-            <div class="bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl p-3 text-center">
-                <div class="text-xs opacity-80">TIEMPO</div>
+        <!-- Stats Bar -->
+        <div class="grid grid-cols-4 gap-3 p-6 border-b border-slate-200 dark:border-slate-700">
+            <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-3 text-center text-white">
+                <div class="text-xs opacity-80 mb-1">TIEMPO</div>
                 <div id="gameTimer" class="text-2xl font-bold font-mono">60</div>
             </div>
-            <div class="bg-gradient-to-br from-electric-600 to-blue-600 text-white rounded-xl p-3 text-center">
-                <div class="text-xs opacity-80">PUNTOS</div>
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-3 text-center text-white">
+                <div class="text-xs opacity-80 mb-1">PUNTOS</div>
                 <div id="gameScore" class="text-2xl font-bold font-mono">0</div>
             </div>
-            <div class="bg-gradient-to-br from-amber-500 to-orange-500 text-white rounded-xl p-3 text-center">
-                <div class="text-xs opacity-80">COMBO</div>
+            <div class="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl p-3 text-center text-white">
+                <div class="text-xs opacity-80 mb-1">COMBO</div>
                 <div id="gameCombo" class="text-2xl font-bold font-mono">x1</div>
             </div>
-            <div class="bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-xl p-3 text-center">
-                <div class="text-xs opacity-80">ACIERTOS</div>
+            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-3 text-center text-white">
+                <div class="text-xs opacity-80 mb-1">ACIERTOS</div>
                 <div id="gameCorrect" class="text-2xl font-bold font-mono">0</div>
             </div>
         </div>
         
         <!-- Barra de progreso temporal -->
-        <div class="mb-6">
+        <div class="px-6 pt-4">
             <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                <div id="gameTimeBar" class="h-full bg-gradient-to-r from-green-500 via-amber-500 to-red-500 transition-all duration-1000 ease-linear" style="width:100%"></div>
+                <div id="gameTimeBar" class="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full transition-all duration-1000" style="width:100%"></div>
             </div>
         </div>
         
         <!-- Área de pregunta -->
-        <div id="gameQuestionArea" class="bg-slate-50 dark:bg-slate-700/50 rounded-2xl p-6 mb-6 min-h-[200px] flex flex-col justify-center">
-            <div id="gameCategory" class="inline-block self-start bg-electric-100 dark:bg-electric-900/30 text-electric-700 dark:text-electric-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">
-                Ley de Ohm
-            </div>
-            <h4 id="gameQuestionText" class="text-xl font-bold text-slate-900 dark:text-white mb-6 text-center">
-                ¿Listo para comenzar?
-            </h4>
-            
-            <!-- Opciones de respuesta -->
-            <div id="gameOptions" class="grid grid-cols-2 gap-3">
-                <button onclick="startMiniGameRound()" class="col-span-2 bg-gradient-to-r from-electric-600 to-blue-600 hover:from-electric-500 hover:to-blue-500 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all hover:scale-105 shadow-lg">
+        <div id="gameQuestionArea" class="p-6 min-h-[250px] flex flex-col justify-center">
+            <!-- Se llenará dinámicamente con JavaScript -->
+            <div id="gameStartScreen" class="text-center py-12">
+                <div class="w-24 h-24 bg-gradient-to-br from-electric-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow">
+                    <i data-lucide="zap" class="w-12 h-12 text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">¿Listo para el desafío?</h3>
+                <p class="text-slate-500 dark:text-slate-400 mb-6">Tendrás 60 segundos para responder la mayor cantidad de preguntas posibles.</p>
+                <button onclick="startMiniGameRound()" class="col-span-2 px-8 py-4 bg-gradient-to-r from-electric-600 to-blue-600 hover:from-electric-700 hover:to-blue-700 text-white font-bold text-lg rounded-xl shadow-lg hover:scale-105 transition-all inline-flex items-center gap-2">
+                    <i data-lucide="play" class="w-6 h-6"></i>
                     🚀 INICIAR RONDA
                 </button>
             </div>
+            
+            <div id="gamePlayArea" style="display:none;">
+                <div id="gameCategory" class="inline-block bg-electric-100 dark:bg-electric-900/30 text-electric-700 dark:text-electric-400 text-xs font-semibold px-3 py-1 rounded-full mb-4"></div>
+                <h3 id="gameQuestionText" class="text-xl font-bold text-slate-900 dark:text-white mb-6"></h3>
+                <div id="gameOptions" class="grid grid-cols-2 gap-3"></div>
+            </div>
+            
+            <div id="gameFeedbackArea" class="hidden">
+                <!-- Feedback dinámico -->
+            </div>
+            
+            <div id="gameResultsArea" style="display:none;" class="text-center py-8">
+                <div class="text-6xl mb-4">🎮</div>
+                <h3 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">¡Ronda Finalizada!</h3>
+                <div id="gameFinalScore" class="text-5xl font-bold text-electric-600 my-6">0 pts</div>
+                <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-8">
+                    <div class="bg-slate-100 dark:bg-slate-700 rounded-xl p-3">
+                        <div class="text-2xl font-bold text-green-600" id="resultCorrect">0</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Correctas</div>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-700 rounded-xl p-3">
+                        <div class="text-2xl font-bold text-amber-500" id="resultMaxCombo">x0</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Max Combo</div>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-700 rounded-xl p-3">
+                        <div class="text-2xl font-bold text-blue-600" id="resultRounds">0</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Rondas</div>
+                    </div>
+                </div>
+                <div class="flex gap-3 justify-center">
+                    <button onclick="startMiniGameRound()" class="px-6 py-3 bg-electric-600 text-white font-semibold rounded-xl hover:bg-electric-700 transition-colors flex items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i> Jugar Nuevo
+                    </button>
+                    <button onclick="closeMiniGame()" class="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
         </div>
         
-        <!-- Feedback de respuesta -->
-        <div id="gameFeedback" class="hidden rounded-xl p-4 text-center font-semibold text-lg mb-4 animate-bounce">
-        </div>
-        
-        <!-- Controles inferiores -->
-        <div class="flex justify-between items-center pt-4 border-t border-slate-200 dark:border-slate-700">
-            <div class="text-xs text-slate-500 dark:text-slate-400">
-                <strong>Dificultad:</strong> <span id="gameDifficulty">Fácil</span>
+        <!-- Footer con dificultad y sonido -->
+        <div class="sticky bottom-0 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 p-4 rounded-b-3xl flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-sm text-slate-500 dark:text-slate-400">Dificultad:</span>
+                <span id="gameDifficultyBadge" class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full">FÁCIL</span>
             </div>
-            <div class="flex gap-2">
-                <button onclick="toggleSound()" id="soundToggleBtn" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" title="Activar/desactivar sonido">
-                    <i data-lucide="volume-2" class="w-4 h-4 inline"></i> Sound
-                </button>
-            </div>
+            <button onclick="toggleSound()" id="soundToggleBtn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-sm font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                <i data-lucide="volume-2" class="w-4 h-4" id="soundIcon"></i>
+                <span id="soundText">Sound ON</span>
+            </button>
         </div>
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- MODAL: PANEL DE LOGROS/BADGES (NUEVO)        -->
-<!-- ============================================ -->
-<div id="badgesModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:290;align-items:center;justify-content:center;overflow-y:auto;padding:20px;backdrop-blur-sm;">
-    <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 max-w-4xl w-full mx-4 shadow-2xl border border-slate-200 dark:border-slate-700 my-8">
-        
+<!-- ============================================
+     [FEATURE C] MODAL BADGES/LOGROS
+============================================ -->
+<div id="badgesModal" style="display:none;" class="fixed inset-0 z-[290] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative my-8">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h3 class="text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
-                    🏆 Mis Logros y Badges
-                </h3>
-                <p class="text-slate-500 dark:text-slate-400 mt-2">
-                    Has desbloqueado <span id="badgeTotalCount" class="font-bold text-electric-600">0</span> de <span id="badgeMaxCount">12</span> logros
-                </p>
+        <div class="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 rounded-t-3xl z-10">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        🏆 Mis Logros y Badges
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                        Has desbloqueado <span id="badgesUnlockedCount" class="font-bold text-amber-600">0</span> de 12 logros
+                    </p>
+                </div>
+                <button onclick="toggleBadgesPanel()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" aria-label="Cerrar logros">
+                    <i data-lucide="x" class="w-6 h-6 text-slate-500"></i>
+                </button>
             </div>
-            <button onclick="toggleBadgesPanel()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" aria-label="Cerrar panel de logros">
-                <i data-lucide="x" class="w-6 h-6 text-slate-500"></i>
-            </button>
-        </div>
-        
-        <!-- Barra de progreso general -->
-        <div class="mb-8">
-            <div class="flex justify-between text-sm text-slate-600 dark:text-slate-300 mb-2">
-                <span>Progreso General</span>
-                <span id="badgeProgressPercent" class="font-bold">0%</span>
-            </div>
-            <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                <div id="badgeProgressBar" class="h-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 transition-all duration-500 rounded-full" style="width:0%"></div>
+            
+            <!-- Barra de progreso general -->
+            <div class="mt-4">
+                <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div id="badgesProgressBar" class="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full transition-all duration-500" style="width:0%"></div>
+                </div>
             </div>
         </div>
         
         <!-- Grid de badges -->
-        <div id="badgesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <!-- Los badges se generan dinámicamente via JavaScript -->
+        <div id="badgesGridContainer" class="p-6">
+            <div id="badgesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Se genera dinámicamente -->
+            </div>
         </div>
         
-        <!-- Categorías de filtros -->
-        <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
-            <div class="flex gap-2 flex-wrap justify-center">
-                <button onclick="filterBadges('all')" class="badge-filter active px-4 py-2 rounded-lg text-sm font-medium bg-electric-600 text-white">Todos</button>
-                <button onclick="filterBadges('game')" class="badge-filter px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">🎮 Juegos</button>
-                <button onclick="filterBadges('learn')" class="badge-filter px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">📚 Aprendizaje</button>
-                <button onclick="filterBadges('special')" class="badge-filter px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">⭐ Especiales</button>
+        <!-- Filtros -->
+        <div class="sticky bottom-0 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 p-4 rounded-b-3xl">
+            <div class="flex gap-2 justify-center flex-wrap">
+                <button onclick="filterBadges('all')" class="filter-badge-btn active px-4 py-2 rounded-lg text-sm font-semibold bg-electric-600 text-white transition-all">Todos</button>
+                <button onclick="filterBadges('game')" class="filter-badge-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">🎮 Juegos</button>
+                <button onclick="filterBadges('learn')" class="filter-badge-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">📚 Aprendizaje</button>
+                <button onclick="filterBadges('special')" class="filter-badge-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">⭐ Especiales</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- MODAL: CELEBRACIÓN DE LOGRO (NUEVO)          -->
-<!-- ============================================ -->
-<div id="achievementCelebration" style="display:none;position:fixed;inset:0;z-index:400;pointer-events:none;">
+<!-- ============================================
+     [FEATURE C+F] MODAL CELEBRACIÓN CON CONFETI
+============================================ -->
+<div id="achievementCelebration" style="display:none;" class="fixed inset-0 z-[400] pointer-events-none">
     <!-- Canvas de confeti -->
     <canvas id="confettiCanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
     
-    <!-- Modal centrado de celebración -->
-    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center animate-bounce-in">
-        <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-2xl border-2 border-amber-400 max-w-md mx-4">
-            <div class="text-6xl mb-4" id="celebrationIcon">🏆</div>
-            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" id="celebrationTitle">¡Logro Desbloqueado!</h3>
-            <p class="text-lg text-amber-600 font-semibold mb-2" id="celebrationBadgeName">Nombre del Badge</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400" id="celebrationBadgeDesc">Descripción del badge</p>
+    <!-- Card centrada de celebración -->
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto animate-bounce-in">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 text-center max-w-sm mx-4 border-2 border-amber-400">
+            <div id="celebrationIcon" class="text-6xl mb-4">🏆</div>
+            <h3 class="text-xl font-bold text-amber-600 mb-2">¡Logro Desbloqueado!</h3>
+            <div id="celebrationName" class="text-lg font-bold text-slate-900 dark:text-white mb-2"></div>
+            <div id="celebrationDesc" class="text-sm text-slate-500 dark:text-slate-400"></div>
         </div>
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- TOAST NOTIFICATION                          -->
-<!-- ============================================ -->
-<div id="toast" style="display:none;position:fixed;bottom:24px;right:24px;z-index:300">
-    <div class="bg-electric-600 text-white px-6 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2 animate-slide-in-right">
+<!-- ============================================
+     MODAL AUTENTICACIÓN (Firebase)
+============================================ -->
+<div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl text-center">
+        <div class="w-16 h-16 bg-electric-50 dark:bg-electric-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="lock" class="w-8 h-8 text-electric-600"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Acceso Requerido</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Inicia sesión con tu cuenta de Google para gestionar las prácticas.</p>
+        <p id="authError" style="display:none" class="text-red-500 text-xs mb-3 font-medium"></p>
+        <div class="flex flex-col gap-3">
+            <button onclick="loginWithGoogle()" class="w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-3 transition-colors">
+                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Iniciar sesión con Google
+            </button>
+            <button onclick="closeAuthModal()" class="w-full px-4 py-2.5 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================
+     FORMULARIO DE PRÁCTICA (Firebase)
+============================================ -->
+<div id="practiceFormModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:210;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 0">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-xl w-full mx-4 shadow-2xl">
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2" id="pfModalTitle">Nueva Práctica</h3>
+        <div class="space-y-5">
+            <div>
+                <label class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 block">📌 Título *</label>
+                <input type="text" id="pfTitle" class="form-input-easy w-full dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+            </div>
+            <div>
+                <label class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 block">📚 Área</label>
+                <select id="pfArea" class="form-input-easy w-full dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+                    <option>Ley de Ohm</option>
+                    <option>Componentes</option>
+                    <option>Circuitos</option>
+                    <option>Señales</option>
+                    <option>Otros</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 block">🎯 Objetivo *</label>
+                <textarea id="pfObj" rows="2" class="form-input-easy w-full resize-none dark:bg-slate-700 dark:border-slate-600 dark:text-white"></textarea>
+            </div>
+            <div>
+                <label class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 block">🛠 Materiales</label>
+                <textarea id="pfMat" rows="2" class="form-input-easy w-full resize-none dark:bg-slate-700 dark:border-slate-600 dark:text-white"></textarea>
+            </div>
+            <div>
+                <label class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 block">📋 Procedimiento *</label>
+                <textarea id="pfPasos" rows="4" class="form-input-easy w-full resize-none dark:bg-slate-700 dark:border-slate-600 dark:text-white"></textarea>
+            </div>
+            <div>
+                <label class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 block">📝 Observaciones</label>
+                <textarea id="pfNotas" rows="2" class="form-input-easy w-full resize-none dark:bg-slate-700 dark:border-slate-600 dark:text-white"></textarea>
+            </div>
+            <div>
+                <label class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 block">🖼 Imagen (Opcional, máx 200KB)</label>
+                <input type="file" id="pfImage" accept="image/*" class="w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-electric-50 file:text-electric-700 dark:file:bg-electric-900/30 dark:file:text-electric-400">
+            </div>
+            <div class="flex gap-3 pt-2">
+                <button onclick="closePracticeForm()" class="flex-1 px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">Cancelar</button>
+                <button onclick="submitPractice()" class="flex-1 px-4 py-3 bg-electric-600 text-white rounded-xl text-sm font-semibold hover:bg-electric-700 flex items-center justify-center gap-2 shadow-md">
+                    <i data-lucide="save" class="w-4 h-4"></i> 
+                    <span id="pfSubmitText">Guardar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================
+     TOAST NOTIFICATION
+============================================ -->
+<div id="toast" style="display:none;position:fixed;bottom:24px;right:24px;z-index:310">
+    <div class="bg-electric-600 text-white px-6 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2">
         <i data-lucide="check-circle" class="w-4 h-4"></i>
         <span id="toastMsg"></span>
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- FOOTER                                       -->
-<!-- ============================================ -->
+<!-- ============================================
+     FOOTER
+============================================ -->
 <footer id="appFooter" style="display:none" class="bg-electric-900 text-white py-10 px-6">
     <div class="max-w-7xl mx-auto text-center">
         <div class="flex items-center justify-center gap-4 mb-4">
-            <img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" 
-                 alt="ESFM" 
-                 class="h-10 object-contain shield-img">
-            <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" 
-                 alt="Especialidad" 
-                 class="h-10 object-contain shield-img">
+            <img src="https://z-cdn-media.chatglm.cn/files/5d91020a-0549-4616-9c45-571c6264befc.png?auth_key=1879313417-4b485efac38f458987e708975eabf06c-0-24e336b7bee69505966d3a3305edc053" alt="ESFM" class="h-10 object-contain shield-img">
+            <img src="https://z-cdn-media.chatglm.cn/files/1e4e5adb-780a-4a2e-b551-e119bb0a08cc.png?auth_key=1879313417-bfc2c4f704cd4e4b922023948d49d323-0-cc7a4796ac1e99f9dbfd15cd5bc53440" alt="Especialidad" class="h-10 object-contain shield-img">
         </div>
-        <p class="text-sm text-electric-300">
-            © 2026 ElectroniLab 2.0 — IEPC - PEC · U.E. Max Fernandez Rojas · ESFM Mariscal Sucre
-        </p>
-        <p class="text-xs text-electric-400 mt-2">
-            Versión 2.0 con Gamificación • Mini-Juegos • Sistema de Logros • Modo Oscuro
-        </p>
+        <p class="text-sm text-electric-300">© 2026 ElectroniLab 2.0 — IEPC - PEC · U.E. Max Fernandez Rojas · ESFM Mariscal Sucre</p>
+        <p class="text-xs text-electric-400 mt-2">Versión gamificada con sistema de logros, mini-juegos y modo oscuro</p>
     </div>
 </footer>
 
-<!-- Script principal -->
+<!-- SCRIPT PRINCIPAL -->
 <script src="script.js"></script>
 
 </body>
